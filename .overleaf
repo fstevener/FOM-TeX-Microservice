@@ -1,0 +1,19 @@
+{
+    "compiler": "xelatex",
+    "synctex": true,
+    "auto_compile": true,
+    "default_packages": [
+        "graphicx",
+        "amsmath",
+        "fontspec"
+    	],
+    "documentclass": [
+	"german",
+	"12pt",
+	"oneside",
+	"titlepage",
+	"listof=totoc",
+	"bibliography=totoc"
+	],
+    "fontsize": "12pt"
+}
