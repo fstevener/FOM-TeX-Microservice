@@ -67,8 +67,44 @@
 	\setkomafont{sectioning}{\bfseries}
 
 % bibliography
-\usepackage[backend=biber,style=ext-authoryear,maxcitenames=1,maxbibnames=999,mergedate=false,date=iso,seconds=true,urldate=iso,innamebeforetitle,dashed=false,autocite=footnote,doi=false,useprefix=true,mincrossrefs=1]{biblatex}\input{app/src/bib/modsBiblatex}
+%\usepackage[backend=biber,style=ext-authoryear,maxcitenames=1,maxbibnames=999,mergedate=false,date=iso,seconds=true,urldate=iso,innamebeforetitle,dashed=false,autocite=footnote,doi=false,useprefix=true,mincrossrefs=1]{biblatex}\input{app/src/bib/modsBiblatex}
 %\usepackage[backend=biber,style=ieee,maxcitenames=1,maxbibnames=999,mergedate=false,date=iso,seconds=true,urldate=iso,innamebeforetitle,dashed=false,autocite=footnote,doi=false,useprefix=true,mincrossrefs=1]{biblatex}\input{app/src/bib/modsBiblatex}
+% \usepackage[
+%     backend=biber,
+%     style=ieee,
+%     maxcitenames=1,
+%     maxbibnames=999,
+%     mergedate=false,
+%     date=iso,
+%     seconds=true,
+%     urldate=iso,
+%     innamebeforetitle,
+%     dashed=false,
+%     doi=false,
+%     useprefix=true,
+%     mincrossrefs=1
+% ]{biblatex}
+% \input{app/src/bib/modsBiblatexIEEE}
+
+% \usepackage[
+%     backend=biber,
+%     style=ieee,
+%     maxcitenames=1,
+%     maxbibnames=99,
+%     doi=false
+% ]{biblatex}
+% \addbibresource{deine_inhalte/citations.bib}
+% \addbibresource{deine_inhalte/citations_manual.bib}
+
+\usepackage[
+    backend=biber,
+    style=ieee,
+    maxbibnames=99,
+    doi=false
+]{biblatex}
+
+\addbibresource{deine_inhalte/citations.bib}
+\addbibresource{deine_inhalte/citations_manual.bib}
 
 % footnote
 \usepackage{fnpct}

@@ -1,7 +1,7 @@
 \section{Einleitung}
 \subsection{Einführung in die Thematik}
 \blindtext\nomenclature{W3C}{World Wide Web Consortium}
-\blindtext\footcite[Vgl.][]{mswpf}\footcite[Vgl.][19]{sadtler_rechtskonformes_2017}
+\blindtext\cite{mswpf}\cite[19]{sadtler_rechtskonformes_2017}
 
 \subsection{Problemstellung und Zielsetzung}
 \blindtext
@@ -11,22 +11,22 @@
 
 \section{Hauptteil}
 \subsection{LaTeX-Beispiele und Befehle}
-„Dies ist ein direktes Zitat."\footcite[212]{mertens_digitalisierung_2017} \blindtext\footcite[Vgl.][]{msdatabind}\footcite[Vgl.][]{lambda}\footcite[Vgl.][34]{Digitaloekonomie}
+„Dies ist ein direktes Zitat."\cite[212]{mertens_digitalisierung_2017} \blindtext\cite{msdatabind}\cite{lambda}\cite[34]{Digitaloekonomie}
 \blindenumerate
-\blindtext\footcite[Vgl.][415-426]{Tanenbaum2016}\footcite[Vgl.][223]{mandl_internet_2019}
+\blindtext\cite[415-426]{Tanenbaum2016}\cite[223]{mandl_internet_2019}
 
 \begin{figure}[!htb]
     \caption{Terminal}
     \includegraphics[width=1\textwidth]{.github/terminal}
     \captionsetup{width=1\textwidth}
-    \capquelle{\cite[][200]{bsp}}\label{abb_bsp}
+    \capquelle{\cite[200]{bsp}}\label{abb_bsp}
 \end{figure}
 \blindtext
 
 \subsubsection{Tabelle}
-\Blindtext\footcite[Vgl.][34]{Digitaloekonomie}\footcite[Vgl.][]{mesh}
+\Blindtext\cite[34]{Digitaloekonomie}\cite{mesh}
 \blinditemize
-\blindtext (vgl. Tabelle \ref{tabelle_eins}).\footcite[Vgl.][511]{Tanenbaum2016}
+\blindtext (vgl. Tabelle \ref{tabelle_eins}).\cite[511]{Tanenbaum2016}
 \begin{table}[!htb]\label{tabelle_eins}
     \setlength{\arrayrulewidth}{1pt}
     \begin{threeparttable}
@@ -39,7 +39,7 @@
             1 & 2 & 3 & 4 & Lorem ipsum dolor sit amet \tabularnewline \hline
         \end{tabularx}
         \begin{tablenotes}[flushleft]
-            \item \normalsize{Quelle: \cite[][207]{bsp}}
+            \item \normalsize{Quelle: \cite[207]{bsp}}
         \end{tablenotes}
     \end{threeparttable}
 \end{table}
@@ -47,7 +47,7 @@
 \subsubsection{Quelltext}
 \lstinputlisting[caption={Writing Templates}\label{Templates},language=Yaml]{deine_inhalte/Quellcode/red_hat.yaml}
 \captionsetup{width=1\textwidth}
-\capquelle{\cite[][]{red}}\label{Red Hat} \\
+\capquelle{\cite{red}}\label{Red Hat} \\
 
 
 \subsubsection{LaTeX-Befehle}
@@ -77,7 +77,7 @@ Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BY
     back arrow disabled=true
   }
   \smartdiagram[flow diagram:horizontal]{Develop \& Commit,Build,Integration,Build on Integrated Code, Integration-Tests,Packing}
-  \capquelle{Eigendarstellung angelehnt an \cite[][19-20]{pathania_learning_2017}}\label{Continuous Integration Prozess}
+  \capquelle{Eigendarstellung angelehnt an \cite[19-20]{pathania_learning_2017}}\label{Continuous Integration Prozess}
 \end{figure}
 \subsection{Ebene 2.2}
 \blindtext
@@ -113,7 +113,7 @@ Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BY
           }
     \end{tikzpicture}
   \end{center}
-  \capquelle{Eigendarstellung angelehnt an \cite[][311-317]{cohn_succeeding_2010}}\label{Testpyramide}
+  \capquelle{Eigendarstellung angelehnt an \cite[311-317]{cohn_succeeding_2010}}\label{Testpyramide}
 \end{figure}
 
 \subsubsection{Ebene 3}
@@ -124,7 +124,7 @@ Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BY
 \blindtext
 \subsubsubsection{Ebene 4.2}
 \blindtext
-\footcite[Vgl.][79]{Schelinski2019}
+\cite[79]{Schelinski2019}
 
 \section{Schluss}
 \subsection{Fazit}
