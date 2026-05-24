@@ -25,6 +25,19 @@ Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen 
 Da der Begriff der Schema-Versionierung bislang nicht einheitlich definiert ist und sowohl in der wissenschaftlichen Literatur als auch in der Praxis unterschiedliche Auffassungen darüber bestehen, wird in diesem Kapitel eine für diese Arbeit gültige Begriffsbestimmung auf Grundlage etablierter wissenschaftlicher Definitionen vorgenommen. Darüber hinaus werden verwandte Konzepte erläutert, die der Schema-Versionierung inhaltlich nahe stehen und daher häufig mit ihr verwechselt oder vermischt werden.
 
 \subsection{Datenbankschema}
+Das Datenbankschema definiert die Struktur der Datenbank. Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des DBMS gespeichert. Datenbankschemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich. Der Begriff Datenbankschema wird in der Literatur nicht einheitlich verwendet. Die ANSI-SPARC Architektur (vgl. Abb. 1) definiert Datenbankschemata auf drei verschiedenen Abstraktionsebenen, das interne Schema, das konzeptionelle Schema und das externe Schema:
+
+	1. Das interne Schema definiert die physische Struktur der Datenbank. Es enthält vollständige Informationen über die physische Speicherung der Daten in der Datenbank / auf dem Datenträger.
+	
+	2. Das konzeptionelle Schema definiert die logische Struktur der Datenbank. Es abstrahiert die Details der physischen Speicherung und bezieht sich ausschließlich auf das konzeptionelle Design der Datenbank. Es beschreibt Relationen, Attribute, Datentypen, Beziehungen zwischen Entitäten und Integritätsbedingungen. Das konzeptionelle Schema legt damit fest, wie die Daten in der Datenbank angeordnet sind und in welcher Beziehung die Daten zueinander stehen.
+	
+	3. Das externe Schema definiert die benutzerspezifische Sicht auf die Datenbank. Es legt fest, auf welche Teilmenge des konzeptionellen Schemas ein Benutzer zugreifen darf. Für verschiedene Benutzergruppen können unterschiedliche externe Schemata existieren.
+
+Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigkeit. Schemaänderungen auf einer Ebene des Datenbanksystems, haben damit keine Auswirkungen auf das Schema der nächsthöheren Ebene. Es wird zwischen physischer Datenunabhängigkeit und logischer Datenunabhängigkeit differenziert. Physische Datenunabhängigkeit beschreibt die Fähigkeit, Änderungen am internen Schema eines Datenbanksystems vorzunehmen, ohne das konzeptionelle Schema ändern zu müssen. Logische Datenunabhängigkeit liegt vor, wenn das konzeptionelle Schema geändert werden kann, ohne das externe Schema ändern zu müssen. Die Drei-Ebenen-Architektur findet nur in wenigen DBMS vollständige Berücksichtigung. (hier kannst du auch das Paper von Curino "Graceful Database Schema Evolution: the PRISM Workbench" zitieren). Die in dieser Arbeit vorgestellten Konzepte beziehen sich primär auf das konzeptionelle Schema, wenngleich Schema-Versionierung alle drei Ebenen der ANSI-SPARC Architektur betreffen kann.
+  
+Das Datenbankschema ist eine intensionale Beschreibung der Datenbank, es enthält keine Daten. Die Datenbankinstanz hingegen, ist der konkrete Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Es wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Integritätsbedingungen und Strukturen des Schemas. Jedes Einfügen, Löschen und Aktualisieren von Daten in der Datenbank, führt zu einem neuen Zustand und damit zu einer neuen Datenbankinstanz. Das Schema bleibt dabei konstant und ist zeitlich stabiler als die Instanz. Erst wenn die Struktur der Datenbank geändert werden soll, muss das Schema angepasst werden. Das kann z.B. eintreten, wenn sich die Anforderungen an die Applikation ändern, mit der die Datenbank verbunden ist. Die Kapitel 2.2 -2.4 gehen näher darauf ein, wie Änderungen an Datenbankschemata in einem DBMS unterstützt werden können. 
+
+
 „Dies ist ein direktes Zitat."\cite[212]{mertens_digitalisierung_2017} \blindtext\cite{msdatabind}\cite{lambda}\cite[34]{Digitaloekonomie}
 \blindenumerate
 \blindtext\cite[415-426]{Tanenbaum2016}\cite[223]{mandl_internet_2019}
@@ -74,19 +87,65 @@ Da der Begriff der Schema-Versionierung bislang nicht einheitlich definiert ist 
     \textbullet\addspace \textsf{Sans Serif} 
     \textbullet\addspace \textrm{Roman} 
 
-\subsection{Taxonomie der Schema-Modifikation}
-Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BYOD) definiert. Darauffolgend wird dargelegt welche Fokusse gesetzt werden sollen und Schlussfolgerungen gezogen, sowie eine Sicherheitsrichtlinie abgeleitet. Welche als Grundlage einer Gegenüberstellung mit etablierten Konzepten dient, sodass Strategien erörtert werden können. 
+\subsection{Schemamodifikation}
+Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BYOD) definiert.
 
-\subsection{Herausforderungen der Schemaevolution}
-\blindtext
+Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als Schemamodifikation bezeichnet. Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas. Bei der Schemamodifikation wird das bestehende Datenbankschema inklusive der zugehörigen Datenbankinstanz verworfen und durch ein neues ,leeres Schema ersetzt. Aspekte wie Datenintegrität und Schemakonsistenz werden dabei – im Gegensatz zur Schemaevolution und Schema-Versionierung – nicht berücksichtigt.   (siehe Seite 7 des Lietarture Reviews zur Schemaevolution für referenz)
 
-\subsection{Schema Versionierung}
-\blindtext
+Die Abbildungen (vgl. Abb. 2-4) verdeutlichen den Ablauf einer Schema-Modifikation in einer relationalen Datenbank. Ausgangspunkt ist die Schemaversion SV1 mit entsprechendem Eintrag im Systemkatalog. SV1 besteht aus der Relation EMPLOYEE mit den Attributen Name, Address und City. Die Datenbankinstanz besteht aus zwei Tupel (vgl. Abb. 2).  
 
-\section{Test der Ebenen und Beispieldiagramme}
-\subsection{Ebene 2}
-\blindtext
-\begin{figure}[!htb]
+
+
+Das Schema wird mit DDL-Operationen verändert (vgl. Abb. 3). Zunächst wird das Attribut Address aus der Relation entfernt. Anschließend wird ein neues Attribut Phone hinzugefügt.
+
+
+
+
+Dadurch entsteht die neue Schemaversion SV2 mit angepasstem Eintrag im Systemkatalog (vgl. Abb. 4)
+
+
+
+Die ursprüngliche Schema-Version SV1 existiert nach der Modifikation nicht mehr. Auch die mit SV1 verbundene Datenbankinstanz geht verloren. 
+
+Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen Schema-Modifikation: Änderungen werden direkt auf dem bestehenden Schema durchgeführt, ohne frühere Schemaversionen oder historische Dateninstanzen beizubehalten. Anwendungen und Anfragen müssen anschließend mit der neuen Struktur kompatibel sein.
+
+
+\subsection{Schema-Evolution}
+Schemaevolution bezeichnet die Änderung des Datenbankschemas einer bestehenden Datenbank, wobei die bereits gespeicherten Daten durch geeignete Migrationsoperationen an das neue Schema angepasst werden. Sie grenzt sich von der Schemamodifikation dadurch ab, dass die bestehenden Daten erhalten bleiben und in das neue Schema überführt, anstatt verworfen zu werden. Dennoch kann es im Rahmen der Schemaevolution, beispielsweise bei der Entfernung von Attributen oder Änderung von Datentypen, zu einem teilweisen Informationsverlust kommen. Auch die Kompatibilität des neuen Schemas mit Anwendungen, die auf Basis des alten Schemas entwickelt wurden, ist durch Schemaevolution nicht garantiert.
+
+Abbildung 5 zeigt das aus der DDL-Operation in Abbildung 4 resultierende Schema bei einem DBMS, das Schemaevolution unterstützt. Die ursprüngliche Schemaversion SV1 wird verworfen und vollständig durch die neue Schemaversion SV2 ersetzt. Dabei wird die bestehende Datenbankinstanz an das neue Schema angepasst. Die Daten der Attribute NAME und CITY werden in die neue Schemaversion übernommen. Die Informationen des Attributs ADDRESS gehen hingegen verloren, da dieses Attribut nicht mehr Bestandteil von SV2 ist. Für das neu eingeführte Attribut PHONE liegen zunächst keine Werte vor, sodass die entsprechenden Tupel mit NULL-Werten belegt werden.
+
+\subsection{Schema-Versionierung}
+Schema-Versionierung bezeichnet die Fähigkeit eines Datenbanksystems, verschiedene Zustände eines Schemas über die Zeit hinweg zu verwalten und zugänglich zu machen. Dabei werden Änderungen am Schema historisch gespeichert, sodass frühere und aktuelle Versionen weiterhin genutzt werden können. Im Unterschied zur Schemaevolution wird das bestehende Schema nicht ersetzt, sondern durch eine zusätzliche Schema-Version ergänzt, sodass mehrere Schema-Versionen parallel im DBMS zur Laufzeit existieren können. Ein wesentliches Merkmal ist zudem die Möglichkeit, Daten sowohl über aktuelle als auch historische Schemata abzurufen. Das ermöglicht Anwendungen auf die Schema-Version zuzugreifen, für die sie entwickelt wurden, wodurch ihre Funktionsfähigkeit erhalten bleibt. Neue Daten werden dabei in der Regel nach der aktuellen Schema-Version gespeichert. Ein zentrales Ziel der Schema-Versionierung ist es, Informationsverlust zu vermeiden und den Betrieb bestehender Anwendungen weiterhin zu gewährleisten.
+
+Schema-Versionierung ist komplexer als die reine Schemaevolution, da sämtliche Schema-Versionen innerhalb eines DBMS gemeinsam mit den zugehörigen Daten und abhängigen Komponenten koexistieren und konsistent betrieben werden müssen.
+
+Abbildung 6 zeigt das resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schemaevolution koexistiert die neue Schemaversion SV2 mit der ursprünglichen Schemaversion SV1 innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Datenbankinstanz der Schemaversion SV1 bleibt vollständig erhalten. Für SV2 werden die Daten analog zur Schemaevolution an die neue Schemastruktur angepasst. Dadurch können Anwendungen, die entweder gegen SV1 oder gegen SV2 entwickelt beziehungsweise kompiliert wurden, weiterhin ohne Anpassungen betrieben werden.
+
+
+\section{Methoden der Schema-Versionierung}
+Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Da die konkrete Ausgestaltung einer Schema-Versionierung maßgeblich von den jeweiligen Anwendungsanforderungen abhängt, ist eine isolierte Betrachtung einzelner Lösungen nur eingeschränkt aussagekräftig. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
+\subsection{Dimensionen der Schema-Versionierung}
+\subsubsection{Partielle und vollständige Schema-Versionierung}
+Im Hinblick auf die Query- und Update-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen Partial Schema Versioning und Full Schema Versioning differenziert.
+
+Partial Schema Versioning ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin korrekt funktionieren, sofern diese Anwendungen Daten verändern. Die Abbildung 7 zeigt, dass Anwendungen, die Schreib Operationen auf SV1 ausführen, nicht mehr korrekt funktionieren, sobald SV2 eingeführt wird. Ab diesem Zeitpunkt sind Schreiboperationen nur noch über SV2 möglich. 
+
+ (e.g., freely querying I1 and I2 is allowed through either SV1 or SV2) but to update data through a single schema version only (normally the current schema version, i.e., only I2 via SV2 can be modi¯ed)
+
+
+
+Full Schema Versioning hingegen ermöglicht sowohl das Abrufen als auch das Aktualisieren von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Änderungen am Schema weiterhin funktionsfähig.
+
+(e.g., freely querying and updating data in I1 and I2 is allowed through either SV1 or SV2)
+
+
+
+
+
+Die Kompatibilität zwischen Daten und Schema-Versionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen Rückwärtskompatibilität und Vorwärtskompatibilität. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schema-Version erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schema-Version entwickelt wurde. Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schema-Version erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schema-Version konzipiert ist  (e.g., accessing I2 data via SV1). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erstellt wurden.
+
+In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Datenbankschemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht möglich. Deshalb unterstützen viele Systeme nur partielle Schema-Versionierung, bei der entweder Datenkompatibilität oder Anwendungskompatibilität erhalten bleibt.\begin{figure}[!htb]
   \caption{Continuous Integration Prozess}
   \captionsetup{width=1\textwidth}
   \smartdiagramset{
@@ -99,8 +158,140 @@ Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BY
   \smartdiagram[flow diagram:horizontal]{Develop \& Commit,Build,Integration,Build on Integrated Code, Integration-Tests,Packing}
   \capquelle{Eigendarstellung angelehnt an \cite[19-20]{pathania_learning_2017}}\label{Continuous Integration Prozess}
 \end{figure}
-\subsection{Ebene 2.2}
-\blindtext
+
+
+\subsubsection{Temporale Schema-Versionierung}
+
+Neben nicht-temporalen Konzepten, können Schemata auch entlang zeitlicher Dimensionen versioniert werden.  Castro et al. entwickelten – aufbauend auf einem Vorschlag von John F. Roddick – drei Ansätze der temporalen Schema-Versionierung. Dabei unterscheiden sie zwischen Schema-Versionierung basierend auf transaction-time, valid-time und bitemporal-time.
+
+Transaction-Time
+Bei der transaktionszeitbasierten Schema-Versionierung versieht das DBMS jede Schemaversion mit einem Transaktionsbeginn und einem Transaktionsende als Zeitstempel. Die Kataloginformationen werden dabei analog zu Transaktionszeittabellen verwaltet. Änderungen können ausschließlich an der aktuell gültigen Schemaversion vorgenommen werden. Bereits vergangene Versionen bleiben unveränderlich, während zukünftige Versionen im Rahmen dieses Ansatzes nicht berücksichtigt werden. Dieses Verfahren eignet sich insbesondere für Anwendungsszenarien, in denen Schemaänderungen unmittelbar nach ihrer Durchführung wirksam werden sollen.
+
+Valid-Time
+In der gültigkeitszeitbasierte Schema-Versionierung wird jede Version eines Datenbankschemas durch einen Beginn sowie ein Ende ihrer zeitlichen Gültigkeit beschrieben. Hierfür verwaltet das DBMS die Kataloginformationen in Form von Gültigkeitszeittabellen. 
+
+Da sich dieser Ansatz an der Gültigkeitszeit orientiert, lassen sich nicht nur unmittelbar wirksame Änderungen am Schema abbilden, sondern auch rückwirkende sowie zukünftige Anpassungen. Rückwirkende Änderungen entstehen, wenn eine reale Veränderung bereits eingetreten ist und erst nachträglich im Schema nachvollzogen wird. Zukünftige Änderungen hingegen werden bereits vor ihrem tatsächlichen Wirksamwerden definiert und mit einer entsprechenden zukünftigen Gültigkeitsperiode versehen. Dadurch können frühere, aktuelle und geplante Versionen eines Schemas gezielt angepasst werden.
+
+Die Versionierung basierend auf Gültigkeitszeit eignet sich insbesondere für Anwendungsbereiche, in denen Schemaänderungen mit rückwirkender oder vorausplanender Wirkung erforderlich sind. Rückwirkende Anpassungen können beispielsweise durch gesetzliche Vorgaben notwendig werden, die strukturelle Änderungen administrativer Datenbestände verlangen. Ein Beispiel ist die Änderung der Ziffernlänge der Sozialversicherungsnummer. 
+
+Zukünftige Schemaänderungen bieten dagegen die Möglichkeit, geplante Anpassungen bereits im Vorfeld zu modellieren, zu testen und hinsichtlich ihrer Auswirkungen zu bewerten, bevor sie produktiv eingesetzt werden.
+
+
+Bitemporal
+Bei der bitemporalen Schema-Versionierung wird jede Version eines Datenbankschemas sowohl mit Transaktionszeit- als auch mit Gültigkeitszeitstempeln versehen, sodass die Datenbankkataloge bitemporal organisiert sind. Die Nutzung beider Zeitdimensionen ist insbesondere für Anwendungen relevant, die Schemaänderungen nicht nur zeitnah, sondern auch rückwirkend oder im Voraus ermöglichen müssen und bei denen diese Art der Anwendung nachvollziehbar bleiben soll. Dadurch wird im Katalog dokumentiert, ob eine Änderung retroaktiv oder proaktiv erfolgt ist. Im Gegensatz dazu erlaubt eine rein gültigkeitszeitbasierte Schema-Versionierung nach der Ausführung keine eindeutige Rekonstruktion mehr, ob eine Schemaänderung rückwirkend oder vorausschauend eingetragen wurde. Durch die zusätzliche Erfassung der Transaktionszeit bleibt jedoch dokumentiert, wann die Änderung tatsächlich in das System übernommen wurde.
+
+
+Es folgt eine beispielhafte Illustration der Ansätze. Die Beispiele basieren auf der Arbeit von De Castro et al. 
+
+Gegeben seien folgende Datenbank-Operationen:
+
+O1 – Schemaänderung – On-time-Transaktion – committed am 1983/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Erstellung der Tabelle EMPLOYEE mit den Spalten NAME, ADDRESS, CITY;
+
+O2 – Datenänderung – On-time-Transaktion – committed am 1984/1/1: Einfügen des Tupels „(Blanc, BD St Michel 87, Paris)“ in die Tabelle EMPLOYEE;
+
+O3 – Schemaänderung – rückwirkende (retroaktive) Transaktion – committed am 1985/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Entfernung der Spalte ADDRESS aus der Tabelle EMPLOYEE (die Transaktion modifiziert die vorherige Schemaversion, ohne ihre Gültigkeit zu beeinträchtigen);
+
+O4 – Datenänderung – On-time-Transaktion – committed am 1986/1/1: Aktualisierung des Attributs CITY (gesetzt auf Bruxelles) in Blancs Daten, die in der Tabelle EMPLOYEE gespeichert sind;
+
+O5 – Schemaänderung – proaktive Transaktion – committed am 1987/1/1 – wirksam ab 1988/1/1: Hinzufügen der Spalte PHONE zur Tabelle EMPLOYEE.
+
+Die nachfolgenden Abbildungen 9-11 beschreiben den Zustand des DBMS nach Ausführung der Operationen O1-O5. Der Einfachheit halber wird eine zeitliche Granularität von einem Tag angenommen. Zudem wird auf eine Angabe der erforderlichen SQL-Statements verzichtet.
+
+Transaction-Time Schema Versioning:
+Die Operation O1 initialisiert das Datenbankschema, bestehend aus der Relation EMPLOYEE mit den Attributen NAME, ADDRESS und CITY. Nach der transaktionszeitbasierten Schema-Versionierung, dürfen Anpassungen nur die aktuelle Schema-Version betreffen. Schemaänderungen werden daher ausschließlich als on-time Transaktionen ausgeführt. Sie werden also mit dem Zeitpunkt ihrer Definition auf das aktuelle Schema wirksam. Damit ist eine Schema-Version immer so lange aktuell, bis eine neue Schemaänderung definiert und damit eine neue Schema-Version erzeugt wird. Der Status im Systemkatalog des DBMS nach O1 wäre daher:  SV1 (1/1/83 - infinity), bis zu dem Zeitpunkt einer neuen Schemaänderung. O2 und  O4 betreffen die Datenbankinstanz. Sie verändern das Schema nicht und haben damit keinen Einfluss auf den Systemkatalog. O3 und O5 sind retro- bzw. proaktive Schemaänderungen. Da die transaktionszeitbasierte Versionierung diese Art der Anpassung nicht unterstützt, werden die Schemaänderungen ebenfalls mit dem Zeitpunkt ihrer Definition wirksam, wie der Abbildung 9 zu entnehmen ist.  O3 erzeugt die Schema-Version SV2 und O5 die Schema-Version SV3.
+
+
+
+Valid-Time Schema Versioning:
+Im Gegensatz zum Transaction-time schema versioning, kann nach diesem Ansatz der Gültigkeitszeitraum der Schemaänderung definiert werden. Die Anpassungen betreffen dann jenes Schema, das für diesen Gültigkeitszeitraum definiert ist. Dadurch sind Anpassungen an vergangenen oder zukünftigen Schema-Versionen möglich. Da die retroaktive Schemaänderungen O3 für den gleichen Gültigkeitszeitraum definiert ist, wie die Schema-Version SV1, ersetzt die aus O3 resultierende Version SV2 die alte Version SV1 vollständig. SV1 wird gelöscht und ist in der Datenbank und dem DBMS somit nicht mehr existent. Die proaktive Schemaänderung O5 ist für einen Gültigkeitszeitraum in der Zukunft definiert. O5 wird somit erst am 1/1/88 ausgeführt, wodurch SV3 entsteht. In der Arbeit von De Castro et al. wird nicht näher erläutert, welche Version im Zeitraum von 86-88 greift.   
+
+
+
+Bitemporal Schema-Versioning:
+Die Verwaltung der Schema-Versionen entlang der Transaktionszeit und der Gültigkeitszeit ermöglicht es, historische Status der Datenbank zu bewahren. Ein Rückgang auf ältere Schema-Versionen ist somit möglich. Schemata die für den gleichen Gültigkeitszeitraum definiert sind, müssen nicht mehr gelöscht werden, da die Transaktionszeit belegt, welche Schema-Version aktuell ist. Die aus O3 resultierende Version SV2 würde die Version SV1 zwar hinsichtlich der Aktualität ablösen. SV1 wird nach diesem Ansatz jedoch nicht gelöscht, sondern archiviert und ist weiterhin abrufbar, sofern ein Rückgang von SV2 auf SV1 erforderlich ist. Sowohl die intensionalen als auch die extensionalen Daten bleiben dabei erhalten.
+
+
+\subsubsection{Speicherkonzept}
+Die Koordination zwischen Schema-Version und Datenbankinstanz betreffend, unterscheiden De Castro et al. zwei grundlegende Speicher-Strategien: den Single-Pool- und den Multi-Pool-Ansatz. Der Begriff Data-Pool meint in diesem Kontext einen Speicherort für extensionale Daten. Beide Ansätze sind auf logischer Ebene zu betrachten. Details der physischen Speicherung wurden von den Autoren absichtlich abstrahiert.
+
+Beim Multi-Pool-Ansatz werden die Daten jeder Version einer Relation in einem separaten Speicher gehalten. Die Daten der unterschiedliche Versionen werden also unabhängig voneinander gespeichert. Ausgehend von dem Beispiel aus Kapitel 2.2: Werden die Instanzen I1 und I2 jeweils in eigenen Tabellen abgelegt, entspricht dies einer Speicherung nach dem Multi-Pool-Verfahren (Vgl. Abb. 12).
+
+
+
+
+
+
+Der Single-Pool-Ansatz verfolgt dagegen das Ziel, alle Daten einer Relation zentral in einer gemeinsamen Struktur zu verwalten. Dadurch lassen sich redundante Daten vermeiden, insbesondere wenn mehrere Schemaversionen dieselben Werte verwenden. Für den Single-Pool Ansatz wird ein übergeordnetes Schema erzeugt, das sämtliche Attribute aller vorhandenen Schemaversionen der Relation umfasst. Dieses sogenannte „Completed Schema“ dient als gemeinsame Grundlage für die Speicherung der Daten. Die einzelnen Versionen des Schemas werden anschließend nicht mehr direkt als eigene Tabellen geführt, sondern als Views auf diese gemeinsame Datenbasis definiert. Jede View stellt dabei nur die Attribute bereit, die für die jeweilige Schemaversion relevant sind. Abbildung 13 zeigt eine Single-Pool Implementierung des Beispieles aus Kapitel 2.2.. Die Instanzen von SV1 und SV2 werden dabei in einer einzigen Tabelle gehalten.
+
+
+
+
+Den folgendne Part evtl ganz weglassen und nur auf Vor Nachteile verweisen:
+
+Ein wesentlicher Unterschied zwischen beiden Ansätzen zeigt sich beim Aufwand zur Unterstützung von Vorwärts- und Rückwärtskompatibilität zwischen mehreren Versionen.
+Existieren insgesamt (n) Schemaversionen, so werden beim Single-Pool-Ansatz lediglich (n) Views benötigt, um Daten zwischen verschiedenen Versionen zugänglich zu machen und damit Vorwärts- sowie Rückwärtskompatibilität zu unterstützen. Beim Multi-Pool-Ansatz steigt der Aufwand deutlich an, da hierfür insgesamt (n(n-1)) Views beziehungsweise Konvertierungsfunktionen erforderlich sein können.
+Auch hinsichtlich der Änderbarkeit der Daten ergeben sich Unterschiede. 
+Für die Unterstützung eines partiellen Schema-Versionierungsansatzes muss beim Single-Pool-Modell das aktuelle Schema als aktualisierbare View auf dem Completed Schema definiert sein. Soll dagegen vollständige Schema-Versionierung ermöglicht werden, müssen sämtliche Views aktualisierbar sein, was wesentlich schwieriger umzusetzen ist.
+
+De Castro et al. und Brahmia et al. haben in ihren Arbeiten weitere Vor- und Nachteile beider Ansätze beluechtet auf die an dieser Stelle zwar verwiesen aber im Rahmen dieser Arbeit nicht weiter eingegangen wird. (Referenz geben wo das in den Arbeiten thematisiert wird). 
+
+
+\subsubsection{Interaktion zwischen Instanz und Schema}
+In den bislang betrachteten Beispielen wurden ausschließlich klassische Snapshot-Daten betrachtet, da diese ausreichten, um die zuvor vorgestellten Ansätze zur Schema-Versionierung zu erläutern. Zusätzliche Herausforderungen entstehen jedoch, wenn Schema-Versionierung in Datenbanken eingesetzt wird, die temporale Daten speichern. In diesem Fall muss das Zusammenspiel zwischen der Versionierung der Daten selbst (extensionale Versionierung) und der Versionierung des Schemas (intensionale Versionierung) berücksichtigt werden.
+Aus dieser Wechselwirkung ergibt sich eine weitere Gestaltungsoption für das Datenmanagement. Sie wird relevant, wenn sowohl Daten als auch Schemata entlang derselben Zeitdimension versioniert werden. Die Autoren unterscheiden dabei zwei grundlegende Verwaltungsansätze:
+	• Synchrones Management:
+Temporale Daten werden ausschließlich über jene Schemaversion verarbeitet, deren zeitlicher Gültigkeitsbereich mit dem der Daten übereinstimmt. Das betrifft sowohl das Speichern als auch das Abrufen und Aktualisieren der Daten. 
+	• Asynchrones Management:
+Temporale Daten können unabhängig von ihrer zeitlichen Einordnung über beliebige Schemaversionen abgefragt oder verändert werden. Die zeitliche Gültigkeit von Daten und Schema muss hierbei also nicht übereinstimmen. Dieses Modell ist vor allem notwendig, um Rückwärts- und Vorwärtskompatibilität zu ermöglichen sowie partielle oder vollständige Schema-Versionierung zu unterstützen, wenn sowohl Daten als auch Schemata entlang derselben zeitlichen Dimension versioniert werden.
+
+
+In diesem Kontext erwähnen die Autoren eine wichtige Einschränkung. Werden Schema und Daten über die Transaktionszeit verwaltet, ist nur synchrones Management möglich, weil diese Zeitdimension den tatsächlichen historischen Zustand der Datenbank beschreibt. Wenn eine Datenbank auf einen bestimmten Zeitpunkt zurückgesetzt wird, muss sowohl das Schema als auch die gespeicherten Daten genau zu diesem Zeitpunkt passen.
+Würde man Schema- und Datenversionen asynchron verwalten, könnten unterschiedliche zeitliche Zustände miteinander kombiniert werden — etwa ein Schema aus dem Jahr 1995 mit Daten aus dem Jahr 1996. Dadurch entstünde ein inkonsistenter Datenbankzustand, der historisch nie tatsächlich existiert hat. Genau das widerspricht jedoch der Bedeutung der Transaktionszeit, deren Zweck darin besteht, vergangene Zustände der Datenbank korrekt und vollständig rekonstruieren zu können.
+Deshalb müssen bei der Transaction Time Schema und Daten immer gemeinsam und zeitlich abgestimmt versioniert sowie abgefragt werden. Nur so bleibt gewährleistet, dass jeder rekonstruierte Zustand konsistent ist. Für die Valid Time gilt diese Einschränkung dagegen nicht, da sie nicht den historischen Zustand der Datenbank selbst beschreibt, sondern die fachliche Gültigkeit von Informationen in der realen Welt.
+
+Das nachfolgende Beispiel soll die Funktionweisen beider Ansätze verdeutlichen. Der Ausgangspunkt ist die Relation EMPLOYEE mit den Attributen NAME und SALARY. Sowohl Schema als auch Daten werden über die Gültigkeitszeit-Dimension versioniert. Die zwei Tupel zeigen die Gehaltshistorie des Mitarbeiters "Brown" (vgl. Abb. 14). 
+
+
+
+
+
+Anschließend wird eine Schemaänderung angenommen, bei der der Relation EMPLOYEE das zusätzliche Attribut DEPT hinzugefügt wird. Diese Änderung soll ab dem 1. Januar 1994 gültig sein. Darüber hinaus wird angenommen, dass dieselbe Transaktion mithilfe der neuen Schemaversion die Information speichert, dass der Mitarbeiter Brown schon immer in der Sales-Abteilung gearbeitet hat. 
+Abbildung 15 veranschaulicht den Zustand des DBMS nach der Schemaänderung im Rahmen des synchronen Managements. 
+Es zeigt sich, dass die Abteilungsinformation für den Zeitraum 1992–1993 nicht gespeichert werden konnte, da die entsprechenden Daten von Brown in diesem Zeitraum noch mit der alten Schemaversion verknüpft sind, die das Attribut DEPT nicht enthält.
+Darüber hinaus müssen spezielle Anwendungen entwickelt werden, die beide Schemaversionen berücksichtigen, um selbst die vollständige Historie der älteren Daten – also die Daten ohne das Attribut DEPT – von 1990 bis heute rekonstruieren zu können. Der Grund dafür liegt darin, dass die Historie der Daten im synchronen Management analog zu den Schemaversionen aufgeteilt wird.
+
+
+
+
+
+
+Abbildung 16 zeigt den Zustand des DBMS unter Anwendung von asynchronem Management: 
+In diesem Fall bleibt die vollständige Historie der Mitarbeiterdaten in jeder Schemaversion erhalten. Bestehende Anwendungen können weiterhin mit den älteren Daten arbeiten und liefern dabei dieselben Ergebnisse wie vor der Schemaänderung. Gleichzeitig können neue Anwendungen entwickelt werden, die auf den erweiterten Datenbestand zugreifen und zusätzlich die Informationen des Attributs DEPT nutzen.
+
+
+
+
+An dieser Stelle sei noch erwähnt, dass die konkreten Auswirkungen von Schema- und Datenänderungen im Rahmen des asynchronen Managements zusätzlich davon abhängen, ob Tabellen mithilfe eines Single-Pool- oder eines Multi-Pool-Ansatzes implementiert werden.
+
+
+Dabei wird die vollständige Schema-Versionierung entlang der Transaction Time aus Konsistenzgründen eingeschränkt, während andere Ausprägungen weiterhin als mögliche Entwurfsentscheidungen betrachtet werden mit async oder sync management!!
+
+Abschließend sei darauf hingewiesen, dass viele wissenschaftliche Lösungsansätze auf einer Kombination der zuvor vorgestellten Dimensionen und Konzepte basieren. Aufgrund verschiedener technischer und konzeptioneller Restriktionen sind jedoch nicht alle Kombinationen dieser Konzepte miteinander kompatibel. So stellt bei Daten und Schemata, die entlang derselben Zeitdimension versioniert werden, die Gültigkeitszeit in Verbindung mit asynchronem Management die einzige Kombination dar, die mit einer partiellen oder vollständigen Schema-Versionierung vereinbar ist.
+
+Ein Beispiel für einen Lösungsansatz, der eine vollständige Schema-Versionierung unterstützt, ist der Prototyp VERSIOS. Dieser basiert auf einer Versionierung entlang der Gültigkeits- beziehungsweise bitemporalen Zeit, verwendet das Multi-Pool-Verfahren und verwaltet die Interaktion zwischen Schema- und Instanzversionen durch asynchrones Management.
+
+
+
+\subsection{DBMS Support und Tooling}
+Auch wenn die Schema-Versionierung theoretisch die einzige Methode ist, mit der sich Änderungen an einer sich entwickelnden Datenbankstruktur sauber nachverfolgen und auch frühere Zustände wiederherstellen lassen, wird dieses Konzept von heutigen relationalen DBMS nicht nativ unterstützt. Auch der SQL-Standard definiert kein Konzept für Schema-Versionierung.
+
+Viele kommerzielle Datenbanksysteme wie Microsoft SQL Server, IBM DB2, Oracle oder MySQL stellen über integrierte Funktionen oder die Unterstützung externer Werkzeuge eine Versionsverwaltung für die Entwicklung von Schemata zur Verfügung. Dadurch können Datenbankentwickler parallel an einem noch nicht produktiven Datenbankschema arbeiten und verschiedene Varianten sowie aufeinanderfolgende Versionen erstellen.
+Diese Versionierungsmechanismen helfen beispielsweise dabei, Änderungen verschiedener Entwickler zusammenzuführen, fehlerhafte Anpassungen gezielt zurückzunehmen, Unterschiede zwischen Entwicklungsständen oder Schema-Varianten nachzuvollziehen und Skripte zu erzeugen, die ein Schema in eine andere Version überführen. Eine solche Überführung kann dabei auch vorhandene Daten betreffen und stellt somit eine teilweise und oft verlustbehaftete Unterstützung der Schema-Evolution vor der Produktivsetzung dar. Tools wie Flyway oder Liquibase unterstützen diese Funktion.
+Obwohl diese Tools häufig der „Schema-Versionierung“ zugeordnet werden, handelt es sich dabei nicht um Schema-Versionierung im Sinne der Endnutzer: In produktiven Umgebungen können bestehende Daten nicht gleichzeitig über verschiedene Schema-Versionen hinweg geteilt oder unterschiedlich angezeigt und bearbeitet werden.
+
+Eine Lösung die dem Gedanken der Schema-Versionierung nahe kommt ist der Oracle Workspace Manager. 
+
+Oracle Workspace Manager stellt eine datenbankinterne Versionierungsmechanik bereit, die auf Zeilenebene mehrere konsistente Datenzustände innerhalb sogenannter Workspaces ermöglicht. Im Gegensatz zu klassischen Migrationsansätzen erlaubt das System damit eine parallele Existenz unterschiedlicher Datenversionen innerhalb derselben Datenbankinstanz. Dadurch ist OWM dem Konzept der Schema- bzw. Datenversionierung konzeptionell sehr nahe, da es nicht nur eine zeitliche Evolution, sondern auch gleichzeitige, isolierte Zustände unterstützt. Allerdings handelt es sich nicht um eine vollständige Schema-Versionierung, da insbesondere die strukturelle Unabhängigkeit von Tabellen und Schemata nicht gegeben ist und Versionierung primär auf Daten- und nicht auf Strukturebene erfolgt.
 
 \begin{figure}[!htb]
   \caption{Testpyramide}
@@ -136,12 +327,10 @@ Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BY
   \capquelle{Eigendarstellung angelehnt an \cite[311-317]{cohn_succeeding_2010}}\label{Testpyramide}
 \end{figure}
 
-\subsubsection{Ebene 3}
-\blindtext
-\subsubsection{Ebene 3.2}
-\blindtext
-\subsubsubsection{Ebene 4}
-\blindtext
+\subsection{Ausblick}
+Die standardisierte SQL-DDL (Data Definition Language), die für die Definition und Modifikation relationaler Datenbankschemata eingesetzt wird, weist lediglich eingeschränkte Möglichkeiten zur Unterstützung von Schemaänderungen auf und bietet keine native Funktionalität für Schema-Evolution oder Schema-Versionierung. Aus diesem Grund erscheint eine Erweiterung der SQL-Spezifikation sinnvoll, die explizit Konzepte der Schema-Evolution und Versionierung auf Benutzerebene unterstützt. Eine solche Weiterentwicklung könnte dazu beitragen, Änderungen am Datenbankschema nicht nur technisch, sondern auch konzeptionell transparenter und benutzerfreundlicher abzubilden.
+Im Hinblick auf zukünftige Forschungsarbeiten eröffnet sich hierbei ein breites Spektrum an Fragestellungen. Insbesondere die Entwicklung standardisierter Sprachkonstrukte für Schema-Versionierung, die Integration von Migrationsmechanismen direkt in die Datenbanksprache sowie die konsistente Unterstützung historisierter Datenabfragen über mehrere Schemazustände hinweg stellen vielversprechende Forschungsrichtungen dar. Darüber hinaus wäre zu untersuchen, wie sich solche Erweiterungen in bestehende Datenbankmanagementsysteme integrieren lassen, ohne deren Komplexität oder Performance wesentlich zu beeinträchtigen.
+
 \subsubsubsection{Ebene 4.2}
 \blindtext
 \cite[79]{Schelinski2019}
@@ -150,5 +339,5 @@ Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BY
 \subsection{Fazit}
 \blindtext (vgl. Abbildung \ref{abb_bsp}).
 
-\subsection{Ausblick}
+\subsection{Ausblick final}
 \blindtext
