@@ -1,16 +1,30 @@
 \section{Einleitung}
-\subsection{Einführung in die Thematik}
-\blindtext\nomenclature{W3C}{World Wide Web Consortium}
-\blindtext\cite{mswpf}\cite[19]{sadtler_rechtskonformes_2017}
+Änderungen an Datenmodellen treten in datengetriebenen Informationssystemen regelmäßig auf und sind als natürlicher Bestandteil ihrer Weiterentwicklung zu verstehen. Ursachen hierfür liegen unter anderem in sich verändernden Nutzeranforderungen, der Anpassung an neue Geschäftslogiken oder in externen Rahmenbedingungen wie gesetzlichen Vorgaben. Diese strukturellen Anpassungen stellen besondere Anforderungen an die Verwaltung von Datenbeständen, da bestehende Daten und Anwendungen weiterhin funktionsfähig bleiben müssen.
 
-\subsection{Problemstellung und Zielsetzung}
-\blindtext
+Ein zentraler Ansatz zur Bewältigung dieser Problematik ist die Schema-Versionierung. Dieses Konzept sieht vor, verschiedene Versionen eines Datenbankschemas parallel zu verwalten und die zugehörigen Daten konsistent diesen Versionen zuzuordnen. Dadurch können sowohl historische Datenbestände als auch ältere Anwendungen weiterhin genutzt werden, ohne dass Informationen verloren gehen oder unmittelbare Migrationen erforderlich sind.
 
-\subsection{Methodischer Aufbau der Arbeit}
-\blindtext
+Schema-Versionierung wurde sowohl für klassische relationale Datenbanksysteme als auch für neuere Datenbankparadigmen umfassend untersucht. Obwohl eine Vielzahl wissenschaftlicher Arbeiten zu diesem Thema existiert, ist die praktische Unterstützung in Datenbanksystemen bislang nur eingeschränkt ausgeprägt.
 
-\section{Hauptteil}
-\subsection{LaTeX-Beispiele und Befehle}
+Vor diesem Hintergrund bietet die vorliegende Seminararbeit eine Einführung in die grundlegenden Konzepte der Schema-Versionierung, wie sie in der wissenschaftlichen Literatur behandelt werden. Der Fokus der Arbeit liegt ausschließlich auf der Versionierung von Datenbankschemata in relationalen Datenbanken.
+
+Methodisch basiert die Arbeit auf einer Literaturanalyse einschlägiger Fachquellen; eigene empirische Erhebungen werden nicht durchgeführt.
+
+Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen Begriffe „Datenbankschema“, „Schemamodifikation“, „Schemaevolution“ und „Schema-Versionierung“ und grenzt diese voneinander ab. Kapitel 3 behandelt anschließend grundlegende Konzepte der Schema-Versionierung, wie sie in der wissenschaftlichen Literatur beschrieben werden, und stellt ausgewählte Softwarelösungen vor. Abschließend erfolgt ein kurzer Ausblick.
+
+%\subsection{Einführung in die Thematik}
+%\blindtext\nomenclature{W3C}{World Wide Web Consortium}
+%\blindtext\cite{mswpf}\cite[19]{sadtler_rechtskonformes_2017}
+
+%\subsection{Problemstellung und Zielsetzung}
+%\blindtext
+
+%\subsection{Methodischer Aufbau der Arbeit}
+%\blindtext
+
+\section{Theoretische Grundlagen}
+Da der Begriff der Schema-Versionierung bislang nicht einheitlich definiert ist und sowohl in der wissenschaftlichen Literatur als auch in der Praxis unterschiedliche Auffassungen darüber bestehen, wird in diesem Kapitel eine für diese Arbeit gültige Begriffsbestimmung auf Grundlage etablierter wissenschaftlicher Definitionen vorgenommen. Darüber hinaus werden verwandte Konzepte erläutert, die der Schema-Versionierung inhaltlich nahe stehen und daher häufig mit ihr verwechselt oder vermischt werden.
+
+\subsection{Datenbankschema}
 „Dies ist ein direktes Zitat."\cite[212]{mertens_digitalisierung_2017} \blindtext\cite{msdatabind}\cite{lambda}\cite[34]{Digitaloekonomie}
 \blindenumerate
 \blindtext\cite[415-426]{Tanenbaum2016}\cite[223]{mandl_internet_2019}
@@ -60,8 +74,14 @@
     \textbullet\addspace \textsf{Sans Serif} 
     \textbullet\addspace \textrm{Roman} 
 
-\subsection{Test: Silbentrennung - Gegenüberstellung - darf nicht in den weißen Rand laufen}
+\subsection{Taxonomie der Schema-Modifikation}
 Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BYOD) definiert. Darauffolgend wird dargelegt welche Fokusse gesetzt werden sollen und Schlussfolgerungen gezogen, sowie eine Sicherheitsrichtlinie abgeleitet. Welche als Grundlage einer Gegenüberstellung mit etablierten Konzepten dient, sodass Strategien erörtert werden können. 
+
+\subsection{Herausforderungen der Schemaevolution}
+\blindtext
+
+\subsection{Schema Versionierung}
+\blindtext
 
 \section{Test der Ebenen und Beispieldiagramme}
 \subsection{Ebene 2}
