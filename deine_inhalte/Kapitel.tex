@@ -193,11 +193,11 @@ Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung 
 \subsection{Dimensionen der Schema-Versionierung}
 
 \subsubsection{Partielle und vollständige Schema-Versionierung}
-Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen \textit{partieller Schema-Versioning} und \textit{vollständiger Schema-Versioning} differenziert.
+Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen \textit{partieller Schema-Versionierung} und \textit{vollständiger Schema-Versionierung} differenziert.
 
 \vspace{0.5cm}
 
-Die \textit{partielle Schema-Versioning} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren. Abbildung ~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich. 
+Die \textit{partielle Schema-Versionierung} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren. Abbildung ~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich. 
 
 
 \begin{figure}[h]
@@ -208,7 +208,7 @@ Die \textit{partielle Schema-Versioning} ermöglicht das Abrufen von Daten über
 \end{figure}
 
 
-Die \textit{vollständige Schema-Versioning} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig. Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb. ~\ref{fig:fullsv}).
+Die \textit{vollständige Schema-Versionierung} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig. Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb. ~\ref{fig:fullsv}).
 
 
 \begin{figure}[h]
@@ -253,39 +253,62 @@ Bei der \textit{bitemporalen Schema-Versionierung} wird jede Version eines Schem
 
 \vspace{0.5cm}
 
-Es folgt eine beispielhafte Illustration der Ansätze. Die Beispiele basieren auf der Arbeit von De Castro et al. 
+Im Folgenden werden die Ansätze anhand von Beispielen illustriert. Die Beispiele basieren auf der Arbeit von De Castro et al. 
 
 \vspace{0.5cm}
 
-Gegeben seien folgende Datenbank-Operationen:
+Die DDL-Operationen $O_1$ bis $O_5$ werden wie folgt definiert:
+
+\vspace{0.5cm}
+\begin{itemize}
+    \item $O_1$ – Schemaänderung – On-time-Transaktion – committed am 1983/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Erstellung der Tabelle \textit{EMPLOYEE} mit den Spalten \textit{NAME}, \textit{ADDRESS} und \textit{CITY}
+    \item $O_2$ – Datenänderung – On-time-Transaktion – committed am 1984/1/1: Einfügen des Tupels „(Blanc, BD St Michel 87, Paris)“ in die Tabelle \textit{EMPLOYEE}
+    \item $O_3$ – Schemaänderung – rückwirkende (retroaktive) Transaktion – committed am 1985/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Entfernung der Spalte \textit{ADDRESS} aus der Tabelle \textit{EMPLOYEE}
+    \item $O_4$ – Datenänderung – On-time-Transaktion – committed am 1986/1/1: Aktualisierung der Spalte \textit{CITY} (gesetzt auf Bruxelles) in Blancs Daten, die in der Tabelle \textit{EMPLOYEE} gespeichert sind
+    \item $O_5$ – Schemaänderung – proaktive Transaktion – committed am 1987/1/1 – wirksam ab 1988/1/1: Hinzufügen der Spalte \textit{PHONE} zur Tabelle \textit{EMPLOYEE}
+\end{itemize}
+
+Die Abbildungen 9-11 beschreiben den Zustand des DBMS nach Ausführung der DDL-Operationen $O_1$ bis $O_5$. Der Einfachheit halber wird eine zeitliche Granularität von einem Tag angenommen. Zudem wird auf eine Angabe der erforderlichen DDL-Statements verzichtet.
 
 \vspace{0.5cm}
 
-O1 – Schemaänderung – On-time-Transaktion – committed am 1983/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Erstellung der Tabelle EMPLOYEE mit den Spalten NAME, ADDRESS, CITY;
+\textbf{Transaktionszeitbasierte Schema-Versionierng}
 
-O2 – Datenänderung – On-time-Transaktion – committed am 1984/1/1: Einfügen des Tupels „(Blanc, BD St Michel 87, Paris)“ in die Tabelle EMPLOYEE;
 
-O3 – Schemaänderung – rückwirkende (retroaktive) Transaktion – committed am 1985/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Entfernung der Spalte ADDRESS aus der Tabelle EMPLOYEE (die Transaktion modifiziert die vorherige Schemaversion, ohne ihre Gültigkeit zu beeinträchtigen);
-
-O4 – Datenänderung – On-time-Transaktion – committed am 1986/1/1: Aktualisierung des Attributs CITY (gesetzt auf Bruxelles) in Blancs Daten, die in der Tabelle EMPLOYEE gespeichert sind;
-
-O5 – Schemaänderung – proaktive Transaktion – committed am 1987/1/1 – wirksam ab 1988/1/1: Hinzufügen der Spalte PHONE zur Tabelle EMPLOYEE.
-
-Die nachfolgenden Abbildungen 9-11 beschreiben den Zustand des DBMS nach Ausführung der Operationen O1-O5. Der Einfachheit halber wird eine zeitliche Granularität von einem Tag angenommen. Zudem wird auf eine Angabe der erforderlichen SQL-Statements verzichtet.
-
-Transaction-Time Schema Versioning:
 Die Operation O1 initialisiert das Datenbankschema, bestehend aus der Relation EMPLOYEE mit den Attributen NAME, ADDRESS und CITY. Nach der transaktionszeitbasierten Schema-Versionierung, dürfen Anpassungen nur die aktuelle Schema-Version betreffen. Schemaänderungen werden daher ausschließlich als on-time Transaktionen ausgeführt. Sie werden also mit dem Zeitpunkt ihrer Definition auf das aktuelle Schema wirksam. Damit ist eine Schema-Version immer so lange aktuell, bis eine neue Schemaänderung definiert und damit eine neue Schema-Version erzeugt wird. Der Status im Systemkatalog des DBMS nach O1 wäre daher:  SV1 (1/1/83 - infinity), bis zu dem Zeitpunkt einer neuen Schemaänderung. O2 und  O4 betreffen die Datenbankinstanz. Sie verändern das Schema nicht und haben damit keinen Einfluss auf den Systemkatalog. O3 und O5 sind retro- bzw. proaktive Schemaänderungen. Da die transaktionszeitbasierte Versionierung diese Art der Anpassung nicht unterstützt, werden die Schemaänderungen ebenfalls mit dem Zeitpunkt ihrer Definition wirksam, wie der Abbildung 9 zu entnehmen ist.  O3 erzeugt die Schema-Version SV2 und O5 die Schema-Version SV3.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{.github/3_1_2_transaction_time.drawio.pdf}
+    \caption{Transaktionszeitbasierte Schema-Versionierung}
+    \label{fig:transactiontime}
+\end{figure}
 
 
-Valid-Time Schema Versioning:
+\textbf{Valid-Time Schema Versionierung}
+
+
 Im Gegensatz zum Transaction-time schema versioning, kann nach diesem Ansatz der Gültigkeitszeitraum der Schemaänderung definiert werden. Die Anpassungen betreffen dann jenes Schema, das für diesen Gültigkeitszeitraum definiert ist. Dadurch sind Anpassungen an vergangenen oder zukünftigen Schema-Versionen möglich. Da die retroaktive Schemaänderungen O3 für den gleichen Gültigkeitszeitraum definiert ist, wie die Schema-Version SV1, ersetzt die aus O3 resultierende Version SV2 die alte Version SV1 vollständig. SV1 wird gelöscht und ist in der Datenbank und dem DBMS somit nicht mehr existent. Die proaktive Schemaänderung O5 ist für einen Gültigkeitszeitraum in der Zukunft definiert. O5 wird somit erst am 1/1/88 ausgeführt, wodurch SV3 entsteht. In der Arbeit von De Castro et al. wird nicht näher erläutert, welche Version im Zeitraum von 86-88 greift.   
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{.github/3_1_2_valid_time.drawio.pdf}
+    \caption{Gültigkeitszeitbasierte Schema-Versionierung}
+    \label{fig:validtime}
+\end{figure}
 
 
-Bitemporal Schema-Versioning:
+\textbf{Bitemporale Schema-Versionierung}
+
+
 Die Verwaltung der Schema-Versionen entlang der Transaktionszeit und der Gültigkeitszeit ermöglicht es, historische Status der Datenbank zu bewahren. Ein Rückgang auf ältere Schema-Versionen ist somit möglich. Schemata die für den gleichen Gültigkeitszeitraum definiert sind, müssen nicht mehr gelöscht werden, da die Transaktionszeit belegt, welche Schema-Version aktuell ist. Die aus O3 resultierende Version SV2 würde die Version SV1 zwar hinsichtlich der Aktualität ablösen. SV1 wird nach diesem Ansatz jedoch nicht gelöscht, sondern archiviert und ist weiterhin abrufbar, sofern ein Rückgang von SV2 auf SV1 erforderlich ist. Sowohl die intensionalen als auch die extensionalen Daten bleiben dabei erhalten.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{.github/3_1_2_bitemporal_time.drawio.pdf}
+    \caption{Bitemporale Schema-Versionierung}
+    \label{fig:bitemporal}
+\end{figure}
 
 \subsubsection{Speicherkonzept}
 Die Koordination zwischen Schema-Version und Datenbankinstanz betreffend, unterscheiden De Castro et al. zwei grundlegende Speicher-Strategien: den Single-Pool- und den Multi-Pool-Ansatz. Der Begriff Data-Pool meint in diesem Kontext einen Speicherort für extensionale Daten. Beide Ansätze sind auf logischer Ebene zu betrachten. Details der physischen Speicherung wurden von den Autoren absichtlich abstrahiert.
