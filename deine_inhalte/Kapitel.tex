@@ -197,7 +197,7 @@ Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Sc
 
 \vspace{0.5cm}
 
-\textit{Partielle Schema-Versioning} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin korrekt funktionieren, sofern diese Anwendungen Daten verändern. Die Abbildung ~\ref{fig:partialsv} zeigt, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden können. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nicht mehr korrekt, sobald $\mathrm{SV}_2$ eingeführt wird. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich. 
+Die \textit{partielle Schema-Versioning} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren. Abbildung ~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich. 
 
 
 \begin{figure}[h]
@@ -208,7 +208,7 @@ Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Sc
 \end{figure}
 
 
-\textit{Vollständige Schema-Versioning} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Änderungen am Schema weiterhin funktionsfähig. Das Lesen und Schreiben auf die Instanzen $I_1$ und $I_2$ ist damit über $\mathrm{SV}_1$ und auch $\mathrm{SV}_2$ möglich (vgl. Abb. ~\ref{fig:fullsv}).
+Die \textit{vollständige Schema-Versioning} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig. Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb. ~\ref{fig:fullsv}).
 
 
 \begin{figure}[h]
@@ -219,37 +219,47 @@ Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Sc
 \end{figure}
 
 
-Die Kompatibilität zwischen Instanzen und Schemaversionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen \textit{Rückwärtskompatibilität} und \textit{Vorwärtskompatibilität}. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schemaversion entwickelt wurde (z.B. $I_1$ über $\mathrm{SV}_2$). Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schema-Version erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schema-Version konzipiert ist (z.B. $I_2$ über $\mathrm{SV}_1$). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erstellt wurden.
+Die Kompatibilität zwischen Instanzen und Schemaversionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen \textit{Rückwärtskompatibilität} und \textit{Vorwärtskompatibilität}. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schemaversion entwickelt wurde (beispielsweise der Zugriff auf $I_1$ über $\mathrm{SV}_2$). Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schemaversion konzipiert ist (beispielsweise der Zugriff auf $I_2$ über $\mathrm{SV}_1$). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erzeugt wurden.
 
 \vspace{0.5cm}
 
-In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Schemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht möglich. Deshalb unterstützen viele Systeme nur partielle Schema-Versionierung, bei der entweder Datenkompatibilität oder Anwendungskompatibilität erhalten bleibt.
+In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Schemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht realisierbar. Aus diesem Grund unterstützen viele Systeme lediglich die partielle Schema-Versionierung.
 
 
 \subsubsection{Temporale Schema-Versionierung}
 
-Neben nicht-temporalen Konzepten, können Schemata auch entlang zeitlicher Dimensionen versioniert werden.  Castro et al. entwickelten – aufbauend auf einem Vorschlag von John F. Roddick – drei Ansätze der temporalen Schema-Versionierung. Dabei unterscheiden sie zwischen Schema-Versionierung basierend auf transaction-time, valid-time und bitemporal-time.
+Neben nicht-temporalen Konzepten, können Schemata auch entlang zeitlicher Dimensionen versioniert werden. De Castro et al. entwickelten – aufbauend auf einem Vorschlag von John F. Roddick – drei Ansätze der temporalen Schema-Versionierung. Dabei unterscheiden sie zwischen \textit{transaktionszeitbasierter (transaction-time)}, \textit{gültigkeitszeitbasierter (valid-time)} und \textit{bitemporaler (bitemporal-time)} Schema-Versionierung.
 
-Transaction-Time
-Bei der transaktionszeitbasierten Schema-Versionierung versieht das DBMS jede Schemaversion mit einem Transaktionsbeginn und einem Transaktionsende als Zeitstempel. Die Kataloginformationen werden dabei analog zu Transaktionszeittabellen verwaltet. Änderungen können ausschließlich an der aktuell gültigen Schemaversion vorgenommen werden. Bereits vergangene Versionen bleiben unveränderlich, während zukünftige Versionen im Rahmen dieses Ansatzes nicht berücksichtigt werden. Dieses Verfahren eignet sich insbesondere für Anwendungsszenarien, in denen Schemaänderungen unmittelbar nach ihrer Durchführung wirksam werden sollen.
+\vspace{0.5cm}
 
-Valid-Time
-In der gültigkeitszeitbasierte Schema-Versionierung wird jede Version eines Datenbankschemas durch einen Beginn sowie ein Ende ihrer zeitlichen Gültigkeit beschrieben. Hierfür verwaltet das DBMS die Kataloginformationen in Form von Gültigkeitszeittabellen. 
-
-Da sich dieser Ansatz an der Gültigkeitszeit orientiert, lassen sich nicht nur unmittelbar wirksame Änderungen am Schema abbilden, sondern auch rückwirkende sowie zukünftige Anpassungen. Rückwirkende Änderungen entstehen, wenn eine reale Veränderung bereits eingetreten ist und erst nachträglich im Schema nachvollzogen wird. Zukünftige Änderungen hingegen werden bereits vor ihrem tatsächlichen Wirksamwerden definiert und mit einer entsprechenden zukünftigen Gültigkeitsperiode versehen. Dadurch können frühere, aktuelle und geplante Versionen eines Schemas gezielt angepasst werden.
-
-Die Versionierung basierend auf Gültigkeitszeit eignet sich insbesondere für Anwendungsbereiche, in denen Schemaänderungen mit rückwirkender oder vorausplanender Wirkung erforderlich sind. Rückwirkende Anpassungen können beispielsweise durch gesetzliche Vorgaben notwendig werden, die strukturelle Änderungen administrativer Datenbestände verlangen. Ein Beispiel ist die Änderung der Ziffernlänge der Sozialversicherungsnummer. 
-
-Zukünftige Schemaänderungen bieten dagegen die Möglichkeit, geplante Anpassungen bereits im Vorfeld zu modellieren, zu testen und hinsichtlich ihrer Auswirkungen zu bewerten, bevor sie produktiv eingesetzt werden.
+\textbf{Transaktionszeit}
 
 
-Bitemporal
-Bei der bitemporalen Schema-Versionierung wird jede Version eines Datenbankschemas sowohl mit Transaktionszeit- als auch mit Gültigkeitszeitstempeln versehen, sodass die Datenbankkataloge bitemporal organisiert sind. Die Nutzung beider Zeitdimensionen ist insbesondere für Anwendungen relevant, die Schemaänderungen nicht nur zeitnah, sondern auch rückwirkend oder im Voraus ermöglichen müssen und bei denen diese Art der Anwendung nachvollziehbar bleiben soll. Dadurch wird im Katalog dokumentiert, ob eine Änderung retroaktiv oder proaktiv erfolgt ist. Im Gegensatz dazu erlaubt eine rein gültigkeitszeitbasierte Schema-Versionierung nach der Ausführung keine eindeutige Rekonstruktion mehr, ob eine Schemaänderung rückwirkend oder vorausschauend eingetragen wurde. Durch die zusätzliche Erfassung der Transaktionszeit bleibt jedoch dokumentiert, wann die Änderung tatsächlich in das System übernommen wurde.
+Bei der \textit{transaktionszeitbasierten Schema-Versionierung} versieht das DBMS jede Schemaversion mit einem Transaktionsbeginn und einem Transaktionsende als Zeitstempel. Die Kataloginformationen werden dabei analog zu Transaktionszeittabellen verwaltet. Änderungen können ausschließlich an der aktuell gültigen Schemaversion vorgenommen werden. Bereits vergangene Versionen bleiben unveränderlich, während zukünftige Versionen im Rahmen dieses Ansatzes nicht berücksichtigt werden. Dieses Verfahren eignet sich insbesondere für Anwendungsszenarien, in denen Schemaänderungen unmittelbar nach ihrer Durchführung wirksam werden sollen.
 
+\vspace{0.5cm}
+
+\textbf{Gültigkeitszeit}
+
+
+In der \textit{gültigkeitszeitbasierten Schema-Versionierung} wird jede Version eines Schemas durch einen Beginn sowie ein Ende ihrer zeitlichen Gültigkeit beschrieben. Hierfür verwaltet das DBMS die Kataloginformationen in Form von Gültigkeitszeittabellen. Da sich dieser Ansatz an der Gültigkeitszeit orientiert, lassen sich nicht nur unmittelbar wirksame Änderungen am Schema abbilden, sondern auch rückwirkende sowie zukünftige Anpassungen. Rückwirkende Änderungen entstehen, wenn eine reale Veränderung bereits eingetreten ist und erst nachträglich im Schema nachvollzogen wird. Zukünftige Änderungen hingegen werden bereits vor ihrem tatsächlichen Wirksamwerden definiert und mit einer entsprechenden zukünftigen Gültigkeitsperiode versehen. Dadurch können frühere, aktuelle und geplante Versionen eines Schemas gezielt angepasst werden. Die Versionierung basierend auf Gültigkeitszeit eignet sich insbesondere für Anwendungsbereiche, in denen Schemaänderungen mit rückwirkender oder vorausplanender Wirkung erforderlich sind. Rückwirkende Anpassungen können beispielsweise durch gesetzliche Vorgaben notwendig werden, die strukturelle Änderungen administrativer Datenbestände verlangen – wie etwa eine Anpassung der Ziffernlänge der Sozialversicherungsnummer. Zukünftige Schemaänderungen bieten dagegen die Möglichkeit, geplante Anpassungen bereits im Vorfeld zu modellieren, zu testen und hinsichtlich ihrer Auswirkungen zu bewerten, bevor sie produktiv eingesetzt werden.
+
+\vspace{0.5cm}
+
+\textbf{Bitemporale-Zeit}
+
+
+Bei der \textit{bitemporalen Schema-Versionierung} wird jede Version eines Schemas sowohl mit Transaktionszeit- als auch mit Gültigkeitszeitstempeln versehen, sodass die Datenbankkataloge bitemporal organisiert sind. Die Nutzung beider Zeitdimensionen ist insbesondere für Anwendungen relevant, die Schemaänderungen nicht nur zeitnah, sondern auch rückwirkend oder im Voraus ermöglichen müssen und bei denen diese Modifikationen lückenlos nachvollziehbar bleiben sollen. Dadurch wird im Systemkatalog dokumentiert, ob eine Änderung retroaktiv oder proaktiv erfolgt ist. Im Gegensatz dazu erlaubt eine rein gültigkeitszeitbasierte Schema-Versionierung nach der Ausführung keine eindeutige Rekonstruktion, ob eine Schemaänderung rückwirkend oder vorausschauend eingetragen wurde. Durch die zusätzliche Erfassung der Transaktionszeit bleibt hingegen exakt dokumentiert, zu welchem Zeitpunkt die Änderung tatsächlich in das System übernommen wurde.
+
+\vspace{0.5cm}
 
 Es folgt eine beispielhafte Illustration der Ansätze. Die Beispiele basieren auf der Arbeit von De Castro et al. 
 
+\vspace{0.5cm}
+
 Gegeben seien folgende Datenbank-Operationen:
+
+\vspace{0.5cm}
 
 O1 – Schemaänderung – On-time-Transaktion – committed am 1983/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Erstellung der Tabelle EMPLOYEE mit den Spalten NAME, ADDRESS, CITY;
 
@@ -396,14 +406,3 @@ Oracle Workspace Manager stellt eine datenbankinterne Versionierungsmechanik ber
 \subsection{Ausblick}
 Die standardisierte SQL-DDL (Data Definition Language), die für die Definition und Modifikation relationaler Datenbankschemata eingesetzt wird, weist lediglich eingeschränkte Möglichkeiten zur Unterstützung von Schemaänderungen auf und bietet keine native Funktionalität für Schema-Evolution oder Schema-Versionierung. Aus diesem Grund erscheint eine Erweiterung der SQL-Spezifikation sinnvoll, die explizit Konzepte der Schema-Evolution und Versionierung auf Benutzerebene unterstützt. Eine solche Weiterentwicklung könnte dazu beitragen, Änderungen am Datenbankschema nicht nur technisch, sondern auch konzeptionell transparenter und benutzerfreundlicher abzubilden.
 Im Hinblick auf zukünftige Forschungsarbeiten eröffnet sich hierbei ein breites Spektrum an Fragestellungen. Insbesondere die Entwicklung standardisierter Sprachkonstrukte für Schema-Versionierung, die Integration von Migrationsmechanismen direkt in die Datenbanksprache sowie die konsistente Unterstützung historisierter Datenabfragen über mehrere Schemazustände hinweg stellen vielversprechende Forschungsrichtungen dar. Darüber hinaus wäre zu untersuchen, wie sich solche Erweiterungen in bestehende Datenbankmanagementsysteme integrieren lassen, ohne deren Komplexität oder Performance wesentlich zu beeinträchtigen.
-
-\subsubsubsection{Ebene 4.2}
-\blindtext
-\cite[79]{Schelinski2019}
-
-\section{Schluss}
-\subsection{Fazit}
-\blindtext (vgl. Abbildung \ref{abb_bsp}).
-
-\subsection{Ausblick final}
-\blindtext
