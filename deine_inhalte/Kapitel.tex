@@ -31,7 +31,7 @@ Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen 
 Da der Begriff der Schema-Versionierung bislang nicht einheitlich definiert ist und sowohl in der wissenschaftlichen Literatur als auch in der Praxis unterschiedliche Auffassungen darüber bestehen, wird in diesem Kapitel eine für diese Arbeit gültige Begriffsbestimmung auf Grundlage etablierter wissenschaftlicher Definitionen vorgenommen. Darüber hinaus werden verwandte Konzepte erläutert, die der Schema-Versionierung inhaltlich nahe stehen und daher häufig mit ihr verwechselt oder vermischt werden.
 
 \subsection{Datenbankschema}
-Das \textit{Datenbankschema} definiert die Struktur der Datenbank. Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des DBMS gespeichert. Im Folgenden wird der Begriff \textit{Schema} synonym für das Datenbankschema verwendet. Schemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich. Der Begriff Schema wird in der Literatur nicht einheitlich verwendet. Die ANSI-SPARC-Architektur definiert Schemata auf drei verschiedenen Abstraktionsebenen: das \textit{interne Schema}, das \textit{konzeptionelle Schema} und das \textit{externe Schema} (vgl. Abb.~\ref{fig:ansi-sparc}).
+Das \textit{Datenbankschema} definiert die Struktur der Datenbank. Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des \textit{Datenbankmanagementsystems} (kurz \textit{DBMS}) gespeichert. Im Folgenden wird der Begriff \textit{Schema} synonym für das Datenbankschema verwendet. Schemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich. Der Begriff Schema wird in der Literatur nicht einheitlich verwendet. Die ANSI-SPARC-Architektur definiert Schemata auf drei verschiedenen Abstraktionsebenen: das \textit{interne Schema}, das \textit{konzeptionelle Schema} und das \textit{externe Schema} (vgl. Abb.~\ref{fig:ansi-sparc}).
 
 \vspace{0.5cm}
 
@@ -117,46 +117,75 @@ Das Schema ist eine intensionale Beschreibung der Datenbank und enthält selbst 
     \textbullet\addspace \textrm{Roman} 
 
 \subsection{Schemamodifikation}
-Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als \textit{Schemamodifikation} bezeichnet. Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas. Bei der Schemamodifikation wird das bestehende Schema inklusive der zugehörigen Instanz verworfen und durch ein neues ,leeres Schema ersetzt. Aspekte wie Datenintegrität und Schemakonsistenz werden dabei – im Gegensatz zur Schema-Evolution und Schema-Versionierung – nicht berücksichtigt.   (siehe Seite 7 des Lietarture Reviews zur Schemaevolution für referenz)
+Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als \textit{Schemamodifikation} bezeichnet. Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas. Bei der Schemamodifikation wird das bestehende Schema inklusive der zugehörigen Instanz verworfen und durch ein neues ,leeres Schema ersetzt. Aspekte wie Datenerhalt und Schemakonsistenz werden dabei – im Gegensatz zur Schema-Evolution und Schema-Versionierung – nicht berücksichtigt.   (siehe Seite 7 des Lietarture Reviews zur Schemaevolution für referenz)
 
 \vspace{0.5cm}
 
-Die Abbildungen 2 bis 4 verdeutlichen den Ablauf einer Schemamodifikation in einer relationalen Datenbank. Ausgangspunkt ist die Schemaversion SV1 mit entsprechendem Eintrag im Systemkatalog des DBMS. SV1 besteht aus der Relation EMPLOYEE mit den Attributen Name, Address und City. Die Instanz I1 besteht aus zwei Tupel (vgl. Abb. ~\ref{fig:schemamodifikation_initial}).  
+Die Abbildungen ~\ref{fig:schemamodifikation_initial} und ~\ref{fig:schemamodifikation_after_schemaChange} verdeutlichen den Ablauf einer Schemamodifikation in einer relationalen Datenbank. Ausgangspunkt ist die Schemaversion $\mathrm{SV}_1$ mit dem entsprechenden Eintrag im Systemkatalog des DBMS. $\mathrm{SV}_1$ besteht aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Die Instanz $I_1$ umfasst zwei Tupel (vgl. Abb. ~\ref{fig:schemamodifikation_initial}).  
+
 
 \begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/2_2_Schemamodifikation_initial_Table.drawio.pdf}
-    \caption{Ausgangspunkt - Schemaversion SV1 mit Instanz I1}
+    \caption{Zustand vor der Schemamodifikation}
     \label{fig:schemamodifikation_initial}
 \end{figure}
 
 
-Das Schema wird mit DDL-Operationen verändert (vgl. Abb. 3). Zunächst wird das Attribut Address aus der Relation entfernt. Anschließend wird ein neues Attribut Phone hinzugefügt.
+Das Schema wird mit Hilfe von DDL-Statements verändert (vgl. Quelltext ~\ref{lst:ddl}). Zunächst wird das Attribut \textit{ADDRESS} aus der Relation entfernt. Anschließend wird ein neues Attribut \textit{PHONE} hinzugefügt.
 
 
+\lstinputlisting[
+    language=SQL,
+    caption={DDL-Statements},
+    label={lst:ddl}
+]{deine_inhalte/Quellcode/chapter_2_2_ddl.sql}
 
 
-Dadurch entsteht die neue Schemaversion SV2 mit angepasstem Eintrag im Systemkatalog (vgl. Abb. 4)
+Dadurch entsteht die neue Schemaversion $\mathrm{SV}_2$ mit leerer Instanz $I_2$ und angepasstem Eintrag im Systemkatalog (vgl. Abb. ~\ref{fig:schemamodifikation_after_schemaChange}). Die ursprüngliche Schema-Version $\mathrm{SV}_1$ existiert nach der Modifikation nicht mehr. Auch die mit $\mathrm{SV}_1$ verbundene Instanz $I_1$ geht verloren.
 
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{.github/2_2_Schemamodifikation_after_schemaChange.drawio.pdf}
+    \caption{Zustand nach der Schemamodifikation}
+    \label{fig:schemamodifikation_after_schemaChange}
+\end{figure}
 
-Die ursprüngliche Schema-Version SV1 existiert nach der Modifikation nicht mehr. Auch die mit SV1 verbundene Datenbankinstanz geht verloren. 
-
-Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen Schema-Modifikation: Änderungen werden direkt auf dem bestehenden Schema durchgeführt, ohne frühere Schemaversionen oder historische Dateninstanzen beizubehalten. Anwendungen und Anfragen müssen anschließend mit der neuen Struktur kompatibel sein.
+Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen Schemamodifikation: Änderungen werden direkt auf dem bestehenden Schema durchgeführt, ohne frühere Schemaversionen oder historische Instanzen beizubehalten. Anwendungen und Anfragen müssen anschließend zwingend mit der neuen Struktur kompatibel sein.
 
 
 \subsection{Schema-Evolution}
-Schemaevolution bezeichnet die Änderung des Datenbankschemas einer bestehenden Datenbank, wobei die bereits gespeicherten Daten durch geeignete Migrationsoperationen an das neue Schema angepasst werden. Sie grenzt sich von der Schemamodifikation dadurch ab, dass die bestehenden Daten erhalten bleiben und in das neue Schema überführt, anstatt verworfen zu werden. Dennoch kann es im Rahmen der Schemaevolution, beispielsweise bei der Entfernung von Attributen oder Änderung von Datentypen, zu einem teilweisen Informationsverlust kommen. Auch die Kompatibilität des neuen Schemas mit Anwendungen, die auf Basis des alten Schemas entwickelt wurden, ist durch Schemaevolution nicht garantiert.
+\textit{Schema-Evolution} bezeichnet die Änderung des Schemas einer bestehenden Datenbank, wobei die bereits gespeicherten Daten durch geeignete Migrationsoperationen an das neue Schema angepasst werden. Sie grenzt sich von der Schemamodifikation dadurch ab, dass die bestehenden Daten erhalten bleiben und in das neue Schema überführt werden, anstatt sie zu verwerfen. Dennoch kann es im Rahmen der Schema-Evolution, beispielsweise bei der Entfernung von Attributen oder der Änderung von Datentypen, zu einem teilweisen Informationsverlust kommen. Auch die Kompatibilität des neuen Schemas mit Anwendungen, die auf Basis des alten Schemas entwickelt wurden, ist durch Schema-Evolution nicht garantiert.
 
-Abbildung 5 zeigt das aus der DDL-Operation in Abbildung 4 resultierende Schema bei einem DBMS, das Schemaevolution unterstützt. Die ursprüngliche Schemaversion SV1 wird verworfen und vollständig durch die neue Schemaversion SV2 ersetzt. Dabei wird die bestehende Datenbankinstanz an das neue Schema angepasst. Die Daten der Attribute NAME und CITY werden in die neue Schemaversion übernommen. Die Informationen des Attributs ADDRESS gehen hingegen verloren, da dieses Attribut nicht mehr Bestandteil von SV2 ist. Für das neu eingeführte Attribut PHONE liegen zunächst keine Werte vor, sodass die entsprechenden Tupel mit NULL-Werten belegt werden.
+\vspace{0.5cm}
+
+Abbildung ~\ref{fig:schemaevolution} zeigt das aus den DDL-Statements in Quelltext ~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Evolution unterstützt. Die ursprüngliche Schemaversion $\mathrm{SV}_1$ wird verworfen und vollständig durch die neue Schemaversion $\mathrm{SV}_2$ ersetzt. Ebenso wird die bestehende Instanz $I_1$ vollständig durch die neue Instanz $I_2$ ersetzt. Die Daten der Attribute \textit{NAME} und \textit{CITY} werden auf Basis von $I_1$ in die Instanz $I_2$ der neuen Schemaversion $\mathrm{SV}_2$ übernommen. Die Informationen des Attributes \textit{ADDRESS} gehen hingegen verloren, da dieses kein Bestandteil der Schemaversion $\mathrm{SV}_2$ ist. Für das neu eingeführte Attribut \textit{PHONE} liegen zunächst keine Werte vor, sodass die entsprechenden Tupel mit NULL-Werten belegt werden.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{.github/2_3_Schemaevolution.drawio.pdf}
+    \caption{Zustand nach der Schema-Evolution}
+    \label{fig:schemaevolution}
+\end{figure}
 
 \subsection{Schema-Versionierung}
-Schema-Versionierung bezeichnet die Fähigkeit eines Datenbanksystems, verschiedene Zustände eines Schemas über die Zeit hinweg zu verwalten und zugänglich zu machen. Dabei werden Änderungen am Schema historisch gespeichert, sodass frühere und aktuelle Versionen weiterhin genutzt werden können. Im Unterschied zur Schemaevolution wird das bestehende Schema nicht ersetzt, sondern durch eine zusätzliche Schema-Version ergänzt, sodass mehrere Schema-Versionen parallel im DBMS zur Laufzeit existieren können. Ein wesentliches Merkmal ist zudem die Möglichkeit, Daten sowohl über aktuelle als auch historische Schemata abzurufen. Das ermöglicht Anwendungen auf die Schema-Version zuzugreifen, für die sie entwickelt wurden, wodurch ihre Funktionsfähigkeit erhalten bleibt. Neue Daten werden dabei in der Regel nach der aktuellen Schema-Version gespeichert. Ein zentrales Ziel der Schema-Versionierung ist es, Informationsverlust zu vermeiden und den Betrieb bestehender Anwendungen weiterhin zu gewährleisten.
+\textit{Schema-Versionierung} bezeichnet die Fähigkeit eines Datenbanksystems, verschiedene Zustände eines Schemas über die Zeit hinweg zu verwalten und zugänglich zu machen. Dabei werden Änderungen am Schema historisch gespeichert, sodass frühere und aktuelle Versionen weiterhin genutzt werden können. Im Unterschied zur Schema-Evolution wird das bestehende Schema nicht ersetzt, sondern durch eine zusätzliche Schemaversion ergänzt, sodass mehrere Schemaversionen parallel im DBMS zur Laufzeit existieren können. Ein wesentliches Merkmal ist zudem die Möglichkeit, Daten sowohl über aktuelle als auch historische Schemata abzurufen. Das ermöglicht Anwendungen auf jene Schemaversion zuzugreifen, für die sie entwickelt wurden, wodurch ihre Funktionsfähigkeit erhalten bleibt. Neue Daten werden dabei in der Regel nach der aktuellen Schemaversion gespeichert. Ein zentrales Ziel der Schema-Versionierung ist es, Informationsverlust zu vermeiden und den Betrieb bestehender Anwendungen weiterhin zu gewährleisten.
 
-Schema-Versionierung ist komplexer als die reine Schemaevolution, da sämtliche Schema-Versionen innerhalb eines DBMS gemeinsam mit den zugehörigen Daten und abhängigen Komponenten koexistieren und konsistent betrieben werden müssen.
+\vspace{0.5cm}
 
-Abbildung 6 zeigt das resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schemaevolution koexistiert die neue Schemaversion SV2 mit der ursprünglichen Schemaversion SV1 innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Datenbankinstanz der Schemaversion SV1 bleibt vollständig erhalten. Für SV2 werden die Daten analog zur Schemaevolution an die neue Schemastruktur angepasst. Dadurch können Anwendungen, die entweder gegen SV1 oder gegen SV2 entwickelt beziehungsweise kompiliert wurden, weiterhin ohne Anpassungen betrieben werden.
+Schema-Versionierung ist komplexer als die reine Schema-Evolution, da sämtliche Schemaversionen innerhalb eines DBMS gemeinsam mit den zugehörigen Instanzen und abhängigen Komponenten koexistieren und konsistent betrieben werden müssen.
 
+\vspace{0.5cm}
+
+Abbildung ~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Quelltext ~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schema-Evolution koexistiert die neue Schemaversion $\mathrm{SV}_2$ mit der ursprünglichen Schemaversion $\mathrm{SV}_1$ innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Datenbankinstanz $I_1$ der Schemaversion $\mathrm{SV}_1$ bleibt vollständig erhalten. Für $\mathrm{SV}_2$ werden die Daten analog zur Schema-Evolution an die neue Schemastruktur angepasst, sodass $I_2$ entsteht. Dadurch können Anwendungen, die entweder gegen $\mathrm{SV}_1$ oder gegen $\mathrm{SV}_2$ entwickelt wurden, weiterhin ohne Anpassungen betrieben werden.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{.github/2_4_SchemaVersionierung.drawio.pdf}
+    \caption{Zustand nach der Schema-Versionierung}
+    \label{fig:schemaversionierung}
+\end{figure}
 
 \section{Methoden der Schema-Versionierung}
 Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Da die konkrete Ausgestaltung einer Schema-Versionierung maßgeblich von den jeweiligen Anwendungsanforderungen abhängt, ist eine isolierte Betrachtung einzelner Lösungen nur eingeschränkt aussagekräftig. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
