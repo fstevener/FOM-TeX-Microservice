@@ -31,17 +31,40 @@ Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen 
 Da der Begriff der Schema-Versionierung bislang nicht einheitlich definiert ist und sowohl in der wissenschaftlichen Literatur als auch in der Praxis unterschiedliche Auffassungen darüber bestehen, wird in diesem Kapitel eine für diese Arbeit gültige Begriffsbestimmung auf Grundlage etablierter wissenschaftlicher Definitionen vorgenommen. Darüber hinaus werden verwandte Konzepte erläutert, die der Schema-Versionierung inhaltlich nahe stehen und daher häufig mit ihr verwechselt oder vermischt werden.
 
 \subsection{Datenbankschema}
-Das Datenbankschema definiert die Struktur der Datenbank. Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des DBMS gespeichert. Datenbankschemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich. Der Begriff Datenbankschema wird in der Literatur nicht einheitlich verwendet. Die ANSI-SPARC Architektur (vgl. Abb. 1) definiert Datenbankschemata auf drei verschiedenen Abstraktionsebenen, das interne Schema, das konzeptionelle Schema und das externe Schema:
+Das \textit{Datenbankschema} definiert die Struktur der Datenbank. Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des DBMS gespeichert. Im Folgenden wird der Begriff \textit{Schema} synonym für das Datenbankschema verwendet. Schemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich. Der Begriff Schema wird in der Literatur nicht einheitlich verwendet. Die ANSI-SPARC-Architektur definiert Schemata auf drei verschiedenen Abstraktionsebenen: das \textit{interne Schema}, das \textit{konzeptionelle Schema} und das \textit{externe Schema} (vgl. Abb.~\ref{fig:ansi-sparc}).
 
-	1. Das interne Schema definiert die physische Struktur der Datenbank. Es enthält vollständige Informationen über die physische Speicherung der Daten in der Datenbank / auf dem Datenträger.
-	
-	2. Das konzeptionelle Schema definiert die logische Struktur der Datenbank. Es abstrahiert die Details der physischen Speicherung und bezieht sich ausschließlich auf das konzeptionelle Design der Datenbank. Es beschreibt Relationen, Attribute, Datentypen, Beziehungen zwischen Entitäten und Integritätsbedingungen. Das konzeptionelle Schema legt damit fest, wie die Daten in der Datenbank angeordnet sind und in welcher Beziehung die Daten zueinander stehen.
-	
-	3. Das externe Schema definiert die benutzerspezifische Sicht auf die Datenbank. Es legt fest, auf welche Teilmenge des konzeptionellen Schemas ein Benutzer zugreifen darf. Für verschiedene Benutzergruppen können unterschiedliche externe Schemata existieren.
+\vspace{0.5cm}
 
-Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigkeit. Schemaänderungen auf einer Ebene des Datenbanksystems, haben damit keine Auswirkungen auf das Schema der nächsthöheren Ebene. Es wird zwischen physischer Datenunabhängigkeit und logischer Datenunabhängigkeit differenziert. Physische Datenunabhängigkeit beschreibt die Fähigkeit, Änderungen am internen Schema eines Datenbanksystems vorzunehmen, ohne das konzeptionelle Schema ändern zu müssen. Logische Datenunabhängigkeit liegt vor, wenn das konzeptionelle Schema geändert werden kann, ohne das externe Schema ändern zu müssen. Die Drei-Ebenen-Architektur findet nur in wenigen DBMS vollständige Berücksichtigung. (hier kannst du auch das Paper von Curino "Graceful Database Schema Evolution: the PRISM Workbench" zitieren). Die in dieser Arbeit vorgestellten Konzepte beziehen sich primär auf das konzeptionelle Schema, wenngleich Schema-Versionierung alle drei Ebenen der ANSI-SPARC Architektur betreffen kann.
-  
-Das Datenbankschema ist eine intensionale Beschreibung der Datenbank, es enthält keine Daten. Die Datenbankinstanz hingegen, ist der konkrete Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Es wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Integritätsbedingungen und Strukturen des Schemas. Jedes Einfügen, Löschen und Aktualisieren von Daten in der Datenbank, führt zu einem neuen Zustand und damit zu einer neuen Datenbankinstanz. Das Schema bleibt dabei konstant und ist zeitlich stabiler als die Instanz. Erst wenn die Struktur der Datenbank geändert werden soll, muss das Schema angepasst werden. Das kann z.B. eintreten, wenn sich die Anforderungen an die Applikation ändern, mit der die Datenbank verbunden ist. Die Kapitel 2.2 -2.4 gehen näher darauf ein, wie Änderungen an Datenbankschemata in einem DBMS unterstützt werden können. 
+Das \textit{interne Schema} definiert die physische Struktur der Datenbank. Es enthält vollständige Informationen über die physische Speicherung der Daten auf dem Datenträger.
+
+\vspace{0.5cm}
+	
+Das \textit{konzeptionelle Schema} definiert die logische Struktur der Datenbank. Es abstrahiert die Details der physischen Speicherung und bezieht sich ausschließlich auf das konzeptionelle Design der Datenbank. Es beschreibt Relationen, Attribute, Datentypen, Beziehungen zwischen Entitäten und Integritätsbedingungen. Das konzeptionelle Schema legt damit fest, wie die Daten in der Datenbank angeordnet sind und in welcher Beziehung sie zueinander stehen.
+
+\vspace{0.5cm}
+	
+Das \textit{externe Schema} definiert die benutzerspezifische Sicht auf die Datenbank. Es legt fest, auf welche Teilmenge des konzeptionellen Schemas ein Benutzer zugreifen darf. Für verschiedene Benutzergruppen können unterschiedliche externe Schemata existieren.
+
+\vspace{0.5cm}
+
+Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigkeit. Schemaänderungen auf einer Ebene des Datenbanksystems haben damit keine Auswirkungen auf das Schema der nächsthöheren Ebene. Es wird zwischen \textit{physischer Datenunabhängigkeit} und \textit{logischer Datenunabhängigkeit} differenziert. Physische Datenunabhängigkeit beschreibt die Fähigkeit, Änderungen am internen Schema eines Datenbanksystems vorzunehmen, ohne das konzeptionelle Schema anpassen zu müssen. Logische Datenunabhängigkeit liegt vor, wenn das konzeptionelle Schema geändert werden kann, ohne das externe Schema anpassen zu müssen. Die in dieser Arbeit vorgestellten Konzepte beziehen sich primär auf das konzeptionelle Schema, wenngleich Schema-Versionierung alle drei Ebenen der ANSI-SPARC-Architektur betreffen kann.
+
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=\linewidth]{.github/2_1_ANSI_SPARC.drawio.pdf}
+%  \includegraphics[scale = ]{.github/2_1_ANSI_SPARC.drawio.pdf}
+%  \caption{Mein Diagramm}
+%\end{figure} 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.8]{.github/2_1_ANSI_SPARC.drawio.pdf}
+    \caption{ANSI-SPARC-Architektur}
+    \label{fig:ansi-sparc}
+\end{figure}
+
+
+Das Schema ist eine intensionale Beschreibung der Datenbank und enthält selbst keine Daten. Die \textit{Datenbankinstanz} (im Folgenden kurz \textit{Instanz}) hingegen repräsentiert den konkreten Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Sie wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Strukturen und Integritätsbedingungen des Schemas. Jedes Einfügen, Löschen oder Aktualisieren von Daten führt zu einem neuen Zustand und damit zu einer neuen Instanz. Das Schema bleibt dabei konstant und ist zeitlich wesentlich stabiler als die Instanz. Erst wenn die Struktur der Datenbank modifiziert werden soll, muss das Schema angepasst werden. Dies kann beispielsweise eintreten, wenn sich die Anforderungen an die Applikation ändern, die mit der Datenbank interagiert. Die Kapitel 2.2 bis 2.4 gehen näher darauf ein, wie Änderungen an Schemata in einem DBMS unterstützt werden können.
 
 
 „Dies ist ein direktes Zitat."\cite[212]{mertens_digitalisierung_2017} \blindtext\cite{msdatabind}\cite{lambda}\cite[34]{Digitaloekonomie}
@@ -94,12 +117,18 @@ Das Datenbankschema ist eine intensionale Beschreibung der Datenbank, es enthäl
     \textbullet\addspace \textrm{Roman} 
 
 \subsection{Schemamodifikation}
-Im zweiten Kapitel wird zunächst der Begriff \textit{Bring Your Own Device} (BYOD) definiert.
+Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als \textit{Schemamodifikation} bezeichnet. Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas. Bei der Schemamodifikation wird das bestehende Schema inklusive der zugehörigen Instanz verworfen und durch ein neues ,leeres Schema ersetzt. Aspekte wie Datenintegrität und Schemakonsistenz werden dabei – im Gegensatz zur Schema-Evolution und Schema-Versionierung – nicht berücksichtigt.   (siehe Seite 7 des Lietarture Reviews zur Schemaevolution für referenz)
 
-Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als Schemamodifikation bezeichnet. Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas. Bei der Schemamodifikation wird das bestehende Datenbankschema inklusive der zugehörigen Datenbankinstanz verworfen und durch ein neues ,leeres Schema ersetzt. Aspekte wie Datenintegrität und Schemakonsistenz werden dabei – im Gegensatz zur Schemaevolution und Schema-Versionierung – nicht berücksichtigt.   (siehe Seite 7 des Lietarture Reviews zur Schemaevolution für referenz)
+\vspace{0.5cm}
 
-Die Abbildungen (vgl. Abb. 2-4) verdeutlichen den Ablauf einer Schema-Modifikation in einer relationalen Datenbank. Ausgangspunkt ist die Schemaversion SV1 mit entsprechendem Eintrag im Systemkatalog. SV1 besteht aus der Relation EMPLOYEE mit den Attributen Name, Address und City. Die Datenbankinstanz besteht aus zwei Tupel (vgl. Abb. 2).  
+Die Abbildungen 2 bis 4 verdeutlichen den Ablauf einer Schemamodifikation in einer relationalen Datenbank. Ausgangspunkt ist die Schemaversion SV1 mit entsprechendem Eintrag im Systemkatalog des DBMS. SV1 besteht aus der Relation EMPLOYEE mit den Attributen Name, Address und City. Die Instanz I1 besteht aus zwei Tupel (vgl. Abb. ~\ref{fig:schemamodifikation_initial}).  
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{.github/2_2_Schemamodifikation_initial_Table.drawio.pdf}
+    \caption{Ausgangspunkt - Schemaversion SV1 mit Instanz I1}
+    \label{fig:schemamodifikation_initial}
+\end{figure}
 
 
 Das Schema wird mit DDL-Operationen verändert (vgl. Abb. 3). Zunächst wird das Attribut Address aus der Relation entfernt. Anschließend wird ein neues Attribut Phone hinzugefügt.
