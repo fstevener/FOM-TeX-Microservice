@@ -257,25 +257,23 @@ Im Folgenden werden die Ansätze anhand von Beispielen illustriert. Die Beispiel
 
 \vspace{0.5cm}
 
-Die DDL-Operationen $O_1$ bis $O_5$ werden wie folgt definiert:
+Die DDL-Operationen $O_1$ bis $O_3$ werden wie folgt definiert:
 
 \vspace{0.5cm}
 \begin{itemize}
-    \item $O_1$ – Schemaänderung – On-time-Transaktion – committed am 1983/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Erstellung der Tabelle \textit{EMPLOYEE} mit den Spalten \textit{NAME}, \textit{ADDRESS} und \textit{CITY}
-    \item $O_2$ – Datenänderung – On-time-Transaktion – committed am 1984/1/1: Einfügen des Tupels „(Blanc, BD St Michel 87, Paris)“ in die Tabelle \textit{EMPLOYEE}
-    \item $O_3$ – Schemaänderung – rückwirkende (retroaktive) Transaktion – committed am 1985/1/1 – wirksam von 1983/1/1 bis 1985/12/31: Entfernung der Spalte \textit{ADDRESS} aus der Tabelle \textit{EMPLOYEE}
-    \item $O_4$ – Datenänderung – On-time-Transaktion – committed am 1986/1/1: Aktualisierung der Spalte \textit{CITY} (gesetzt auf Bruxelles) in Blancs Daten, die in der Tabelle \textit{EMPLOYEE} gespeichert sind
-    \item $O_5$ – Schemaänderung – proaktive Transaktion – committed am 1987/1/1 – wirksam ab 1988/1/1: Hinzufügen der Spalte \textit{PHONE} zur Tabelle \textit{EMPLOYEE}
+    \item $O_1$ – Schemaänderung – On-Time-Transaktion – committed am 1/1/1983 – wirksam von 1/1/1983 bis 12/31/1985: Erstellung der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}
+    \item $O_2$ – Schemaänderung – rückwirkende (retroaktive) Transaktion – committed am 1/1/1985 – wirksam von 1/1/1983 bis 12/31/1985: Entfernung des Attributes \textit{ADDRESS} aus der Relation \textit{EMPLOYEE}
+    \item $O_3$ – Schemaänderung – proaktive Transaktion – committed am 1/1/1987 – wirksam ab 1/1/1988: Hinzufügen des Attributes \textit{PHONE} zur Relation \textit{EMPLOYEE}
 \end{itemize}
 
-Die Abbildungen 9-11 beschreiben den Zustand des DBMS nach Ausführung der DDL-Operationen $O_1$ bis $O_5$. Der Einfachheit halber wird eine zeitliche Granularität von einem Tag angenommen. Zudem wird auf eine Angabe der erforderlichen DDL-Statements verzichtet.
+Die Abbildungen ~\ref{fig:transactiontime} bis ~\ref{fig:bitemporal} beschreiben den Zustand des DBMS nach Ausführung der DDL-Operationen $O_1$ bis $O_3$. Der Einfachheit halber wird eine zeitliche Granularität von einem Tag angenommen. Zudem wird auf eine Angabe der entsprechenden DDL-Statements verzichtet.
 
 \vspace{0.5cm}
 
 \textbf{Transaktionszeitbasierte Schema-Versionierng}
 
 
-Die Operation O1 initialisiert das Datenbankschema, bestehend aus der Relation EMPLOYEE mit den Attributen NAME, ADDRESS und CITY. Nach der transaktionszeitbasierten Schema-Versionierung, dürfen Anpassungen nur die aktuelle Schema-Version betreffen. Schemaänderungen werden daher ausschließlich als on-time Transaktionen ausgeführt. Sie werden also mit dem Zeitpunkt ihrer Definition auf das aktuelle Schema wirksam. Damit ist eine Schema-Version immer so lange aktuell, bis eine neue Schemaänderung definiert und damit eine neue Schema-Version erzeugt wird. Der Status im Systemkatalog des DBMS nach O1 wäre daher:  SV1 (1/1/83 - infinity), bis zu dem Zeitpunkt einer neuen Schemaänderung. O2 und  O4 betreffen die Datenbankinstanz. Sie verändern das Schema nicht und haben damit keinen Einfluss auf den Systemkatalog. O3 und O5 sind retro- bzw. proaktive Schemaänderungen. Da die transaktionszeitbasierte Versionierung diese Art der Anpassung nicht unterstützt, werden die Schemaänderungen ebenfalls mit dem Zeitpunkt ihrer Definition wirksam, wie der Abbildung 9 zu entnehmen ist.  O3 erzeugt die Schema-Version SV2 und O5 die Schema-Version SV3.
+Die Operation $O_1$ initialisiert das Schema, bestehend aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Gemäß der transaktionszeitbasierten Schema-Versionierung dürfen Anpassungen stets nur die aktuelle Schemaversion betreffen. Schemaänderungen werden daher ausschließlich als On-Time-Transaktionen ausgeführt. Sie werden also mit dem Zeitpunkt ihrer Definition auf das aktuelle Schema wirksam. Damit bleibt eine Schemaversion so lange aktuell, bis eine neue Schemaänderung definiert und damit eine neue Schemaversion erzeugt wird. Der Status im Systemkatalog des DBMS nach $O_1$ lautet demnach $\mathrm{SV}_1 \; (1/1/83 - \infty)$ und bleibt bis zum Zeitpunkt einer neuen Schemaänderung bestehen. Bei den Operationen $O_2$ und $O_3$ handelt es sich um retro- bzw. proaktive Schemaänderungen. Da die transaktionszeitbasierte Versionierung diese Art der Anpassung nicht unterstützt, werden auch diese Schemaänderungen erst zum Zeitpunkt ihrer Definition wirksam (vgl. Abb. ~\ref{fig:transactiontime}). $O_2$ erzeugt die Schemaversion $\mathrm{SV}_2$ und $O_3$ die Schemaversion $\mathrm{SV}_3$.
 
 \begin{figure}[H]
     \centering
@@ -285,10 +283,10 @@ Die Operation O1 initialisiert das Datenbankschema, bestehend aus der Relation E
 \end{figure}
 
 
-\textbf{Valid-Time Schema Versionierung}
+\textbf{Gültigkeitszeitbasierte Schema-Versionierung}
 
 
-Im Gegensatz zum Transaction-time schema versioning, kann nach diesem Ansatz der Gültigkeitszeitraum der Schemaänderung definiert werden. Die Anpassungen betreffen dann jenes Schema, das für diesen Gültigkeitszeitraum definiert ist. Dadurch sind Anpassungen an vergangenen oder zukünftigen Schema-Versionen möglich. Da die retroaktive Schemaänderungen O3 für den gleichen Gültigkeitszeitraum definiert ist, wie die Schema-Version SV1, ersetzt die aus O3 resultierende Version SV2 die alte Version SV1 vollständig. SV1 wird gelöscht und ist in der Datenbank und dem DBMS somit nicht mehr existent. Die proaktive Schemaänderung O5 ist für einen Gültigkeitszeitraum in der Zukunft definiert. O5 wird somit erst am 1/1/88 ausgeführt, wodurch SV3 entsteht. In der Arbeit von De Castro et al. wird nicht näher erläutert, welche Version im Zeitraum von 86-88 greift.   
+Im Gegensatz zur Versionierung nach der Transatkionszeit, kann bei der gültigkeitszeitbasierten Schema-Versierung der Gültigkeitszeitraum der Schemaänderung explizit definiert werden. Die Anpassungen betreffen dann jenes Schema, das für diesen spezifischen Gültigkeitszeitraum definiert ist. Dadurch sind Modifikationen an vergangenen oder zukünftigen Schemaversionen möglich. Da die retroaktive Schemaänderungen $O_2$ für den gleichen Gültigkeitszeitraum definiert ist wie die Schemaversion $\mathrm{SV}_1$, ersetzt die aus $O_2$ resultierende Version $\mathrm{SV}_2$ die alte Version $\mathrm{SV}_1$ vollständig. $\mathrm{SV}_1$ wird in diesem Zuge gelöscht und ist in der Datenbank somit nicht mehr existent. Die proaktive Schemaänderung $O_3$ ist wiederum für einen Gültigkeitszeitraum in der Zukunft definiert. $O_3$ wird somit erst am 01.01.1988 wirksam, wodurch $\mathrm{SV}_3$ entsteht. In der Arbeit von De Castro et al. wird allerdings nicht näher erläutert, welche Version im Zeitraum von 1986-1988 greift.   
 
 \begin{figure}[H]
     \centering
@@ -301,7 +299,7 @@ Im Gegensatz zum Transaction-time schema versioning, kann nach diesem Ansatz der
 \textbf{Bitemporale Schema-Versionierung}
 
 
-Die Verwaltung der Schema-Versionen entlang der Transaktionszeit und der Gültigkeitszeit ermöglicht es, historische Status der Datenbank zu bewahren. Ein Rückgang auf ältere Schema-Versionen ist somit möglich. Schemata die für den gleichen Gültigkeitszeitraum definiert sind, müssen nicht mehr gelöscht werden, da die Transaktionszeit belegt, welche Schema-Version aktuell ist. Die aus O3 resultierende Version SV2 würde die Version SV1 zwar hinsichtlich der Aktualität ablösen. SV1 wird nach diesem Ansatz jedoch nicht gelöscht, sondern archiviert und ist weiterhin abrufbar, sofern ein Rückgang von SV2 auf SV1 erforderlich ist. Sowohl die intensionalen als auch die extensionalen Daten bleiben dabei erhalten.
+Die Versionierung von Schemata entlang der Transaktions- und der Gültigkeitszeit ermöglicht es, historische Stände der Datenbank vollständig zu bewahren. Ein Rückgang auf ältere Schemaversionen ist somit jederzeit möglich. Schemata die für denselben Gültigkeitszeitraum definiert sind, müssen nicht mehr gelöscht werden, da die Transaktionszeit eindeutig belegt, welche Schemaversion zu welchem Zeitpunkt systemaktuell war. Die aus $O_2$ resultierende Version $\mathrm{SV}_2$ löst die Version $\mathrm{SV}_1$ hinsichtlich ihrer Aktualität zwar ab; $\mathrm{SV}_1$ wird nach diesem Ansatz jedoch nicht gelöscht, sondern archiviert und bleibt weiterhin abrufbar, sofern ein Rückgang von $\mathrm{SV}_2$ auf $\mathrm{SV}_1$ erforderlich ist. Sowohl die intensionalen (Schema) als auch die extensionalen Daten (Instanz) bleiben dabei vollständig erhalten.
 
 \begin{figure}[H]
     \centering
