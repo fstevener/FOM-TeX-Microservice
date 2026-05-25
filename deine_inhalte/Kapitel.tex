@@ -170,7 +170,7 @@ Abbildung ~\ref{fig:schemaevolution} zeigt das aus den DDL-Statements in Quellte
 \end{figure}
 
 \subsection{Schema-Versionierung}
-\textit{Schema-Versionierung} bezeichnet die Fähigkeit eines Datenbanksystems, verschiedene Zustände eines Schemas über die Zeit hinweg zu verwalten und zugänglich zu machen. Dabei werden Änderungen am Schema historisch gespeichert, sodass frühere und aktuelle Versionen weiterhin genutzt werden können. Im Unterschied zur Schema-Evolution wird das bestehende Schema nicht ersetzt, sondern durch eine zusätzliche Schemaversion ergänzt, sodass mehrere Schemaversionen parallel im DBMS zur Laufzeit existieren können. Ein wesentliches Merkmal ist zudem die Möglichkeit, Daten sowohl über aktuelle als auch historische Schemata abzurufen. Das ermöglicht Anwendungen auf jene Schemaversion zuzugreifen, für die sie entwickelt wurden, wodurch ihre Funktionsfähigkeit erhalten bleibt. Neue Daten werden dabei in der Regel nach der aktuellen Schemaversion gespeichert. Ein zentrales Ziel der Schema-Versionierung ist es, Informationsverlust zu vermeiden und den Betrieb bestehender Anwendungen weiterhin zu gewährleisten.
+\textit{Schema-Versionierung} bezeichnet die Fähigkeit eines Datenbanksystems, verschiedene Zustände eines Schemas über die Zeit hinweg zu verwalten und zugänglich zu machen. Dabei werden Änderungen am Schema historisch gespeichert, sodass frühere und aktuelle Versionen weiterhin genutzt werden können. Im Unterschied zur Schema-Evolution wird das bestehende Schema nicht ersetzt, sondern durch eine zusätzliche Schemaversion ergänzt. Folglich können mehrere Schemaversionen parallel im DBMS zur Laufzeit existieren. Ein wesentliches Merkmal ist zudem die Möglichkeit, Daten sowohl über aktuelle als auch historische Schemata abzurufen. Das ermöglicht Anwendungen auf jene Schemaversion zuzugreifen, für die sie entwickelt wurden, wodurch ihre Funktionsfähigkeit erhalten bleibt. Neue Daten werden dabei in der Regel nach der aktuellen Schemaversion gespeichert. Ein zentrales Ziel der Schema-Versionierung ist es, Informationsverlust zu vermeiden und den Betrieb bestehender Anwendungen weiterhin zu gewährleisten.
 
 \vspace{0.5cm}
 
@@ -178,7 +178,7 @@ Schema-Versionierung ist komplexer als die reine Schema-Evolution, da sämtliche
 
 \vspace{0.5cm}
 
-Abbildung ~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Quelltext ~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schema-Evolution koexistiert die neue Schemaversion $\mathrm{SV}_2$ mit der ursprünglichen Schemaversion $\mathrm{SV}_1$ innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Datenbankinstanz $I_1$ der Schemaversion $\mathrm{SV}_1$ bleibt vollständig erhalten. Für $\mathrm{SV}_2$ werden die Daten analog zur Schema-Evolution an die neue Schemastruktur angepasst, sodass $I_2$ entsteht. Dadurch können Anwendungen, die entweder gegen $\mathrm{SV}_1$ oder gegen $\mathrm{SV}_2$ entwickelt wurden, weiterhin ohne Anpassungen betrieben werden.
+Abbildung ~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Quelltext ~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schema-Evolution koexistiert die neue Schemaversion $\mathrm{SV}_2$ mit der ursprünglichen Schemaversion $\mathrm{SV}_1$ innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Instanz $I_1$ der Schemaversion $\mathrm{SV}_1$ bleibt vollständig erhalten. Für $\mathrm{SV}_2$ werden die Daten analog zur Schema-Evolution an die neue Schemastruktur angepasst, sodass die Instanz $I_2$ entsteht. Dadurch können Anwendungen, die auf Basis von $\mathrm{SV}_1$ oder $\mathrm{SV}_2$ entwickelt wurden, weiterhin ohne Anpassungen betrieben werden.
 
 \begin{figure}[h]
     \centering
@@ -189,39 +189,41 @@ Abbildung ~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Que
 
 \section{Methoden der Schema-Versionierung}
 Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Da die konkrete Ausgestaltung einer Schema-Versionierung maßgeblich von den jeweiligen Anwendungsanforderungen abhängt, ist eine isolierte Betrachtung einzelner Lösungen nur eingeschränkt aussagekräftig. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
+
 \subsection{Dimensionen der Schema-Versionierung}
+
 \subsubsection{Partielle und vollständige Schema-Versionierung}
-Im Hinblick auf die Query- und Update-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen Partial Schema Versioning und Full Schema Versioning differenziert.
+Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen \textit{partieller Schema-Versioning} und \textit{vollständiger Schema-Versioning} differenziert.
 
-Partial Schema Versioning ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin korrekt funktionieren, sofern diese Anwendungen Daten verändern. Die Abbildung 7 zeigt, dass Anwendungen, die Schreib Operationen auf SV1 ausführen, nicht mehr korrekt funktionieren, sobald SV2 eingeführt wird. Ab diesem Zeitpunkt sind Schreiboperationen nur noch über SV2 möglich. 
+\vspace{0.5cm}
 
- (e.g., freely querying I1 and I2 is allowed through either SV1 or SV2) but to update data through a single schema version only (normally the current schema version, i.e., only I2 via SV2 can be modi¯ed)
-
-
-
-Full Schema Versioning hingegen ermöglicht sowohl das Abrufen als auch das Aktualisieren von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Änderungen am Schema weiterhin funktionsfähig.
-
-(e.g., freely querying and updating data in I1 and I2 is allowed through either SV1 or SV2)
+\textit{Partielle Schema-Versioning} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin korrekt funktionieren, sofern diese Anwendungen Daten verändern. Die Abbildung ~\ref{fig:partialsv} zeigt, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden können. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nicht mehr korrekt, sobald $\mathrm{SV}_2$ eingeführt wird. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich. 
 
 
-
-
-
-Die Kompatibilität zwischen Daten und Schema-Versionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen Rückwärtskompatibilität und Vorwärtskompatibilität. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schema-Version erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schema-Version entwickelt wurde. Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schema-Version erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schema-Version konzipiert ist  (e.g., accessing I2 data via SV1). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erstellt wurden.
-
-In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Datenbankschemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht möglich. Deshalb unterstützen viele Systeme nur partielle Schema-Versionierung, bei der entweder Datenkompatibilität oder Anwendungskompatibilität erhalten bleibt.\begin{figure}[!htb]
-  \caption{Continuous Integration Prozess}
-  \captionsetup{width=1\textwidth}
-  \smartdiagramset{
-    border color=teal,
-    uniform color list=teal!60 for 6 items,
-    uniform arrow color=true,
-    arrow color=gray!80,
-    back arrow disabled=true
-  }
-  \smartdiagram[flow diagram:horizontal]{Develop \& Commit,Build,Integration,Build on Integrated Code, Integration-Tests,Packing}
-  \capquelle{Eigendarstellung angelehnt an \cite[19-20]{pathania_learning_2017}}\label{Continuous Integration Prozess}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{.github/3_1_1_Partial_SV.drawio.pdf}
+    \caption{Partielle Schema-Versionierung}
+    \label{fig:partialsv}
 \end{figure}
+
+
+\textit{Vollständige Schema-Versioning} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Änderungen am Schema weiterhin funktionsfähig. Das Lesen und Schreiben auf die Instanzen $I_1$ und $I_2$ ist damit über $\mathrm{SV}_1$ und auch $\mathrm{SV}_2$ möglich (vgl. Abb. ~\ref{fig:fullsv}).
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=1]{.github/3_1_1_Full_SV.drawio.pdf}
+    \caption{Vollständige Schema-Versionierung}
+    \label{fig:fullsv}
+\end{figure}
+
+
+Die Kompatibilität zwischen Instanzen und Schemaversionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen \textit{Rückwärtskompatibilität} und \textit{Vorwärtskompatibilität}. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schemaversion entwickelt wurde (z.B. $I_1$ über $\mathrm{SV}_2$). Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schema-Version erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schema-Version konzipiert ist (z.B. $I_2$ über $\mathrm{SV}_1$). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erstellt wurden.
+
+\vspace{0.5cm}
+
+In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Schemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht möglich. Deshalb unterstützen viele Systeme nur partielle Schema-Versionierung, bei der entweder Datenkompatibilität oder Anwendungskompatibilität erhalten bleibt.
 
 
 \subsubsection{Temporale Schema-Versionierung}
