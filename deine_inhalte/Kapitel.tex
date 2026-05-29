@@ -1,9 +1,9 @@
 \section{Einleitung}
-Änderungen an Datenmodellen treten in datengetriebenen Informationssystemen regelmäßig auf und sind als natürlicher Bestandteil ihrer Weiterentwicklung zu verstehen. Ursachen hierfür liegen unter anderem in sich verändernden Nutzeranforderungen, der Anpassung an neue Geschäftslogiken oder in externen Rahmenbedingungen wie gesetzlichen Vorgaben (vgl. BRAHMIA, GRANDI und OLIBONI 2024a, S.1). Diese strukturellen Anpassungen stellen besondere Anforderungen an die Verwaltung von Datenbeständen, da bestehende Daten und Anwendungen weiterhin funktionsfähig bleiben müssen (vgl. BRAHMIA, GRANDI und OLIBONI 2024b, S.1).
+Änderungen an Datenmodellen treten in datengetriebenen Informationssystemen regelmäßig auf und sind als natürlicher Bestandteil ihrer Weiterentwicklung zu verstehen. Ursachen hierfür liegen unter anderem in sich verändernden Nutzeranforderungen, der Anpassung an neue Geschäftslogiken oder in externen Rahmenbedingungen wie gesetzlichen Vorgaben (nach BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-1). Diese strukturellen Anpassungen stellen besondere Anforderungen an die Verwaltung von Datenbeständen, da bestehende Daten und Anwendungen weiterhin funktionsfähig bleiben müssen (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2).
 
 \vspace{0.5cm}
 
-Ein zentraler Ansatz zur Bewältigung dieser Problematik ist die Schema-Versionierung. Dieses Konzept sieht vor, verschiedene Versionen eines Datenbankschemas parallel zu verwalten und die zugehörigen Daten konsistent diesen Versionen zuzuordnen. Dadurch können sowohl historische Datenbestände als auch ältere Anwendungen weiterhin genutzt werden, ohne dass Informationen verloren gehen oder unmittelbare Migrationen erforderlich sind. Schema-Versionierung wurde sowohl für klassische relationale Datenbanksysteme als auch für neuere Datenbankparadigmen umfassend untersucht. Obwohl eine Vielzahl wissenschaftlicher Arbeiten zu diesem Thema existiert, ist die praktische Unterstützung in Datenbanksystemen bislang nur eingeschränkt ausgeprägt (vgl. BRAHMIA, GRANDI und OLIBONI 2024b, S.1-3).
+Ein zentraler Ansatz zur Bewältigung dieser Problematik ist die Schema-Versionierung. Dieses Konzept sieht vor, verschiedene Versionen eines Datenbankschemas parallel zu verwalten und die zugehörigen Daten konsistent diesen Versionen zuzuordnen. Dadurch können sowohl historische Datenbestände als auch ältere Anwendungen weiterhin genutzt werden, ohne dass Informationen verloren gehen oder unmittelbare Migrationen erforderlich sind. Schema-Versionierung wurde sowohl für klassische relationale Datenbanksysteme als auch für neuere Datenbankparadigmen umfassend untersucht. Obwohl eine Vielzahl wissenschaftlicher Arbeiten zu diesem Thema existiert, ist die praktische Unterstützung in Datenbanksystemen bislang nur eingeschränkt ausgeprägt (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-1 u. S. 2430002-3).
 
 \vspace{0.5cm}
 
@@ -15,7 +15,7 @@ Methodisch basiert die Arbeit auf einer Literaturanalyse einschlägiger Fachquel
 
 \vspace{0.5cm}
 
-Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen Begriffe \textit{Datenbankschema}, \textit{Schemamodifikation}, \textit{Schema-Evolution} und \textit{Schema-Versionierung} und grenzt diese voneinander ab. Kapitel 3 behandelt anschließend grundlegende Konzepte der Schema-Versionierung, wie sie in der wissenschaftlichen Literatur beschrieben werden und stellt ausgewählte Softwarelösungen vor. Abschließend erfolgt ein kurzer Ausblick.
+Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen Begriffe \textit{Datenbankschema}, \textit{Schemamodifikation}, \textit{Schema-Evolution} sowie \textit{Schema-Versionierung} und grenzt diese voneinander ab. Kapitel 3 behandelt anschließend grundlegende Konzepte der Schema-Versionierung, wie sie in der wissenschaftlichen Literatur beschrieben werden und stellt ausgewählte Softwarelösungen vor. Abschließend erfolgt ein kurzer Ausblick.
 
 %\subsection{Einführung in die Thematik}
 %\blindtext\nomenclature{W3C}{World Wide Web Consortium}
@@ -31,7 +31,7 @@ Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen 
 In diesem Kapitel wird für den Begriff \textit{Schema-Versionierung} eine für diese Arbeit gültige Begriffsbestimmung auf Grundlage etablierter wissenschaftlicher Definitionen vorgenommen. Darüber hinaus werden verwandte Konzepte erläutert, die der Schema-Versionierung inhaltlich nahe stehen und daher häufig mit ihr verwechselt oder vermischt werden.
 
 \subsection{Datenbankschema}
-Das \textit{Datenbankschema} definiert die Struktur der Datenbank. Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des \textit{Datenbankmanagementsystems} (kurz \textit{DBMS}) gespeichert. Im Folgenden wird der Begriff \textit{Schema} synonym für das Datenbankschema verwendet. Schemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich. Die ANSI-SPARC-Architektur definiert Schemata auf drei verschiedenen Abstraktionsebenen: das \textit{interne Schema}, das \textit{konzeptionelle Schema} und das \textit{externe Schema} (vgl. Abb.~\ref{fig:ansi-sparc}).
+Das \textit{Datenbankschema} definiert die Struktur der Datenbank (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des \textit{Datenbankmanagementsystems} (kurz \textit{DBMS}) gespeichert (vgl. ELMASRI, NAVATHE 2011, S. 33; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Im Folgenden wird der Begriff \textit{Schema} synonym für das Datenbankschema verwendet. Schemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Die ANSI-SPARC-Architektur definiert Schemata auf drei verschiedenen Abstraktionsebenen: das \textit{interne Schema}, das \textit{konzeptionelle Schema} und das \textit{externe Schema} (vgl. Abb.~\ref{fig:ansi-sparc}). Die folgenden Ausführungen zu den Schemaebenen der ANSI-SPARC-Architektur basieren auf ELMASRI und NAVATHE (2011, S. 33–35).
 
 \vspace{0.5cm}
 
@@ -47,7 +47,7 @@ Das \textit{externe Schema} definiert die benutzerspezifische Sicht auf die Date
 
 \vspace{0.5cm}
 
-Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigkeit. Schemaänderungen auf einer Ebene des Datenbanksystems haben damit keine Auswirkungen auf das Schema der nächsthöheren Ebene. Es wird zwischen \textit{physischer Datenunabhängigkeit} und \textit{logischer Datenunabhängigkeit} differenziert. Physische Datenunabhängigkeit beschreibt die Fähigkeit, Änderungen am internen Schema eines Datenbanksystems vorzunehmen, ohne das konzeptionelle Schema anpassen zu müssen. Logische Datenunabhängigkeit liegt vor, wenn das konzeptionelle Schema geändert werden kann, ohne das externe Schema anpassen zu müssen. Die in dieser Arbeit vorgestellten Konzepte beziehen sich primär auf das konzeptionelle Schema, wenngleich Schema-Versionierung alle drei Ebenen der ANSI-SPARC-Architektur betreffen kann.
+Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigkeit. Schemaänderungen auf einer Ebene des Datenbanksystems haben damit keine Auswirkungen auf das Schema der nächsthöheren Ebene. Es wird zwischen \textit{physischer Datenunabhängigkeit} und \textit{logischer Datenunabhängigkeit} differenziert. Physische Datenunabhängigkeit beschreibt die Fähigkeit, Änderungen am internen Schema eines Datenbanksystems vorzunehmen, ohne das konzeptionelle Schema anpassen zu müssen. Logische Datenunabhängigkeit liegt vor, wenn das konzeptionelle Schema geändert werden kann, ohne das externe Schema anpassen zu müssen (nach ELMASRI, NAVATHE 2011, S. 35-36). Die in dieser Arbeit vorgestellten Konzepte beziehen sich primär auf das konzeptionelle Schema, wenngleich Schema-Versionierung alle drei Ebenen der ANSI-SPARC-Architektur betreffen kann (vgl. SILBERSCHATZ, KORTH, SUDARSHAN 2019, S. 12-13; BRAHMIA, GRANDI, OLIBONI 2024b).
 
 %\begin{figure}
 %  \centering
@@ -56,15 +56,15 @@ Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigke
 %  \caption{Mein Diagramm}
 %\end{figure} 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=0.8]{.github/2_1_ANSI_SPARC.drawio.pdf}
     \caption{ANSI-SPARC-Architektur}
+    \capquelle{ELMASRI und NAVATHE 2011, S. 34}
     \label{fig:ansi-sparc}
 \end{figure}
 
-
-Das Schema ist eine intensionale Beschreibung der Datenbank und enthält selbst keine Daten. Die \textit{Datenbankinstanz} (im Folgenden kurz \textit{Instanz}) hingegen repräsentiert den konkreten Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Sie wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Strukturen und Integritätsbedingungen des Schemas. Jedes Einfügen, Löschen oder Aktualisieren von Daten führt zu einem neuen Zustand und damit zu einer neuen Instanz. Das Schema bleibt dabei konstant und ist zeitlich wesentlich stabiler als die Instanz. Erst wenn die Struktur der Datenbank modifiziert werden soll, muss das Schema angepasst werden. Dies kann beispielsweise eintreten, wenn sich die Anforderungen an die Applikation ändern, die mit der Datenbank interagiert. Die Kapitel 2.2 bis 2.4 gehen näher darauf ein, wie Änderungen an Schemata in einem DBMS unterstützt werden können.
+Das Schema ist eine intensionale Beschreibung der Datenbank und enthält selbst keine Daten. Die \textit{Datenbankinstanz} (im Folgenden kurz \textit{Instanz}) hingegen repräsentiert den konkreten Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Sie wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Strukturen und Integritätsbedingungen des Schemas. Jedes Einfügen, Löschen oder Aktualisieren von Daten führt zu einem neuen Zustand und damit zu einer neuen Instanz. Das Schema bleibt dabei konstant und ist zeitlich wesentlich stabiler als die Instanz (nach ELMASRI, NAVATHE 2011, S. 32-33). Erst wenn die Struktur der Datenbank modifiziert werden soll, muss das Schema angepasst werden. Dies kann beispielsweise eintreten, wenn sich die Anforderungen an die Applikation ändern, die mit der Datenbank interagiert (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Die Kapitel 2.2 bis 2.4 gehen näher darauf ein, wie Änderungen an Schemata in einem DBMS unterstützt werden können.
 
 
 „Dies ist ein direktes Zitat."\cite[212]{mertens_digitalisierung_2017} \blindtext\cite{msdatabind}\cite{lambda}\cite[34]{Digitaloekonomie}

@@ -41,11 +41,17 @@
 		justification=raggedright,
 		singlelinecheck=off
 	}
+	%\newcommand{\capquelle}[1]{%
+	%	\par\parbox{\captionwidth}{\raggedright\bigskip Quelle: #1}%
+	%}
 	\newcommand{\capquelle}[1]{%
-		\par\parbox{\captionwidth}{\raggedright\bigskip Quelle: #1}%
+		\par\noindent
+		\vspace{-2.5em}
+		\parbox[t]{\linewidth}{\raggedright Quelle:~#1}%
+		\vspace{-1.5em}
 	}
 
-% text Language
+	% text Language
 \usepackage[german=quotes,autostyle]{csquotes}
 \usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
