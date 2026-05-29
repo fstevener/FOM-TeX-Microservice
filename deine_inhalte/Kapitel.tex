@@ -56,9 +56,9 @@ Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigke
 %  \caption{Mein Diagramm}
 %\end{figure} 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
-    \includegraphics[scale=0.8]{.github/2_1_ANSI_SPARC.drawio.pdf}
+    \includegraphics[scale=0.9]{.github/2_1_ANSI_SPARC.drawio.pdf}
     \caption{ANSI-SPARC-Architektur}
     \capquelle{ELMASRI, NAVATHE 2011, S. 34}
     \label{fig:ansi-sparc}
@@ -79,7 +79,7 @@ Die Abbildungen~\ref{fig:schemamodifikation_initial} und~\ref{fig:schemamodifika
 Ausgangspunkt ist die Schemaversion $\mathrm{SV}_1$ mit dem entsprechenden Eintrag im Systemkatalog des DBMS. $\mathrm{SV}_1$ besteht aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Die Instanz $I_1$ umfasst zwei Tupel (vgl. Abb.~\ref{fig:schemamodifikation_initial}).
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/2_2_Schemamodifikation_initial_Table.drawio.pdf}
     \caption{Zustand vor der Schemamodifikation}
@@ -87,6 +87,7 @@ Ausgangspunkt ist die Schemaversion $\mathrm{SV}_1$ mit dem entsprechenden Eintr
     \label{fig:schemamodifikation_initial}
 \end{figure}
 
+\vspace{1em}
 
 Das Schema wird mit Hilfe von DDL-Statements verändert (vgl. Quelltext~\ref{lst:ddl}). Zunächst wird das Attribut \textit{ADDRESS} aus der Relation entfernt. Anschließend wird ein neues Attribut \textit{PHONE} hinzugefügt.
 
@@ -98,16 +99,16 @@ Das Schema wird mit Hilfe von DDL-Statements verändert (vgl. Quelltext~\ref{lst
     label={lst:ddl}
 ]{deine_inhalte/Quellcode/chapter_2_2_ddl.sql}
 
-\vspace{-1.0em}
+\vspace{-0.6em}
 
 \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
 
-\vspace{1.5cm}
+\vspace{1.0cm}
 
 Dadurch entsteht die neue Schemaversion $\mathrm{SV}_2$ mit leerer Instanz $I_2$ und angepasstem Eintrag im Systemkatalog (vgl. Abb.~\ref{fig:schemamodifikation_after_schemaChange}). Die ursprüngliche Schema-Version $\mathrm{SV}_1$ existiert nach der Modifikation nicht mehr. Auch die mit $\mathrm{SV}_1$ verbundene Instanz $I_1$ geht verloren.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/2_2_Schemamodifikation_after_schemaChange.drawio.pdf}
     \caption{Zustand nach der Schemamodifikation}
@@ -125,7 +126,7 @@ Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen 
 
 Abbildung~\ref{fig:schemaevolution} zeigt das aus den DDL-Statements in Quelltext~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Evolution unterstützt. Die ursprüngliche Schemaversion $\mathrm{SV}_1$ wird verworfen und vollständig durch die neue Schemaversion $\mathrm{SV}_2$ ersetzt. Ebenso wird die bestehende Instanz $I_1$ vollständig durch die neue Instanz $I_2$ ersetzt. Die Daten der Attribute \textit{NAME} und \textit{CITY} werden auf Basis von $I_1$ in die Instanz $I_2$ der neuen Schemaversion $\mathrm{SV}_2$ übernommen. Die Informationen des Attributes \textit{ADDRESS} gehen hingegen verloren, da dieses kein Bestandteil der Schemaversion $\mathrm{SV}_2$ ist. Für das neu eingeführte Attribut \textit{PHONE} liegen zunächst keine Werte vor, sodass die entsprechenden Tupel mit NULL-Werten belegt werden (vgl. BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-7 f.).
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/2_3_Schemaevolution.drawio.pdf}
     \caption{Zustand nach der Schema-Evolution}
@@ -144,7 +145,7 @@ Schema-Versionierung ist komplexer als die reine Schema-Evolution, da sämtliche
 
 Abbildung~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Quelltext~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schema-Evolution koexistiert die neue Schemaversion $\mathrm{SV}_2$ mit der ursprünglichen Schemaversion $\mathrm{SV}_1$ innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Instanz $I_1$ der Schemaversion $\mathrm{SV}_1$ bleibt vollständig erhalten. Für $\mathrm{SV}_2$ werden die Daten analog zur Schema-Evolution an die neue Schemastruktur angepasst, sodass die Instanz $I_2$ entsteht. Dadurch können Anwendungen, die auf Basis von $\mathrm{SV}_1$ oder $\mathrm{SV}_2$ entwickelt wurden, weiterhin ohne Anpassungen betrieben werden (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-5 ff.).
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/2_4_SchemaVersionierung.drawio.pdf}
     \caption{Zustand nach der Schema-Versionierung}
@@ -165,7 +166,7 @@ Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Sc
 Die \textit{partielle Schema-Versionierung} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-15). Abbildung~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7).
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_1_Partial_SV.drawio.pdf}
     \caption{Partielle Schema-Versionierung}
@@ -177,7 +178,7 @@ Die \textit{partielle Schema-Versionierung} ermöglicht das Abrufen von Daten ü
 Die \textit{vollständige Schema-Versionierung} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-15). Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb.~\ref{fig:fullsv}) (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7).
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_1_Full_SV.drawio.pdf}
     \caption{Vollständige Schema-Versionierung}
@@ -242,7 +243,7 @@ Die Abbildungen~\ref{fig:transactiontime} bis~\ref{fig:bitemporal} beschreiben d
 
 Die Operation $O_1$ initialisiert das Schema, bestehend aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Gemäß der transaktionszeitbasierten Schema-Versionierung dürfen Anpassungen stets nur die aktuelle Schemaversion betreffen. Schemaänderungen werden daher ausschließlich als On-Time-Transaktionen ausgeführt. Sie werden also mit dem Zeitpunkt ihrer Definition auf das aktuelle Schema wirksam. Damit bleibt eine Schemaversion so lange aktuell, bis eine neue Schemaänderung definiert und damit eine neue Schemaversion erzeugt wird. Der Status im Systemkatalog des DBMS nach $O_1$ lautet demnach $\mathrm{SV}_1 \; (1/1/83 - \infty)$ und bleibt bis zum Zeitpunkt einer neuen Schemaänderung bestehen. Bei den Operationen $O_2$ und $O_3$ handelt es sich um retro- bzw. proaktive Schemaänderungen. Da die transaktionszeitbasierte Versionierung diese Art der Anpassung nicht unterstützt, werden auch diese Schemaänderungen erst zum Zeitpunkt ihrer Definition wirksam (vgl. Abb.~\ref{fig:transactiontime}). $O_2$ erzeugt die Schemaversion $\mathrm{SV}_2$ und $O_3$ die Schemaversion $\mathrm{SV}_3$ (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 263 ff.).
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_2_transaction_time.drawio.pdf}
     \caption{Transaktionszeitbasierte Schema-Versionierung}
@@ -256,7 +257,7 @@ Die Operation $O_1$ initialisiert das Schema, bestehend aus der Relation \textit
 
 Im Gegensatz zur Versionierung nach der Transatkionszeit, kann bei der gültigkeitszeitbasierten Schema-Versierung der Gültigkeitszeitraum der Schemaänderung explizit definiert werden. Die Anpassungen betreffen dann jenes Schema, das für diesen spezifischen Gültigkeitszeitraum definiert ist. Dadurch sind Modifikationen an vergangenen oder zukünftigen Schemaversionen möglich. Da die retroaktive Schemaänderungen $O_2$ für den gleichen Gültigkeitszeitraum definiert ist wie die Schemaversion $\mathrm{SV}_1$, ersetzt die aus $O_2$ resultierende Version $\mathrm{SV}_2$ die alte Version $\mathrm{SV}_1$ vollständig. $\mathrm{SV}_1$ wird in diesem Zuge gelöscht und ist in der Datenbank somit nicht mehr existent. Die proaktive Schemaänderung $O_3$ ist wiederum für einen Gültigkeitszeitraum in der Zukunft definiert. $O_3$ wird somit erst am 01.01.1988 wirksam, wodurch $\mathrm{SV}_3$ entsteht. In der Arbeit von DE CASTRO, GRANDI und SCALAS wird allerdings nicht näher erläutert, welche Version im Zeitraum von 1986-1988 greift (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 269 ff.).   
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_2_valid_time.drawio.pdf}
     \caption{Gültigkeitszeitbasierte Schema-Versionierung}
@@ -286,9 +287,9 @@ Hinsichtlich der Koordination zwischen Schemaversion und Instanz unterscheiden D
 Bei der \textit{Multi-Pool-Speicherung} werden die Daten jeder Version einer Relation in einem separaten, isolierten Speicherbereich verwaltet. Die Datenbestände der unterschiedlichen Versionen werden somit unabhängig voneinander persistiert. Bezogen auf das Beispiel aus Kapitel 2.4 entspricht das Ablegen der Instanzen $I_1$ und $I_2$ in jeweils eigenen Tabellen einer Speicherung nach dem Multi-Pool-Verfahren (vgl. Abb.~\ref{fig:multipool}) (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-8).
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
-    \includegraphics[scale=1]{.github/3_1_3_MultiPool.drawio.pdf}
+    \includegraphics[scale=0.85]{.github/3_1_3_MultiPool.drawio.pdf}
     \caption{Multi-Pool-Speicherung}
     \capquelle{In Anlehnung an DE CASTRO, GRANDI, SCALAS 1997, S. 251 f.; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9}
     \label{fig:multipool}
@@ -300,7 +301,7 @@ Die \textit{Single-Pool-Speicherung} verfolgt hingegen das Ziel, sämtliche Date
 
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=1]{.github/3_1_3_SinglePool.drawio.pdf}
+    \includegraphics[scale=0.75]{.github/3_1_3_SinglePool.drawio.pdf}
     \caption{Single-Pool-Speicherung}
     \capquelle{In Anlehnung an DE CASTRO, GRANDI, SCALAS 1997, S. 251 f.; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9}
     \label{fig:singlepool}
@@ -342,7 +343,7 @@ Deshalb müssen Schema und Daten entlang der Transaktionszeit immer gemeinsam un
 
 Das nachfolgende Beispiel soll die Funktionweisen beider Verwaltungsansätze verdeutlichen und beruht auf DE CASTRO, GRANDI und SCALAS (1997, S. 260 f.). Der Ausgangspunkt ist die Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME} und \textit{SALARY}. Sowohl Schema als auch Daten werden über die Gültigkeitszeit-Dimension versioniert. Die zwei Tupel zeigen die Gehaltshistorie des Mitarbeiters \textit{Brown} (vgl. Abb.~\ref{fig:initialstate}). 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_4_initialState.drawio.pdf}
     \caption{Gehaltshistorie des Mitarbeiters \textit{Brown}}
@@ -359,7 +360,7 @@ Abbildung~\ref{fig:syncmanagement} veranschaulicht den Zustand des DBMS nach der
 Es zeigt sich, dass die Abteilungsinformation \textit{Sales} für den Zeitraum 1992–1993 nicht gespeichert werden konnte, da die entsprechenden Daten von \textit{Brown} in diesem Zeitraum noch über die Schemaversion $\mathrm{SV}_1$ verwaltet werden, die das Attribut \textit{DEPT} nicht enthält.
 Darüber hinaus müssten spezielle Anwendungen entwickelt werden, die beide Schemaversionen berücksichtigen, um die vollständige Historie der älteren Daten – also die Daten ohne das Attribut \textit{DEPT} – von 1990 bis heute rekonstruieren zu können. Der Grund dafür liegt darin, dass die Historie der Daten im synchronen Management analog zu den Gültigkeitsintervallen der Schemaversionen partitioniert wird (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 260).
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_4_syncMngmnt.drawio.pdf}
     \caption{Synchrones Management}
@@ -371,7 +372,7 @@ Darüber hinaus müssten spezielle Anwendungen entwickelt werden, die beide Sche
 Abbildung~\ref{fig:asyncmanagement} zeigt den Zustand des DBMS unter den Bedingungen des asynchronen Managements. 
 In diesem Fall bleibt die vollständige Historie der Mitarbeiterdaten in jeder Schemaversion erhalten. Bestehende Anwendungen können weiterhin mit den älteren Daten arbeiten und liefern dabei dieselben Ergebnisse wie vor der Schemaänderung. Gleichzeitig können neue Anwendungen entwickelt werden, die auf den erweiterten Datenbestand zugreifen und zusätzlich die Informationen des Attributs \textit{DEPT} nutzen (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 260 f.).
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=1]{.github/3_1_5_asyncMngmnt.drawio.pdf}
     \caption{Asynchrones Management}
