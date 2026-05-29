@@ -153,42 +153,44 @@ Abbildung~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Quel
 \end{figure}
 
 \section{Methoden der Schema-Versionierung}
-Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Da die konkrete Ausgestaltung einer Schema-Versionierung maßgeblich von den jeweiligen Anwendungsanforderungen abhängt, ist eine isolierte Betrachtung einzelner Lösungen nur eingeschränkt aussagekräftig. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
+Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
 
 \subsection{Dimensionen der Schema-Versionierung}
 
 \subsubsection{Partielle und vollständige Schema-Versionierung}
-Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen \textit{partieller Schema-Versionierung} und \textit{vollständiger Schema-Versionierung} differenziert.
+Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen \textit{partieller Schema-Versionierung} und \textit{vollständiger Schema-Versionierung} differenziert (nach RODDICK 1995, S. 384).
 
 \vspace{0.5cm}
 
-Die \textit{partielle Schema-Versionierung} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren. Abbildung~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich. 
+Die \textit{partielle Schema-Versionierung} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-15). Abbildung~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7).
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=1]{.github/3_1_1_Partial_SV.drawio.pdf}
     \caption{Partielle Schema-Versionierung}
+    \capquelle{Eigene Darstellung nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7}
     \label{fig:partialsv}
 \end{figure}
 
 
-Die \textit{vollständige Schema-Versionierung} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig. Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb.~\ref{fig:fullsv}).
+Die \textit{vollständige Schema-Versionierung} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-15). Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb.~\ref{fig:fullsv}) (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7).
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=1]{.github/3_1_1_Full_SV.drawio.pdf}
     \caption{Vollständige Schema-Versionierung}
+    \capquelle{Eigene Darstellung nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7}
     \label{fig:fullsv}
 \end{figure}
 
 
-Die Kompatibilität zwischen Instanzen und Schemaversionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen \textit{Rückwärtskompatibilität} und \textit{Vorwärtskompatibilität}. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schemaversion entwickelt wurde (beispielsweise der Zugriff auf $I_1$ über $\mathrm{SV}_2$). Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schemaversion konzipiert ist (beispielsweise der Zugriff auf $I_2$ über $\mathrm{SV}_1$). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erzeugt wurden.
+Die Kompatibilität zwischen Instanzen und Schemaversionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen \textit{Rückwärtskompatibilität} und \textit{Vorwärtskompatibilität}. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schemaversion entwickelt wurde (beispielsweise der Zugriff auf $I_1$ über $\mathrm{SV}_2$). Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schemaversion konzipiert ist (beispielsweise der Zugriff auf $I_2$ über $\mathrm{SV}_1$). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erzeugt wurden (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-8).
 
 \vspace{0.5cm}
 
-In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Schemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht realisierbar. Aus diesem Grund unterstützen viele Systeme lediglich die partielle Schema-Versionierung.
+In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Schemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht realisierbar. Aus diesem Grund unterstützen viele Systeme lediglich die partielle Schema-Versionierung (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-12 f.).
 
 
 \subsubsection{Temporale Schema-Versionierung}
