@@ -60,80 +60,37 @@ Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigke
     \centering
     \includegraphics[scale=0.8]{.github/2_1_ANSI_SPARC.drawio.pdf}
     \caption{ANSI-SPARC-Architektur}
-    \capquelle{ELMASRI und NAVATHE 2011, S. 34}
+    \capquelle{ELMASRI, NAVATHE 2011, S. 34}
     \label{fig:ansi-sparc}
 \end{figure}
 
 Das Schema ist eine intensionale Beschreibung der Datenbank und enthält selbst keine Daten. Die \textit{Datenbankinstanz} (im Folgenden kurz \textit{Instanz}) hingegen repräsentiert den konkreten Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Sie wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Strukturen und Integritätsbedingungen des Schemas. Jedes Einfügen, Löschen oder Aktualisieren von Daten führt zu einem neuen Zustand und damit zu einer neuen Instanz. Das Schema bleibt dabei konstant und ist zeitlich wesentlich stabiler als die Instanz (nach ELMASRI, NAVATHE 2011, S. 32-33). Erst wenn die Struktur der Datenbank modifiziert werden soll, muss das Schema angepasst werden. Dies kann beispielsweise eintreten, wenn sich die Anforderungen an die Applikation ändern, die mit der Datenbank interagiert (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Die Kapitel 2.2 bis 2.4 gehen näher darauf ein, wie Änderungen an Schemata in einem DBMS unterstützt werden können.
 
 
-„Dies ist ein direktes Zitat."\cite[212]{mertens_digitalisierung_2017} \blindtext\cite{msdatabind}\cite{lambda}\cite[34]{Digitaloekonomie}
-\blindenumerate
-\blindtext\cite[415-426]{Tanenbaum2016}\cite[223]{mandl_internet_2019}
-
-\begin{figure}[!htb]
-    \caption{Terminal}
-    \includegraphics[width=1\textwidth]{.github/terminal}
-    \captionsetup{width=1\textwidth}
-    \capquelle{\cite[200]{bsp}}\label{abb_bsp}
-\end{figure}
-\blindtext
-
-\subsubsection{Tabelle}
-\Blindtext\cite[34]{Digitaloekonomie}\cite{mesh}
-\blinditemize
-\blindtext (vgl. Tabelle \ref{tabelle_eins}).\cite[511]{Tanenbaum2016}
-\begin{table}[!htb]\label{tabelle_eins}
-    \setlength{\arrayrulewidth}{1pt}
-    \begin{threeparttable}
-        \caption{Tabelle Eins}
-        \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
-            \hline
-            Spalte 1 & Spalte 2 & Spalte 3 & Spalte 4 & Spalte 5 \tabularnewline \hline
-            1 & 2 & 3 & 4 & Lorem ipsum dolor sit amet \tabularnewline \hline
-            1 & 2 & 3 & 4 & Lorem ipsum dolor sit amet \tabularnewline \hline
-            1 & 2 & 3 & 4 & Lorem ipsum dolor sit amet \tabularnewline \hline
-        \end{tabularx}
-        \begin{tablenotes}[flushleft]
-            \item \normalsize{Quelle: \cite[207]{bsp}}
-        \end{tablenotes}
-    \end{threeparttable}
-\end{table}
-
-\subsubsection{Quelltext}
-\lstinputlisting[caption={Writing Templates}\label{Templates},language=Yaml]{deine_inhalte/Quellcode/red_hat.yaml}
-\captionsetup{width=1\textwidth}
-\capquelle{\cite{red}}\label{Red Hat} \\
-
-
-\subsubsection{LaTeX-Befehle}
-    \textnormal{Normale Schrift} 
-    \textbullet\addspace \textbf{fette Schrift} 
-    \textbullet\addspace \textit{kursive Schrift} 
-    \textbullet\addspace \textsl{schiefe Schrift} 
-    \textbullet\addspace \underline{unterstrichen} 
-    \textbullet\addspace \texttt{Schreib\-ma\-schi\-ne} 
-    \textbullet\addspace \textsf{Sans Serif} 
-    \textbullet\addspace \textrm{Roman} 
-
 \subsection{Schemamodifikation}
-Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als \textit{Schemamodifikation} bezeichnet. Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas. Bei der Schemamodifikation wird das bestehende Schema inklusive der zugehörigen Instanz verworfen und durch ein neues ,leeres Schema ersetzt. Aspekte wie Datenerhalt und Schemakonsistenz werden dabei – im Gegensatz zur Schema-Evolution und Schema-Versionierung – nicht berücksichtigt.   (siehe Seite 7 des Lietarture Reviews zur Schemaevolution für referenz)
+Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als \textit{Schemamodifikation} bezeichnet (nach RODDICK 1995, S. 384). Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas (nach BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-2). Bei der Schemamodifikation wird das bestehende Schema inklusive der zugehörigen Instanz verworfen und durch ein neues, leeres Schema ersetzt. Aspekte wie Datenerhalt und Schemakonsistenz werden dabei – im Gegensatz zur Schema-Evolution und Schema-Versionierung – nicht berücksichtigt (nach BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-6-2430001-8).
 
 \vspace{0.5cm}
 
-Die Abbildungen~\ref{fig:schemamodifikation_initial} und~\ref{fig:schemamodifikation_after_schemaChange} verdeutlichen den Ablauf einer Schemamodifikation in einer relationalen Datenbank. Ausgangspunkt ist die Schemaversion $\mathrm{SV}_1$ mit dem entsprechenden Eintrag im Systemkatalog des DBMS. $\mathrm{SV}_1$ besteht aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Die Instanz $I_1$ umfasst zwei Tupel (vgl. Abb.~\ref{fig:schemamodifikation_initial}).  
+Die Abbildungen~\ref{fig:schemamodifikation_initial} und~\ref{fig:schemamodifikation_after_schemaChange} verdeutlichen den Ablauf der Schemamodifikation in einer relationalen Datenbank. Das Beispiel stammt aus der Arbeit von DE CASTRO, GRANDI und SCALAS (1997, S. 251).
+
+\vspace{0.5cm}
+
+Ausgangspunkt ist die Schemaversion $\mathrm{SV}_1$ mit dem entsprechenden Eintrag im Systemkatalog des DBMS. $\mathrm{SV}_1$ besteht aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Die Instanz $I_1$ umfasst zwei Tupel (vgl. Abb.~\ref{fig:schemamodifikation_initial}).
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=1]{.github/2_2_Schemamodifikation_initial_Table.drawio.pdf}
     \caption{Zustand vor der Schemamodifikation}
+    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
     \label{fig:schemamodifikation_initial}
 \end{figure}
 
 
 Das Schema wird mit Hilfe von DDL-Statements verändert (vgl. Quelltext~\ref{lst:ddl}). Zunächst wird das Attribut \textit{ADDRESS} aus der Relation entfernt. Anschließend wird ein neues Attribut \textit{PHONE} hinzugefügt.
 
+\vspace{0.5cm}
 
 \lstinputlisting[
     language=SQL,
@@ -141,18 +98,24 @@ Das Schema wird mit Hilfe von DDL-Statements verändert (vgl. Quelltext~\ref{lst
     label={lst:ddl}
 ]{deine_inhalte/Quellcode/chapter_2_2_ddl.sql}
 
+\vspace{-1.0em}
+
+\capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
+
+\vspace{1.5cm}
 
 Dadurch entsteht die neue Schemaversion $\mathrm{SV}_2$ mit leerer Instanz $I_2$ und angepasstem Eintrag im Systemkatalog (vgl. Abb.~\ref{fig:schemamodifikation_after_schemaChange}). Die ursprüngliche Schema-Version $\mathrm{SV}_1$ existiert nach der Modifikation nicht mehr. Auch die mit $\mathrm{SV}_1$ verbundene Instanz $I_1$ geht verloren.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[scale=1]{.github/2_2_Schemamodifikation_after_schemaChange.drawio.pdf}
     \caption{Zustand nach der Schemamodifikation}
+    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
     \label{fig:schemamodifikation_after_schemaChange}
 \end{figure}
 
-Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen Schemamodifikation: Änderungen werden direkt auf dem bestehenden Schema durchgeführt, ohne frühere Schemaversionen oder historische Instanzen beizubehalten. Anwendungen und Anfragen müssen anschließend zwingend mit der neuen Struktur kompatibel sein.
+Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen Schemamodifikation: Änderungen werden direkt auf dem bestehenden Schema durchgeführt, ohne frühere Schemaversionen oder historische Instanzen beizubehalten. Anwendungen und Anfragen müssen anschließend zwingend mit der neuen Struktur kompatibel sein (vgl. BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-6-2430001-8).
 
 
 \subsection{Schema-Evolution}
