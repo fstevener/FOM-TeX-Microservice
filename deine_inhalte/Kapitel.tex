@@ -215,6 +215,329 @@ Kurse und Volatilitätsindizes stehen nach Börsenschluss zur Verfügung. Der \t
 \end{table}
 
 
+\subsubsection{Systemarchitektur}
+
+Die Regimeerkennung wird als eigenständiger Regime-Detection-Service in eine serviceorientierte Architektur integriert (Abb. X). Nach Handelsschluss werden die Marktdaten automatisiert abgerufen und historisiert. Eine Datenpipeline führt die Aufbereitung aus Kapitel 3.3.1 durch und erzeugt den Merkmalsvektor $\mathbf{z}_t$.
+
+\vspace{0.5cm}
+
+Der containerisierte Regime Detection Service lädt das produktive Machine Learning Model aus dem Model Store und berechnet die aktuellen Regimewahrscheinlichkeiten $P(S_t=k\mid\mathbf{z}_{1:t})$. Diese werden mit Zeitstempel und Modellversion gespeichert und über eine REST-API für Reporting-Systeme oder anschließende Services bereitgestellt.
+
+\vspace{0.5cm}
+
+Training und Inferenz erfolgen getrennt. Das Modell wird regelmäßig auf einem erweiterten historischen Datenbestand neu geschätzt und nach erfolgreicher Validierung als neue Modellversion im Model Store bereitgestellt. Logging und Monitoring überwachen Datenpipeline, Modellversion und Modellergebnisse \cite{2969442.2969519, Washizaki2019MachineLA}.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=1]{.github/Systemarchitektur.pdf}
+    \caption{Systemarchitektur der KI-basierten Regimeerkennung}
+    \capquelle{Eigene Darstellung in Anlehnung an \cite{2969442.2969519, Washizaki2019MachineLA}}
+    \label{fig:partialsv}
+\end{figure}
+
+\subsubsection{Personalanforderung}
+Für eine erste produktive Ausbaustufe wird ein kleines interdisziplinäres Kernteam benötigt.
+
+\begin{table}[!htb]
+    \setlength{\arrayrulewidth}{1pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{threeparttable}
+        \caption{Rollenprofile des Kernteams}
+        \label{tab:rollenprofile}
+
+        \small
+
+        \begin{tabularx}{\textwidth}{
+            |>{\raggedright\arraybackslash}p{4.6cm}|
+            >{\raggedright\arraybackslash}X|
+        }
+            \hline
+            \textbf{Rollenprofil} &
+            \textbf{Zentrale Aufgaben}
+            \tabularnewline \hline
+
+            Product Owner &
+            Anforderungen, Priorisierung, Stakeholder-Koordination
+            \tabularnewline \hline
+
+            Data Scientist / Quantitative Analyst &
+            Modellentwicklung, Training und Validierung
+            \tabularnewline \hline
+
+            Software Engineer &
+            Datenpipeline, Deployment, REST-API, MLOps, Infrastruktur
+            \tabularnewline \hline
+
+            IT-Architect &
+            Integration in die bestehende IT-Landschaft
+            \tabularnewline \hline
+
+            Portfolio Manager &
+            Fachliche Anforderungen und Bewertung der Modellergebnisse
+            \tabularnewline \hline
+        \end{tabularx}
+
+        \begin{tablenotes}[flushleft]
+            \item \normalsize{Quelle: \cite{noauthor_mlops02-bp01_nodate}}
+        \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+Für die produktive Einführung sind zusätzlich insbesondere IT-Security, Risk Management und Compliance einzubeziehen. Abhängig von Organisationsstruktur, regulatorischem Umfeld und Automatisierungsgrad müssen zudem Datenschutzbeauftragte und Betriebsrat beteiligt werden.
+
+
+\subsection{Analytics}
+
+\subsubsection{Datenaufbereitung}
+
+Die fünf Zeitreihen aus Kapitel 3.2.1 werden vor der Modellierung in acht aussagekräftige Marktmerkmale überführt. Die Merkmale kombinieren Informationen über Rendite, Verlustrisiko, erwartete Volatilität, Kreditstress und das Zusammenspiel von Aktien und Anleihen. Vergleichbare Merkmale werden in der Literatur zur Regimeerkennung und regimeabhängigen Asset Allocation verwendet \cite{ang_regime_2012, ang_international_2002, page_when_2018, polavarapu_cross-asset_2026}.
+
+ \textbf{Schritt 1 – Zusammenführung.} Die fünf Zeitreihen werden anhand ihres Datums zusammengeführt. Dabei werden für jeden Handelstag ausschließlich zu diesem Zeitpunkt bereits verfügbare Werte verwendet, noch nicht veröffentlichte Werte werden durch den zuletzt verfügbaren Stand ersetzt. Dadurch wird ein Informationsvorsprung durch zukünftige Daten vermieden \cite[4]{yang_information_leakage_2024}.
+
+ \textbf{Schritt 2 – Merkmalsbildung.} Die Entwicklung von Aktien und Anleihen wird über Renditemerkmale erfasst, wie sie auch in Cross-Asset-Regimemodellen verwendet werden \cite{ang_regime_2012, polavarapu_cross-asset_2026}. Hierzu werden logarithmische Renditen über fünf Handelstage berechnet \cite[223-224]{cont_empirical_2001}:
+
+ $$
+x_{t,1}=\ln\left(\frac{SPY_t}{SPY_{t-5}}\right),
+\qquad
+x_{t,2}=\ln\left(\frac{TLT_t}{TLT_{t-5}}\right).
+$$
+
+Zur Erfassung der Verlustseite werden zwei Merkmale mit unterschiedlichem Zeithorizont gebildet:
+
+$$
+x_{t,3}
+=
+\frac{SPY_t}
+{\max_{i=t-251,\ldots,t}SPY_i}-1,
+$$
+
+$$
+x_{t,4}
+=
+\sqrt{\frac{1}{21}
+\sum_{i=t-20}^{t}\min(r_i,0)^2},
+\qquad
+r_i=\ln\left(\frac{SPY_i}{SPY_{i-1}}\right).
+$$
+
+Der Drawdown $x_{t,3}$ gibt an, wie weit der SPY unter seinem höchsten Stand der vergangenen 252 Handelstage liegt \cite{chekhlov_drawdown_2005}. Ein Wert von $0$ entspricht einem neuen Hoch, ein Wert von $-0{,}10$ einem Rückgang von 10 \% gegenüber diesem Hoch. Das Fenster von 252 Handelstagen entspricht näherungsweise einem Handelsjahr, das Verhältnis des aktuellen Kurses zum 52-Wochen-Hoch wird auch auf Indexebene als Variable verwendet, die im Zusammenspiel mit weiteren Größen Informationen über künftige Marktrenditen enthält \cite[10, 15]{li_investor_2012}.
+
+\vspace{0.5cm}
+
+Beim Downside Risk $x_{t,4}$ gehen ausschließlich negative Tagesrenditen in die Berechnung ein, positive Renditen erhöhen das Risikomaß nicht. Die 21 Handelstage entsprechen einem Zwölftel des Handelsjahres und damit dem monatlichen Zeithorizont der Volatilitätsmodellierung \cite[10-12]{bazan-palomino_volatility_2026}.
+
+\vspace{0.5cm}
+
+Während $x_{t,3}$ die Tiefe eines bereits eingetretenen Kursrückgangs erfasst, misst $x_{t,4}$ die Heftigkeit der aktuellen Abwärtsbewegungen.
+
+\vspace{0.5cm}
+
+Die Fristenstruktur der erwarteten Aktienmarktvolatilität wird durch
+
+$$
+x_{t,5}
+=
+\ln\left(\frac{VIX_t}{VIX3M_t}\right)
+$$
+
+abgebildet. Ein positiver Wert bedeutet, dass die erwartete kurzfristige Volatilität über der Drei-Monats-Erwartung liegt und kann auf erhöhten kurzfristigen Marktstress hinweisen \cite[2467]{johnson_risk_2015}.
+
+Der Kreditmarkt geht über das aktuelle Niveau des High-Yield-Spreads und dessen Fünf-Tage-Veränderung ein:
+
+$$
+x_{t,6}=OAS_t,
+\qquad
+x_{t,7}=OAS_t-OAS_{t-5}.
+$$
+
+Damit werden sowohl bestehender Kreditstress als auch seine aktuelle Veränderung berücksichtigt \cite{polavarapu_cross-asset_2026}, \cite[1692–1694]{gilchrist_credit_2012}.
+
+Schließlich beschreibt $\rho_t$ die Korrelation der täglichen SPY- und TLT-Renditen über die vergangenen 63 Handelstage. Das Fenster entspricht näherungsweise drei Kalendermonaten und bildet damit einen mittelfristigen Zusammenhang zwischen beiden Anlageklassen ab. Die Korrelation wird mit der Fisher-Z-Transformation in ein unbegrenztes Merkmal überführt \cite[909–911]{barndorff-nielsen_econometric_2004}:
+
+$$
+x_{t,8}
+=
+\frac{1}{2}
+\ln\left(\frac{1+\rho_t}{1-\rho_t}\right).
+$$
+
+Das Merkmal erfasst, ob Aktien und Staatsanleihen zuletzt eher gleich- oder gegenläufig reagierten und damit, wie sich ihre Diversifikationswirkung verändert \cite[27-29]{page_when_2018}.
+
+
+\begin{table}[!htb]
+    \setlength{\arrayrulewidth}{1pt}
+    \renewcommand{\arraystretch}{1.35}
+    \begin{threeparttable}
+        \caption{Modellmerkmale und ihre Berechnung}
+        \label{tab:modellmerkmale}
+
+        \small
+
+        \begin{tabularx}{\textwidth}{
+            |c|
+            >{\raggedright\arraybackslash}p{3.4cm}|
+            >{\centering\arraybackslash}p{4.7cm}|
+            >{\raggedright\arraybackslash}X|
+        }
+            \hline
+            \textbf{Nr.} &
+            \textbf{Merkmal} &
+            \textbf{Berechnung} &
+            \textbf{Erfasst}
+            \tabularnewline \hline
+
+            1 &
+            SPY-Rendite (5 Tage) &
+            $\ln\left(\frac{SPY_t}{SPY_{t-5}}\right)$ &
+            Kurzfristige Entwicklung des Aktienmarkts
+            \tabularnewline \hline
+
+            2 &
+            TLT-Rendite (5 Tage) &
+            $\ln\left(\frac{TLT_t}{TLT_{t-5}}\right)$ &
+            Kurzfristige Entwicklung des Anleihemarkts
+            \tabularnewline \hline
+
+            3 &
+            SPY-Drawdown (252 Tage) &
+            $\frac{SPY_t}{\max_{i=t-251,\ldots,t}SPY_i}-1$ &
+            Abstand zum jüngsten 252-Tage-Hoch
+            \tabularnewline \hline
+
+            4 &
+            SPY-Abwärtsrisiko (21 Tage) &
+            $\sqrt{\frac{1}{21}\sum_{i=t-20}^{t}\min(r_i,0)^2}$ &
+            Stärke negativer Tagesbewegungen
+            \tabularnewline \hline
+
+            5 &
+            VIX-Fristenstruktur &
+            $\ln\left(\frac{VIX_t}{VIX3M_t}\right)$ &
+            Kurzfristiger impliziter Marktstress
+            \tabularnewline \hline
+
+            6 &
+            HY-OAS-Niveau &
+            $OAS_t$ &
+            Bestehender Kreditstress
+            \tabularnewline \hline
+
+            7 &
+            HY-OAS-Veränderung (5 Tage) &
+            $OAS_t-OAS_{t-5}$ &
+            Dynamik des Kreditstresses
+            \tabularnewline \hline
+
+            8 &
+            SPY-TLT-Korrelation (63 Tage) &
+            $\frac{1}{2}\ln\left(\frac{1+\rho_t}{1-\rho_t}\right)$ &
+            Gleichlauf und Diversifikationswirkung von Aktien und Anleihen
+            \tabularnewline \hline
+        \end{tabularx}
+    \end{threeparttable}
+\end{table}
+
+\textbf{Schritt 3 – Skalierung.} Da die Merkmale unterschiedliche Einheiten und Größenordnungen besitzen, werden sie auf Basis des jeweiligen Trainingszeitraums robust skaliert \cite{noauthor_robustscaler_nodate}:
+
+$$
+z_{t,j}
+=
+\frac{x_{t,j}-m_j}{q_j},
+$$
+
+wobei $m_j$ den Median und $q_j$ den Interquartilsabstand des Merkmals $j$ im Trainingszeitraum bezeichnen. Beide Größen werden ausschließlich aus bereits verfügbaren Trainingsdaten bestimmt \cite{yang_information_leakage_2024}.
+
+\vspace{0.5cm}
+
+Der HMM-Eingabevektor eines Handelstags lautet damit
+
+$$
+\mathbf z_t
+=
+(z_{t,1},\ldots,z_{t,8})^\top.
+$$
+
+Tabelle 4 zeigt illustrativ, in welcher Form die Daten nach Abschluss der Pipeline in das Machine Learning Model eingehen. Dargestellt sind bereits skalierte Merkmalswerte.
+
+\begin{table}[!htb]
+    \setlength{\arrayrulewidth}{1pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{threeparttable}
+        \caption{Illustrativer Auszug der Modell-Eingangsdaten}
+        \label{tab:modelleingangsdaten}
+
+        \scriptsize
+
+        \begin{tabularx}{\textwidth}{
+            |>{\centering\arraybackslash}p{1.7cm}|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+        }
+            \hline
+            \textbf{Datum} &
+            \textbf{SPY Ret.} &
+            \textbf{TLT Ret.} &
+            \textbf{SPY DD} &
+            \textbf{Downside} &
+            \textbf{VIX TS} &
+            \textbf{OAS} &
+            \textbf{$\Delta$ OAS} &
+            \textbf{SPY--TLT Corr.}
+            \tabularnewline \hline
+
+            2020-03-16 &
+            -2,41 &
+            0,72 &
+            -3,18 &
+            4,06 &
+            3,64 &
+            2,21 &
+            2,84 &
+            -0,93
+            \tabularnewline \hline
+
+            2020-03-17 &
+            -1,76 &
+            -0,31 &
+            -2,71 &
+            3,88 &
+            3,35 &
+            2,44 &
+            3,01 &
+            -0,66
+            \tabularnewline \hline
+
+            2020-03-18 &
+            -2,28 &
+            -1,52 &
+            -3,13 &
+            4,12 &
+            3,39 &
+            3,08 &
+            3,58 &
+            -0,21
+            \tabularnewline \hline
+        \end{tabularx}
+
+        \begin{tablenotes}[flushleft]
+            \item \scriptsize{Hinweis: Die dargestellten Werte sind illustrativ und dienen ausschließlich der Veranschaulichung der Datenstruktur nach Skalierung.}
+        \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+
+
+
+
+
+
 
 
 
