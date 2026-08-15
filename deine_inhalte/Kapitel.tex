@@ -33,27 +33,58 @@ Marktregime sind nicht direkt beobachtbar, sondern müssen als verborgene Zustä
 
 Regimeerkennungsverfahren modellieren stattdessen mehrere latente Marktzustände mit jeweils eigenen statistischen Eigenschaften und leiten daraus Wahrscheinlichkeiten für den aktuell vorherrschenden Zustand ab \cite[3–7]{yuan_market_2016}. Multivariate Ansätze berücksichtigen hierfür Informationen aus mehreren Marktsegmenten gemeinsam \cite[3–6]{polavarapu_cross-asset_2026}.
 
+\section{KI-basierte Regimeerkennung}
 
-\subsection{Schema-Versionierung}
-\textit{Schema-Versionierung} bezeichnet die Fähigkeit eines Datenbanksystems, verschiedene Zustände eines Schemas über die Zeit hinweg zu verwalten und zugänglich zu machen. Dabei werden Änderungen am Schema historisch gespeichert, sodass frühere und aktuelle Versionen weiterhin genutzt werden können (nach RODDICK 1995, S. 384). Im Unterschied zur Schema-Evolution wird das bestehende Schema nicht ersetzt, sondern durch eine zusätzliche Schemaversion ergänzt. Folglich können mehrere Schemaversionen parallel im DBMS zur Laufzeit existieren. Ein wesentliches Merkmal ist zudem die Möglichkeit, Daten sowohl über aktuelle als auch historische Schemata abzurufen. Das ermöglicht Anwendungen auf jene Schemaversion zuzugreifen, für die sie entwickelt wurden, wodurch ihre Funktionsfähigkeit erhalten bleibt. Neue Daten werden dabei in der Regel nach der aktuellen Schemaversion gespeichert. Ein zentrales Ziel der Schema-Versionierung ist es, Informationsverlust zu vermeiden und den Betrieb bestehender Anwendungen weiterhin zu gewährleisten (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2 f. u. S. 2430002-5 ff.).
-
-\vspace{0.5cm}
-
-Schema-Versionierung ist komplexer als die reine Schema-Evolution, da sämtliche Schemaversionen innerhalb eines DBMS gemeinsam mit den zugehörigen Instanzen und abhängigen Komponenten koexistieren und konsistent betrieben werden müssen (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-14).
+\subsection{Framing}
+\subsubsection{Problemstellung der statischen Portfolioallokation}
+Eine statische Portfolioallokation berücksichtigt nicht, dass sich Rendite- und Risikoeigenschaften verschiedener Anlageklassen zwischen Marktregimen verändern. Dadurch können in Stressphasen erhöhte Verluste entstehen, während eine dauerhaft defensive Positionierung in normalen Marktphasen Renditepotenzial ungenutzt lässt. Regimeabhängige Allokationsstrategien können insbesondere bei Umschichtungen zwischen Aktien, Anleihen und Geldmarktanlagen einen ökonomischen Mehrwert erzielen \cite[1179–1182]{ang_international_2002}.
 
 \vspace{0.5cm}
 
-Abbildung~\ref{fig:schemaversionierung} zeigt das aus den DDL-Statements in Quelltext~\ref{lst:ddl} resultierende Schema bei einem DBMS, das Schema-Versionierung unterstützt. Im Gegensatz zur Schema-Evolution koexistiert die neue Schemaversion $\mathrm{SV}_2$ mit der ursprünglichen Schemaversion $\mathrm{SV}_1$ innerhalb des DBMS. Dies wird unter anderem durch die beiden Einträge im Systemkatalog deutlich. Die Instanz $I_1$ der Schemaversion $\mathrm{SV}_1$ bleibt vollständig erhalten. Für $\mathrm{SV}_2$ werden die Daten analog zur Schema-Evolution an die neue Schemastruktur angepasst, sodass die Instanz $I_2$ entsteht. Dadurch können Anwendungen, die auf Basis von $\mathrm{SV}_1$ oder $\mathrm{SV}_2$ entwickelt wurden, weiterhin ohne Anpassungen betrieben werden (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-5 ff.).
+Das Business Problem besteht darin, regimebedingte Verluste und entgangene Renditechancen durch eine rechtzeitige Anpassung der Portfolioallokation zu reduzieren.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/2_4_SchemaVersionierung.drawio.pdf}
-    \caption{Zustand nach der Schema-Versionierung}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 252}
-    \label{fig:schemaversionierung}
-\end{figure}
+\subsubsection{Analytics-Problem der Regimeerkennung}
+Aus dem Business Problem wird das Analytics-Problem abgeleitet, den jeweils vorherrschenden Marktzustand aus beobachtbaren Marktdaten zu erkennen. Für jeden Handelstag $t$ soll die Wahrscheinlichkeit geschätzt werden, mit der sich der Markt unter Berücksichtigung der bis dahin verfügbaren Informationen $X_{1:t}$ in Regime $k$ befindet:
 
-\section{Methoden der Schema-Versionierung}
+$$
+P(S_t = k \mid X_{1:t})
+$$
+
+Dabei bezeichnet $x_t$ den Vektor der Marktmerkmale am Tag $t$ und $X_{1:t}=(x_1,\ldots,x_t)$ die bis dahin verfügbaren Beobachtungen.
+
+\vspace{0.5cm}
+
+Das Ergebnis ist eine täglich aktualisierte Regimewahrscheinlichkeit als quantitative Entscheidungsgrundlage für die Portfolioallokation.
+
+\subsubsection{Operationalisierung}
+Der wirtschaftliche Nutzen der Regimeerkennung wird anhand einer regelbasierten Portfolioallokation bewertet. Die Übersetzung der Regimewahrscheinlichkeiten in Portfolioentscheidungen wird in Kapitel 3.3.3 definiert. Als Benchmark für die Performance einer nicht regimeabhängigen Strategie dient eine statische 60/40-Allokation aus 60 \% US-Aktien und 40 \% US-Staatsanleihen. 
+
+\vspace{0.5cm}
+
+Primäres Erfolgskriterium ist die Sharpe Ratio als Maß der risikoadjustierten Performance \cite{noauthor_sharpe_nodate}. Ergänzend werden annualisierte Rendite und Maximum Drawdown betrachtet \cite[19–21]{chekhlov_drawdown_2005}.
+
+\vspace{0.5cm}
+
+Das System gilt als wirtschaftlich wertstiftend, wenn das regimeabhängig allokierte Portfolio nach Transaktionskosten eine höhere Sharpe Ratio als die statische Benchmark erzielt.
+
+
+\subsection{Allocation}
+
+\subsubsection{Datenbasis}
+Der Untersuchungsraum wird auf den US-Kapitalmarkt begrenzt. Als Datenbasis dienen fünf tägliche Zeitreihen, deren Auswahl sich an der Literatur zur regimeabhängigen Asset Allocation orientiert \cite{ang_regime_2012, polavarapu_cross-asset_2026}.
+
+\vspace{0.5cm}
+
+
+
+
+
+
+
+\section{AB HIER NUR NOCH ALTER INHALT}
+
+Regimeerkennungsverfahren modellieren stattdessen mehrere latente Marktzustände mit jeweils eigenen statistischen Eigenschaften und leiten daraus Wahrscheinlichkeiten für den aktuell vorherrschenden Zustand ab \cite[3–7]{yuan_market_2016}. Multivariate Ansätze berücksichtigen hierfür Informationen aus mehreren Marktsegmenten gemeinsam \cite[3–6]{polavarapu_cross-asset_2026}.
+
 Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
 
 \subsection{Dimensionen der Schema-Versionierung}
