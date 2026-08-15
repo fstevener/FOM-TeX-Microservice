@@ -75,6 +75,144 @@ Der Untersuchungsraum wird auf den US-Kapitalmarkt begrenzt. Als Datenbasis dien
 
 \vspace{0.5cm}
 
+Der SPDR S\&P 500 ETF Trust (\textit{SPY}) bildet den Aktienmarkt ab \cite{noauthor_spy:_nodate}, der iShares 20+ Year Treasury Bond ETF (\textit{TLT}) langfristige US-Staatsanleihen \cite{noauthor_ishares_nodate}. Der CBOE S\&P 500 Volatility Index (\textit{VIX}) misst die erwartete Schwankungsbreite des US-Aktienmarkts über 30 Tage \cite{noauthor_vix_nodate}, der Cboe S\&P 500 Three-Month Volatility Index (\textit{VIX3M}) über drei Monate \cite{noauthor_cboe_nodate}. Ihr Verhältnis liefert Informationen über die Fristenstruktur: Übersteigt die kurzfristige die längerfristige Erwartung (\textit{VIX > VIX3M}), kann dies auf akuten Marktstress hindeuten \cite[2467]{johnson_risk_2015}. Ergänzend misst der ICE BofA US High Yield Index Option-Adjusted Spread (\textit{HY-OAS}) den Renditeaufschlag von Unternehmensanleihen gegenüber US-Staatsanleihen und dient als Indikator für Kreditstress \cite{ice_bofa}. Steigende Kreditaufschläge signalisieren eine höhere geforderte Risikokompensation und verschärfte Finanzierungsbedingungen \cite[1692–1693]{gilchrist_credit_2012}. Zudem besitzen Kreditspreads Informationsgehalt für die zukünftige wirtschaftliche Entwicklung \cite[1698–1699]{gilchrist_credit_2012}.
+
+\begin{table}[!htb]
+    \setlength{\arrayrulewidth}{1pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{threeparttable}
+        \caption{Rohdatenbasis}
+        \label{tab:rohdatenbasis}
+
+        \small
+
+        \begin{tabularx}{\textwidth}{
+            |c|
+            >{\raggedright\arraybackslash}X|
+            c|
+            >{\raggedright\arraybackslash}p{2.4cm}|
+            >{\raggedright\arraybackslash}p{2.5cm}|
+        }
+            \hline
+            \textbf{Nr.} &
+            \textbf{Zeitreihe} &
+            \textbf{Symbol} &
+            \textbf{Marktsegment} &
+            \textbf{Datenquelle}
+            \tabularnewline \hline
+
+            1 &
+            SPDR S\&P 500 ETF Trust &
+            SPY &
+            Aktien &
+            Bloomberg
+            \tabularnewline \hline
+
+            2 &
+            iShares 20+ Year Treasury Bond ETF &
+            TLT &
+            Staatsanleihen &
+            Bloomberg
+            \tabularnewline \hline
+
+            3 &
+            CBOE S\&P 500 Volatility Index &
+            VIX &
+            Volatilität &
+            Cboe
+            \tabularnewline \hline
+
+            4 &
+            Cboe S\&P 500 Three-Month Volatility Index &
+            VIX3M &
+            Volatilität &
+            Cboe
+            \tabularnewline \hline
+
+            5 &
+            ICE BofA US High Yield Index OAS &
+            BAMLH0A0HYM2 &
+            Kredit &
+            ICE Data Indices
+            \tabularnewline \hline
+        \end{tabularx}
+    \end{threeparttable}
+\end{table}
+
+Verwendet werden tägliche Schlusskurse. Der gemeinsame Untersuchungszeitraum beginnt mit der Verfügbarkeit des \textit{VIX3M} am 4. Dezember 2007 und umfasst damit unter anderem die Finanzkrise 2008/2009 und die COVID-19-Marktverwerfungen \cite{chicacgo_vix3m}. Bei rund 250 Handelstagen pro Jahr ergeben sich bis 2026 etwa 4.800 Beobachtungen je Reihe, die Datenmenge ist damit technisch unkritisch.
+
+\vspace{0.5cm}
+
+Kurse und Volatilitätsindizes stehen nach Börsenschluss zur Verfügung. Der \textit{HY-OAS} wird aufgrund seiner späteren Veröffentlichung jeweils mit dem zuletzt verfügbaren Wert berücksichtigt. Personenbezogene Daten werden nicht verarbeitet. Zu berücksichtigen sind insbesondere Datenlizenzen, Zugriffsrechte und Datenintegrität.
+
+\begin{table}[!htb]
+    \setlength{\arrayrulewidth}{1pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{threeparttable}
+        \caption{Illustrativer Auszug der zusammengeführten Rohdaten}
+        \label{tab:rohdaten}
+
+        \small
+
+        \begin{tabularx}{\textwidth}{
+            |>{\centering\arraybackslash}p{2.3cm}|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+        }
+            \hline
+            \textbf{Datum} &
+            \textbf{SPY} &
+            \textbf{TLT} &
+            \textbf{VIX} &
+            \textbf{VIX3M} &
+            \textbf{HY-OAS}
+            \tabularnewline \hline
+
+            2020-03-16 &
+            239,85 &
+            163,0 &
+            82,69 &
+            63,0 &
+            7,34
+            \tabularnewline \hline
+
+            2020-03-17 &
+            252,86 &
+            156,7 &
+            75,91 &
+            59,6 &
+            7,71
+            \tabularnewline \hline
+
+            2020-03-18 &
+            240,00 &
+            148,6 &
+            76,45 &
+            60,0 &
+            8,71
+            \tabularnewline \hline
+
+            2020-03-19 &
+            240,51 &
+            154,6 &
+            72,00 &
+            57,5 &
+            9,14
+            \tabularnewline \hline
+
+            2020-03-20 &
+            228,80 &
+            161,6 &
+            66,04 &
+            56,0 &
+            9,29
+            \tabularnewline \hline
+        \end{tabularx}
+    \end{threeparttable}
+\end{table}
 
 
 
