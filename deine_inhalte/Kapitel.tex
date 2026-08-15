@@ -533,6 +533,183 @@ Tabelle 4 zeigt illustrativ, in welcher Form die Daten nach Abschluss der Pipeli
 \end{table}
 
 
+\subsubsection{Modellwahl: Das Hidden Markov Model}
+\textbf{Grundgedanke.} Als Machine Learning Model wird ein multivariates Gaussian Hidden Markov Model (\textit{HMM}) eingesetzt. Der tatsächliche Marktzustand ist nicht direkt beobachtbar, sondern wird aus den in Kapitel 3.3.1 berechneten Marktmerkmalen abgeleitet. Das HMM lernt, welche Merkmalsausprägungen für die verschiedenen Regime typisch sind, und berücksichtigt zugleich, mit welcher Wahrscheinlichkeit ein Regime bestehen bleibt oder wechselt \cite{rabiner_tutorial_1989, elliott_application_1997}.
+
+\vspace{0.5cm}
+
+Jeder Handelstag wird durch den Vektor $\mathbf{z}_t$ aus acht skalierten Marktmerkmalen beschrieben. Der nicht direkt beobachtbare Marktzustand am Tag $t$ wird mit $S_t$ bezeichnet. Für das betrachtete Zwei-Regime-Modell gilt:
+
+$$
+S_t \in \{1,2\}.
+$$
+
+Aus den Trainingsdaten lernt das HMM für jedes Regime ein typisches Merkmalsprofil. Da die acht Merkmale kontinuierliche Werte annehmen und gemeinsam betrachtet werden, wird innerhalb jedes Regimes eine multivariate Normalverteilung angenommen \cite{stadler_penalized_2013}. Vereinfacht lernt das Modell dadurch, welche Kombinationen der Merkmale für die beiden Regime typisch sind und wie diese innerhalb eines Regimes gemeinsam schwanken. Die zunächst statistisch identifizierten Zustände werden anschließend anhand ihrer Merkmalsprofile als \textit{Risk-On} beziehungsweise \textit{Risk-Off} interpretiert.
+
+Zusätzlich schätzt das Modell eine Übergangsmatrix $A$, deren Einträge die Wahrscheinlichkeit eines Verbleibs oder Wechsels zwischen den Regimen beschreiben \cite{rabiner_tutorial_1989, elliott_application_1997}. Ein illustratives Ergebnis wäre:
+
+$$
+A=
+\begin{pmatrix}
+0{,}985 & 0{,}015 \\
+0{,}040 & 0{,}960
+\end{pmatrix}.
+$$
+
+Befindet sich der Markt in Regime 1, bleibt er demnach mit 98,5 \% Wahrscheinlichkeit am Folgetag dort. Für Regime 2 beträgt diese Verbleibswahrscheinlichkeit 96 \%. Hohe Werte auf der Hauptdiagonale bilden damit die zeitliche Persistenz der Marktregime ab.
+
+\textbf{Konkretes Beispiel.} Angenommen, das HMM hat am Vortag $t-1$ geschätzt, dass mit einer Wahrscheinlichkeit von 65 \% Regime 1 und mit 35 \% Regime 2 in $t-1$ vorliegt. Mithilfe der Übergangsmatrix wird zunächst die erwartete Regimeverteilung für den heutigen Handelstag $t$ bestimmt:
+
+$$
+\hat{\mathbf{p}}_t
+=
+(0{,}65,\ 0{,}35)A
+\approx
+(0{,}654,\ 0{,}346).
+$$
+
+Dabei bezeichnet $\hat{p}_{t,k}$ die Wahrscheinlichkeit für Regime $k$, bevor die heutigen Marktmerkmale berücksichtigt werden. Für Regime 1 beträgt diese zunächst 65,4 \% und für Regime 2 34,6 \%.
+
+Anschließend vergleicht das Modell die heute beobachteten acht Marktmerkmale mit den zuvor gelernten Merkmalsprofilen. Angenommen, die heute beobachtete Merkmalskombination passt deutlich besser zu Regime 2. Illustrativ seien die entsprechenden Dichtewerte der gelernten Normalverteilungen
+
+$$
+f_1(\mathbf{z}_t)=0{,}10,
+\qquad
+f_2(\mathbf{z}_t)=1{,}15.
+$$
+
+Je größer dieser Wert, desto besser passt die aktuelle Merkmalskombination zum jeweiligen Regime. Das Modell verbindet diese neue Information mit den zuvor bestimmten Regimewahrscheinlichkeiten:
+
+$$
+0{,}654 \cdot 0{,}10 = 0{,}0654,
+\qquad
+0{,}346 \cdot 1{,}15 = 0{,}3979.
+$$
+
+Da diese Zwischenwerte noch keine Wahrscheinlichkeiten darstellen, werden sie anschließend auf eine Summe von eins normiert \cite[263]{rabiner_tutorial_1989}, \cite[233]{elliott_application_1997}:
+
+$$
+P(S_t=1\mid\mathbf{z}_{1:t})
+=
+\frac{0{,}0654}{0{,}0654+0{,}3979}
+\approx 0{,}14,
+$$
+
+$$
+P(S_t=2\mid\mathbf{z}_{1:t})
+=
+\frac{0{,}3979}{0{,}0654+0{,}3979}
+\approx 0{,}86.
+$$
+
+Nach Berücksichtigung der heutigen Marktdaten beträgt die Wahrscheinlichkeit für Regime 1 somit ca. 14 % und für Regime 2 ca. 86 %. Das HMM verbindet damit zwei Informationen: Wie wahrscheinlich ist ein Regime aufgrund der bisherigen Entwicklung? und wie gut passen die aktuellen Marktmerkmale zu diesem Regime?
+
+Das Ergebnis ist eine täglich aktualisierte Wahrscheinlichkeit für das aktuell vorherrschende Marktregime. Das HMM prognostiziert dabei nicht direkt die zukünftige Aktienrendite, sondern liefert ein quantitatives Signal, das einem Investmentkomitee oder einer nachgelagerten Allokationslogik als Entscheidungsgrundlage dienen kann.
+
+\begin{table}[!htb]
+    \setlength{\arrayrulewidth}{1pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{threeparttable}
+        \caption{Illustrativer Auszug der Modellergebnisse}
+        \label{tab:modellergebnisse}
+
+        \small
+
+        \begin{tabularx}{\textwidth}{
+            |>{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+            >{\centering\arraybackslash}X|
+        }
+            \hline
+            \textbf{Datum} &
+            \textbf{Risk-On (1)} &
+            \textbf{Risk-Off (2)}
+            \tabularnewline \hline
+
+            2020-03-16 &
+            0,14 &
+            0,86
+            \tabularnewline \hline
+
+            2020-03-17 &
+            0,09 &
+            0,91
+            \tabularnewline \hline
+
+            2020-03-18 &
+            0,05 &
+            0,95
+            \tabularnewline \hline
+        \end{tabularx}
+
+        \begin{tablenotes}[flushleft]
+            \item \small{Hinweis: Die dargestellten Wahrscheinlichkeiten sind illustrativ und dienen ausschließlich der Veranschaulichung der Modellausgabe.}
+        \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+
+\subsubsection{Evaluation}
+Die folgende Evaluation bewertet nicht die Güte des Modelltrainings, sondern den wirtschaftlichen Nutzen der erzeugten Regimewahrscheinlichkeiten. Hierfür wird das HMM in einer Walk-Forward-Auswertung so eingesetzt, wie es später im Produktivbetrieb arbeiten würde. Das Modell wird regelmäßig ausschließlich auf den bis dahin verfügbaren historischen Daten neu trainiert, sodass keine zukünftigen Informationen in die Regimebestimmung einfließen \cite[440-442]{tashman_out--sample_2000}.
+
+\vspace{0.5cm}
+
+Für die wirtschaftliche Bewertung werden die Regimewahrscheinlichkeiten über eine bewusst einfache Allokationsregel in Portfolioentscheidungen übersetzt. Übersteigt die Risk-On-Wahrscheinlichkeit 50 \%, werden 70 \% in Aktien, 25 \% in US-Staatsanleihen und 5 \% in Cash investiert. Andernfalls gilt eine defensive Allokation von 10 \% Aktien, 20 \% Staatsanleihen und 70 \% Cash. Die Optimierung dieser Regel ist nicht Gegenstand der Arbeit.
+
+\vspace{0.5cm}
+
+Die resultierende Portfolioentwicklung wird der statischen 60/40-Benchmark gegenübergestellt. Bewertet werden Sharpe Ratio, annualisierte Rendite und Maximum Drawdown. Bei jeder Umschichtung werden Transaktionskosten von 10 Basispunkten auf das umgeschichtete Volumen berücksichtigt.
+
+\vspace{0.5cm}
+
+Ergänzend wird untersucht, ob steigende Risk-Off-Wahrscheinlichkeiten in Stressphasen wie der Finanzkrise 2008/2009 und der COVID-19-Marktphase 2020 eine Verschlechterung des Marktumfelds frühzeitig anzeigen und größere Verluste gegenüber der Benchmark begrenzen.
+
+
+\subsection{Preparation}
+\subsubsection{Entscheidungsaufbereitung und Nutzung}
+Die täglich erzeugten Regimewahrscheinlichkeiten können Portfolio Managern über ein Dashboard als aktuelles Regime, Wahrscheinlichkeit und zeitlicher Verlauf bereitgestellt werden. Eine tägliche Regimebestimmung bedeutet jedoch nicht, dass das Portfolio täglich angepasst werden muss. Um kurzfristige Fehlsignale zu vermeiden, könnte eine Umschichtung beispielsweise erst erfolgen, wenn ein Regime über mehrere Tage hinweg mit hoher Wahrscheinlichkeit bestätigt wird.
+
+\vspace{0.5cm}
+
+Die Regimewahrscheinlichkeit kann entweder einem Investmentkomitee als quantitative Entscheidungsgrundlage dienen oder in ein nachgelagertes Portfoliooptimierungsmodell einfließen. Regimeabhängige Optimierungsansätze dieser Art werden beispielsweise von Bae et al. beschrieben \cite{BAE2014450}.
+
+\subsubsection{Erwartete Ergebnisse und Grenzen}
+Ziel ist eine höhere Sharpe Ratio bei gleichzeitig wettbewerbsfähiger annualisierter Rendite und reduziertem Maximum Drawdown. Polavarapu erreicht mit einem vergleichbaren Cross-Asset-HMM in einer Walk-Forward-Auswertung für 2021–2024 eine Sharpe Ratio von 0,881, eine annualisierte Rendite von 9,97 \% und einen Maximum Drawdown von −17,46 \%, die Buy-and-Hold-Referenz erreicht eine Sharpe Ratio von 0,859 \cite{polavarapu_cross-asset_2026}.
+
+\vspace{0.5cm}
+
+Bei institutionellen Anlagevolumina können bereits geringe Performanceverbesserungen einen erheblichen wirtschaftlichen Hebel besitzen. Bei einem beispielhaften Portfolio von 5 Mrd. \$ entspricht eine zusätzliche Rendite von 0,1 Prozentpunkten einem Mehrertrag von 5 Mio. \$ pro Jahr. Die Ergebnisse von Polavarapu sind aufgrund unterschiedlicher Modell-, Daten- und Allokationsentscheidungen jedoch nicht unmittelbar übertragbar.
+
+\vspace{0.5cm}
+
+Grenzen ergeben sich insbesondere aus möglichen Fehlklassifikationen von Regimewechseln, strukturellen Veränderungen historischer Marktbeziehungen sowie Transaktionskosten und Umschichtungshäufigkeit, die den wirtschaftlichen Nutzen der Lösung maßgeblich beeinflussen \cite{ang_regime_2012}. Die Regimewahrscheinlichkeit ist daher als probabilistische Entscheidungsgrundlage und nicht als sichere Prognose zu interpretieren.
+
+\vspace{0.5cm}
+
+Für die Einführung bietet sich zunächst ein Proof of Concept mit historischen Daten und anschließendem Parallelbetrieb zum bestehenden Investmentprozess an. Eine Produktivsetzung sollte von den Ergebnissen dieser Validierung abhängig gemacht werden.
+
+\section{Fazit und Ausblick}
+Die Arbeit zeigt, wie eine HMM-basierte Regimeerkennung die taktische Portfolioallokation quantitativ unterstützen kann. Als nächster Schritt empfiehlt sich ein begrenzter Proof of Concept, um den wirtschaftlichen Mehrwert unter realistischen Marktbedingungen und unter Berücksichtigung von Transaktionskosten zu überprüfen.
+
+\vspace{0.5cm}
+
+Anschließend können unterschiedliche HMM-Varianten und Modellkonfigurationen verglichen sowie die Anzahl der Marktregime variiert werden. Darüber hinaus lässt sich der Regime Detection Service auf weitere Kapitalmärkte und Anlageklassen ausweiten. Perspektivisch könnte daraus eine globale Multi-Asset-Regimeerkennung als zusätzliche Entscheidungsgrundlage für international diversifizierte Portfolios entstehen.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
