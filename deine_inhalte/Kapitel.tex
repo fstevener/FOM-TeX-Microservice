@@ -1,10 +1,10 @@
 \section{Einleitung}
 
 \subsection{Relevanz und Problemstellung}
-Statische Investmentportfolios können nur begrenzt auf veränderte Marktbedingungen reagieren. Gerade in Stressphasen verändern sich Renditen, Risiken und Korrelationen zwischen Anlageklassen, wodurch bestehende Diversifikationsannahmen an Wirkung verlieren können. Für institutionelle Investoren entsteht daraus die Herausforderung, solche Veränderungen frühzeitig zu erkennen und in die Portfolioallokation einzubeziehen.
+Statische Investmentportfolios können nur begrenzt auf veränderte Marktbedingungen reagieren. Gerade in Stressphasen verändern sich Renditen, Risiken und Korrelationen zwischen Anlageklassen, wodurch bestehende Diversifikationsannahmen an Wirkung verlieren können. Für institutionelle Investoren entsteht daraus die Herausforderung, solche Veränderungen frühzeitig zu erkennen und in die Portfolioallokation einzubeziehen \cite{ang_regime_2012}.
 
 \subsection{Zielsetzung}
-Ziel dieser Arbeit ist die Konzeption eines KI-basierten Systems zur Erkennung von Marktregimen als quantitative Entscheidungsunterstützung für die Portfolioallokation. Die Arbeit ist unternehmensunabhängig und konzeptionell ausgerichtet. Adressaten sind insbesondere institutionelle Investoren mit Multi-Asset-Portfolios und aktivem Allokationsmandat, beispielsweise Asset Manager, Pensionsfonds, Hedgefonds oder Family Offices. Der Anwendungsfall wird auf den US-Kapitalmarkt begrenzt. Im Mittelpunkt steht nicht die Automatisierung der Anlageentscheidung, sondern die Frage, wie Marktregime datenbasiert erkannt, technisch operationalisiert und hinsichtlich ihres wirtschaftlichen Nutzens bewertet werden können.
+Ziel dieser Arbeit ist die Konzeption eines KI-basierten Systems zur Erkennung von Marktregimen als quantitative Entscheidungsunterstützung für die Portfolioallokation. Die Arbeit ist unternehmensunabhängig und konzeptionell ausgerichtet. Adressaten sind insbesondere institutionelle Investoren mit Multi-Asset-Portfolios und aktivem Allokationsmandat, beispielsweise Asset Manager, Pensionsfonds, Hedgefonds oder Family Offices. Der Anwendungsfall wird auf den US-Kapitalmarkt begrenzt. Im Mittelpunkt steht nicht die Automatisierung der Anlageentscheidung, sondern die Frage, wie Marktregime datenbasiert erkant, technisch operationalisiert und hinsichtlich ihres wirtschaftlichen Nutzens bewertet werden können.
 
 \subsection{Gang der Untersuchung}
 Kapitel 2 erläutert die fachlichen Grundlagen zu Asset Management, Marktregimen und quantitativer Regimeerkennung. Kapitel 3 entwickelt das Lösungskonzept entlang der vier Phasen des Business-Analytics-Prozesses nach Seiter: Framing, Allocation, Analytics und Preparation. Kapitel 4 fasst die Ergebnisse zusammen und zeigt mögliche Weiterentwicklungen auf.
@@ -146,7 +146,7 @@ Verwendet werden tägliche Schlusskurse. Der gemeinsame Untersuchungszeitraum be
 
 \vspace{0.5cm}
 
-Kurse und Volatilitätsindizes stehen nach Börsenschluss zur Verfügung. Der \textit{HY-OAS} wird aufgrund seiner späteren Veröffentlichung jeweils mit dem zuletzt verfügbaren Wert berücksichtigt. Personenbezogene Daten werden nicht verarbeitet. Zu berücksichtigen sind insbesondere Datenlizenzen, Zugriffsrechte und Datenintegrität.
+Kurse und Volatilitätsindizes stehen nach Börsenschluss zur Verfügung. Der \textit{HY-OAS} wird aufgrund seiner späteren Veröffentlichung jeweils mit dem zuletzt verfügbaren Wert berücksichtigt. Personenbezogene Daten werden nicht verarbeitet. Zu berücksichtigen sind insbesondere Datenlizenzen, Zugriffsrechte und Datenintegrtät.
 
 \begin{table}[!htb]
     \setlength{\arrayrulewidth}{1pt}
@@ -285,7 +285,7 @@ Für eine erste produktive Ausbaustufe wird ein kleines interdisziplinäres Kern
         \end{tabularx}
 
         \begin{tablenotes}[flushleft]
-            \item \normalsize{Quelle: \cite{noauthor_mlops02-bp01_nodate}}
+            \item \normalsize{Quelle: Eigene Darstellung basierend auf \cite{noauthor_mlops02-bp01_nodate}}
         \end{tablenotes}
     \end{threeparttable}
 \end{table}
@@ -702,7 +702,7 @@ Ziel ist eine höhere Sharpe Ratio bei gleichzeitig wettbewerbsfähiger annualis
 
 \vspace{0.5cm}
 
-Bei institutionellen Anlagevolumina können bereits geringe Performanceverbesserungen einen erheblichen wirtschaftlichen Hebel besitzen. Bei einem beispielhaften Portfolio von 5 Mrd. \$ entspricht eine zusätzliche Rendite von 0,1 Prozentpunkten einem Mehrertrag von 5 Mio. \$ pro Jahr. Die Ergebnisse von Polavarapu sind aufgrund unterschiedlicher Modell-, Daten- und Allokationsentscheidungen jedoch nicht unmittelbar übertragbar.
+Bei institutionellen Anlagevolumina können bereits geringe Performanceverbesserungen einen erheblichen wirtschaftlichen Hebel besitzen. Bei einem beispielhaften Portfolio von 5 Mrd. \$ entspricht eine zusätzliche Rendite von 0,1 Prozentpunkten einem Mehrertrag von 5 Mio. \$ pro Jahr. Die Ergebnisse von Polavarapu sind aufgrund unterschiedlicher Modell-, Daten- und Allokationsentscheidungen jedoch nicht unmitelbar übertragbar.
 
 \vspace{0.5cm}
 
@@ -718,325 +718,3 @@ Die Arbeit zeigt, wie eine HMM-basierte Regimeerkennung die taktische Portfolioa
 \vspace{0.5cm}
 
 Anschließend können unterschiedliche HMM-Varianten und Modellkonfigurationen verglichen sowie die Anzahl der Marktregime variiert werden. Darüber hinaus lässt sich der Regime Detection Service auf weitere Kapitalmärkte und Anlageklassen ausweiten. Perspektivisch könnte daraus eine globale Multi-Asset-Regimeerkennung als zusätzliche Entscheidungsgrundlage für international diversifizierte Portfolios entstehen.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\section{AB HIER NUR NOCH ALTER INHALT}
-
-Regimeerkennungsverfahren modellieren stattdessen mehrere latente Marktzustände mit jeweils eigenen statistischen Eigenschaften und leiten daraus Wahrscheinlichkeiten für den aktuell vorherrschenden Zustand ab \cite[3–7]{yuan_market_2016}. Multivariate Ansätze berücksichtigen hierfür Informationen aus mehreren Marktsegmenten gemeinsam \cite[3–6]{polavarapu_cross-asset_2026}.
-
-Im folgenden Kapitel werden die grundlegenden Konzepte der Schema-Versionierung vorgestellt, die in zahlreichen Forschungsarbeiten als Basis unterschiedlicher Lösungsansätze dienen. Ziel des Kapitels ist die Vermittlung eines allgemeinen Verständnisses der zugrunde liegenden Prinzipien und Mechanismen der Schema-Versionierung, ohne dabei auf die detaillierte Implementierung einzelner Ansätze einzugehen. Aus diesem Grund werden spezifische Forschungsergebnisse und prototypische Implementierungen im Rahmen dieser Arbeit nicht vertieft behandelt.
-
-\subsection{Dimensionen der Schema-Versionierung}
-
-\subsubsection{Partielle und vollständige Schema-Versionierung}
-Im Hinblick auf die Lese- und Schreib-Operationen, welche auf die Daten eines Schemas ausgeführt werden können, wird in der Literatur zwischen \textit{partieller Schema-Versionierung} und \textit{vollständiger Schema-Versionierung} differenziert (nach RODDICK 1995, S. 384).
-
-\vspace{0.5cm}
-
-Die \textit{partielle Schema-Versionierung} ermöglicht das Abrufen von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Änderungen an den Daten können jedoch nur über eine einzige – in der Regel die aktuelle – Schemaversion vorgenommen werden. Daher gewährleistet die partielle Schema-Versionierung nicht, dass bestehende Anwendungen nach einer Schemaänderung weiterhin fehlerfrei funktionieren, sofern diese Anwendungen Daten modifizieren (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-15). Abbildung~\ref{fig:partialsv} verdeutlicht, dass die Instanzen $I_1$ und $I_2$ sowohl über $\mathrm{SV}_1$ als auch über $\mathrm{SV}_2$ abrufbar sind. Schreib-Operationen können jedoch nur über $\mathrm{SV}_2$ auf $I_2$ ausgeführt werden. Anwendungen, die Schreib-Operationen über $\mathrm{SV}_1$ ausführen, funktionieren daher nach der Einführung von $\mathrm{SV}_2$ nicht mehr korrekt. Ab diesem Zeitpunkt sind Schreib-Operationen nur noch über $\mathrm{SV}_2$ möglich (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7).
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_1_Partial_SV.drawio.pdf}
-    \caption{Partielle Schema-Versionierung}
-    \capquelle{Eigene Darstellung nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7}
-    \label{fig:partialsv}
-\end{figure}
-
-
-Die \textit{vollständige Schema-Versionierung} hingegen ermöglicht sowohl das Lesen als auch das Schreiben von Daten über alle vergangenen und zukünftigen Schemaversionen hinweg. Dadurch bleiben bereits kompilierte Anwendungen auch nach beliebigen Schemaänderungen weiterhin voll funktionsfähig (vgl. RODDICK 1995, S. 384; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-15). Das Lesen und Schreiben ist hierbei über $\mathrm{SV}_1$ und $\mathrm{SV}_2$ auf die Instanzen $I_1$ und $I_2$ möglich (vgl. Abb.~\ref{fig:fullsv}) (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7).
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_1_Full_SV.drawio.pdf}
-    \caption{Vollständige Schema-Versionierung}
-    \capquelle{Eigene Darstellung nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7}
-    \label{fig:fullsv}
-\end{figure}
-
-
-Die Kompatibilität zwischen Instanzen und Schemaversionen ist ein zentrales Problem der Schema-Versionierung. In diesem Kontext unterscheidet die Literatur zwischen \textit{Rückwärtskompatibilität} und \textit{Vorwärtskompatibilität}. Rückwärtskompatibilität bedeutet, dass Daten, die unter einer früheren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine aktuellere Schemaversion entwickelt wurde (beispielsweise der Zugriff auf $I_1$ über $\mathrm{SV}_2$). Vorwärtskompatibilität bezeichnet entsprechend die Fähigkeit, dass Daten, die unter einer neueren Schemaversion erstellt wurden, von einer Anwendung verarbeitet werden können, die für eine ältere Schemaversion konzipiert ist (beispielsweise der Zugriff auf $I_2$ über $\mathrm{SV}_1$). Zusammenfassend betreffen Rückwärts- und Vorwärtskompatibilität die Möglichkeit, auf Daten über eine andere Schemaversion zuzugreifen als jene, mit der die Daten ursprünglich erzeugt wurden (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-7 f.).
-
-\vspace{0.5cm}
-
-In der Forschung wird diskutiert, ob Schemaänderungen vollständig verlustfrei und kompatibel umgesetzt werden können. Da Änderungen an Schemata häufig die Menge gültiger Daten verändern, ist vollständige Vorwärts- und Rückwärtskompatibilität theoretisch oft nicht realisierbar. Aus diesem Grund unterstützen viele Systeme lediglich die partielle Schema-Versionierung (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-12 f.).
-
-
-\subsubsection{Temporale Schema-Versionierung}
-
-Neben nicht-temporalen Konzepten, können Schemata auch entlang zeitlicher Dimensionen versioniert werden (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-16 f. u. S. 2430002-23 f.). DE CASTRO, GRANDI und SCALAS (1997, S. 254 ff. u. S. 263 ff.) entwickelten – aufbauend auf einem Vorschlag von RODDICK – drei Ansätze der temporalen Schema-Versionierung. Dabei unterscheiden sie zwischen \textit{transaktionszeitbasierter (transaction-time)}, \textit{gültigkeitszeitbasierter (valid-time)} und \textit{bitemporaler (bitemporal-time)} Schema-Versionierung (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-16 f.).
-
-\vspace{0.5cm}
-
-\textbf{Transaktionszeit}
-
-
-Bei der \textit{transaktionszeitbasierten Schema-Versionierung} versieht das DBMS jede Schemaversion mit einem Transaktionsbeginn und einem Transaktionsende als Zeitstempel. Die Kataloginformationen werden dabei analog zu Transaktionszeittabellen verwaltet. Änderungen können ausschließlich an der aktuell gültigen Schemaversion vorgenommen werden. Bereits vergangene Versionen bleiben unveränderlich, während zukünftige Versionen im Rahmen dieses Ansatzes nicht berücksichtigt werden. Dieses Verfahren eignet sich insbesondere für Anwendungsszenarien, in denen Schemaänderungen unmittelbar nach ihrer Durchführung wirksam werden sollen (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-16 f.).
-
-\vspace{0.5cm}
-
-\textbf{Gültigkeitszeit}
-
-
-In der \textit{gültigkeitszeitbasierten Schema-Versionierung} wird jede Version eines Schemas durch einen Beginn sowie ein Ende ihrer zeitlichen Gültigkeit beschrieben. Hierfür verwaltet das DBMS die Kataloginformationen in Form von Gültigkeitszeittabellen. Da sich dieser Ansatz an der Gültigkeitszeit orientiert, lassen sich nicht nur unmittelbar wirksame Änderungen am Schema abbilden, sondern auch rückwirkende sowie zukünftige Anpassungen. Rückwirkende Änderungen entstehen, wenn eine reale Veränderung bereits eingetreten ist und erst nachträglich im Schema nachvollzogen wird. Zukünftige Änderungen hingegen werden bereits vor ihrem tatsächlichen Wirksamwerden definiert und mit einer entsprechenden zukünftigen Gültigkeitsperiode versehen. Dadurch können frühere, aktuelle und geplante Versionen eines Schemas gezielt angepasst werden. Die Versionierung basierend auf Gültigkeitszeit eignet sich insbesondere für Anwendungsbereiche, in denen Schemaänderungen mit rückwirkender oder vorausplanender Wirkung erforderlich sind. Rückwirkende Anpassungen können beispielsweise durch gesetzliche Vorgaben notwendig werden, die strukturelle Änderungen administrativer Datenbestände verlangen – wie etwa eine Anpassung der Ziffernlänge der Sozialversicherungsnummer. Zukünftige Schemaänderungen bieten dagegen die Möglichkeit, geplante Anpassungen bereits im Vorfeld zu modellieren, zu testen und hinsichtlich ihrer Auswirkungen zu bewerten, bevor sie produktiv eingesetzt werden (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-17).
-
-\vspace{0.5cm}
-
-\textbf{Bitemporale-Zeit}
-
-
-Bei der \textit{bitemporalen Schema-Versionierung} wird jede Version eines Schemas sowohl mit Transaktionszeit- als auch mit Gültigkeitszeitstempeln versehen, sodass die Datenbankkataloge bitemporal organisiert sind. Die Nutzung beider Zeitdimensionen ist insbesondere für Anwendungen relevant, die Schemaänderungen nicht nur zeitnah, sondern auch rückwirkend oder im Voraus ermöglichen müssen und bei denen diese Modifikationen lückenlos nachvollziehbar bleiben sollen. Dadurch wird im Systemkatalog dokumentiert, ob eine Änderung retroaktiv oder proaktiv erfolgt ist. Im Gegensatz dazu erlaubt eine rein gültigkeitszeitbasierte Schema-Versionierung nach der Ausführung keine eindeutige Rekonstruktion, ob eine Schemaänderung rückwirkend oder vorausschauend eingetragen wurde. Durch die zusätzliche Erfassung der Transaktionszeit bleibt hingegen exakt dokumentiert, zu welchem Zeitpunkt die Änderung tatsächlich in das System übernommen wurde (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 275 f.; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-17).
-
-\vspace{0.5cm}
-
-Im Folgenden werden die Ansätze anhand von Beispielen illustriert. Die Beispiele basieren auf der Arbeit von DE CASTRO, GRANDI und SCALAS (1997, S. 263 ff.) 
-
-\vspace{0.5cm}
-
-Die DDL-Operationen $O_1$ bis $O_3$ werden wie folgt definiert:
-
-\vspace{0.5cm}
-\begin{itemize}
-    \item $O_1$ – Schemaänderung – On-Time-Transaktion – committed am 1/1/1983 – wirksam von 1/1/1983 bis 12/31/1985: Erstellung der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}
-    \item $O_2$ – Schemaänderung – rückwirkende (retroaktive) Transaktion – committed am 1/1/1985 – wirksam von 1/1/1983 bis 12/31/1985: Entfernung des Attributes \textit{ADDRESS} aus der Relation \textit{EMPLOYEE}
-    \item $O_3$ – Schemaänderung – proaktive Transaktion – committed am 1/1/1987 – wirksam ab 1/1/1988: Hinzufügen des Attributes \textit{PHONE} zur Relation \textit{EMPLOYEE}
-\end{itemize}
-
-Die Abbildungen~\ref{fig:transactiontime} bis~\ref{fig:bitemporal} beschreiben den Zustand des DBMS nach Ausführung der DDL-Operationen $O_1$ bis $O_3$. Der Einfachheit halber wird eine zeitliche Granularität von einem Tag angenommen. Zudem wird auf eine Angabe der entsprechenden DDL-Statements verzichtet.
-
-\vspace{0.5cm}
-
-\textbf{Transaktionszeitbasierte Schema-Versionierng}
-
-
-Die Operation $O_1$ initialisiert das Schema, bestehend aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Gemäß der transaktionszeitbasierten Schema-Versionierung dürfen Anpassungen stets nur die aktuelle Schemaversion betreffen. Schemaänderungen werden daher ausschließlich als On-Time-Transaktionen ausgeführt. Sie werden also mit dem Zeitpunkt ihrer Definition auf das aktuelle Schema wirksam. Damit bleibt eine Schemaversion so lange aktuell, bis eine neue Schemaänderung definiert und damit eine neue Schemaversion erzeugt wird. Der Status im Systemkatalog des DBMS nach $O_1$ lautet demnach $\mathrm{SV}_1 \; (1/1/83 - \infty)$ und bleibt bis zum Zeitpunkt einer neuen Schemaänderung bestehen. Bei den Operationen $O_2$ und $O_3$ handelt es sich um retro- bzw. proaktive Schemaänderungen. Da die transaktionszeitbasierte Versionierung diese Art der Anpassung nicht unterstützt, werden auch diese Schemaänderungen erst zum Zeitpunkt ihrer Definition wirksam (vgl. Abb.~\ref{fig:transactiontime}). $O_2$ erzeugt die Schemaversion $\mathrm{SV}_2$ und $O_3$ die Schemaversion $\mathrm{SV}_3$ (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 263 ff.).
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_2_transaction_time.drawio.pdf}
-    \caption{Transaktionszeitbasierte Schema-Versionierung}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 265}
-    \label{fig:transactiontime}
-\end{figure}
-
-
-\textbf{Gültigkeitszeitbasierte Schema-Versionierung}
-
-
-Im Gegensatz zur Versionierung nach der Transatkionszeit, kann bei der gültigkeitszeitbasierten Schema-Versierung der Gültigkeitszeitraum der Schemaänderung explizit definiert werden. Die Anpassungen betreffen dann jenes Schema, das für diesen spezifischen Gültigkeitszeitraum definiert ist. Dadurch sind Modifikationen an vergangenen oder zukünftigen Schemaversionen möglich. Da die retroaktive Schemaänderungen $O_2$ für den gleichen Gültigkeitszeitraum definiert ist wie die Schemaversion $\mathrm{SV}_1$, ersetzt die aus $O_2$ resultierende Version $\mathrm{SV}_2$ die alte Version $\mathrm{SV}_1$ vollständig. $\mathrm{SV}_1$ wird in diesem Zuge gelöscht und ist in der Datenbank somit nicht mehr existent. Die proaktive Schemaänderung $O_3$ ist wiederum für einen Gültigkeitszeitraum in der Zukunft definiert. $O_3$ wird somit erst am 01.01.1988 wirksam, wodurch $\mathrm{SV}_3$ entsteht. In der Arbeit von DE CASTRO, GRANDI und SCALAS wird allerdings nicht näher erläutert, welche Version im Zeitraum von 1986-1988 greift (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 269 ff.).   
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_2_valid_time.drawio.pdf}
-    \caption{Gültigkeitszeitbasierte Schema-Versionierung}
-    \capquelle{In Anlehnung an DE CASTRO, GRANDI, SCALAS 1997, S. 270 f.}
-    \label{fig:validtime}
-\end{figure}
-
-
-\textbf{Bitemporale Schema-Versionierung}
-
-
-Die Versionierung von Schemata entlang der Transaktions- und der Gültigkeitszeit ermöglicht es, historische Stände der Datenbank vollständig zu bewahren. Ein Rückgang auf ältere Schemaversionen ist somit jederzeit möglich. Schemata die für denselben Gültigkeitszeitraum definiert sind, müssen nicht mehr gelöscht werden, da die Transaktionszeit eindeutig belegt, welche Schemaversion zu welchem Zeitpunkt systemaktuell war. Die aus $O_2$ resultierende Version $\mathrm{SV}_2$ löst die Version $\mathrm{SV}_1$ hinsichtlich ihrer Aktualität zwar ab; $\mathrm{SV}_1$ wird nach diesem Ansatz jedoch nicht gelöscht, sondern archiviert und bleibt weiterhin abrufbar, sofern ein Rückgang von $\mathrm{SV}_2$ auf $\mathrm{SV}_1$ erforderlich ist. Sowohl die intensionalen (Schema) als auch die extensionalen Daten (Instanz) bleiben dabei vollständig erhalten (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 275 ff.).
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_2_bitemporal_time.drawio.pdf}
-    \caption{Bitemporale Schema-Versionierung}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 278}
-    \label{fig:bitemporal}
-\end{figure}
-
-\subsubsection{Speicherkonzept}
-Hinsichtlich der Koordination zwischen Schemaversion und Instanz unterscheiden DE CASTRO, GRANDI und SCALAS (1997, S. 257 f.) zwei grundlegende Speicherstrategien: die \textit{Single-Pool-} und die \textit{Multi-Pool-Speicherung}. Der Begriff \textit{Data-Pool} definiert in diesem Kontext einen logischen Speicherort für extensionale Daten. Beide Ansätze sind primäre auf der logischen Ebene zu betrachten, da die Autoren Details der physischen Speicherung bewusst abstrahieren.
-
-\vspace{0.5cm}
-
-Bei der \textit{Multi-Pool-Speicherung} werden die Daten jeder Version einer Relation in einem separaten, isolierten Speicherbereich verwaltet. Die Datenbestände der unterschiedlichen Versionen werden somit unabhängig voneinander persistiert. Bezogen auf das Beispiel aus Kapitel 2.4 entspricht das Ablegen der Instanzen $I_1$ und $I_2$ in jeweils eigenen Tabellen einer Speicherung nach dem Multi-Pool-Verfahren (vgl. Abb.~\ref{fig:multipool}) (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-8).
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.85]{.github/3_1_3_MultiPool.drawio.pdf}
-    \caption{Multi-Pool-Speicherung}
-    \capquelle{In Anlehnung an DE CASTRO, GRANDI, SCALAS 1997, S. 251 f.; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9}
-    \label{fig:multipool}
-\end{figure}
-
-
-Die \textit{Single-Pool-Speicherung} verfolgt hingegen das Ziel, sämtliche Daten einer Relation zentral in einer gemeinsamen Struktur zu verwalten. Dadurch lassen sich Rendundanzen vermeiden - insbesondere dann, wenn mehrere Schemaversionen identische Datenwerte teilen. Für die Umsetzung des Single-Pool-Ansatzes wird ein übergeordnetes Schema erzeugt, welches die Vereinigung sämtlicher Attribute aller existierenden Schemaversionen der Relation darstellt. Dieses sogenannte \textit{Completed Schema} dient als gemeinsame logische Basis für die Datenspeicherung. Die einzelnen Versionen des Schemas werden folglich nicht mehr als eigenständige Tabellen geführt, sondern als Views auf dieser gemeinsamen Datenbasis definiert. Jede View projiziert dabei exakt jene Attribute, welche für die jeweilige Schemaversion relevant sind. Abbildung~\ref{fig:singlepool} illustriert eine solche Single-Pool-Implementierung für das Beispiel aus Kapitel 2.4, bei der die Instanzen von $\mathrm{SV}_1$ und $\mathrm{SV}_2$ in einer einzigen, konsolidierten Tabelle gehalten werden (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-8 f.).
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.75]{.github/3_1_3_SinglePool.drawio.pdf}
-    \caption{Single-Pool-Speicherung}
-    \capquelle{In Anlehnung an DE CASTRO, GRANDI, SCALAS 1997, S. 251 f.; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9}
-    \label{fig:singlepool}
-\end{figure}
-
-
-Ein wesentlicher Unterschied zwischen beiden Ansätzen zeigt sich im Aufwand zur Gewährleistung von Vorwärts- und Rückwärtskompatibilität. Existieren insgesamt $n$ Schemaversionen, so erfordert der Single-Pool-Ansatz lediglich $n$ Views, um die Datenbestände zwischen den verschiedenen Versionen interoperabel zugänglich zu machen und somit sowohl die Vorwärts- als auch die Rückwärtskompatibilität vollständig zu unterstützen. Beim Multi-Pool-Ansatz hingegen skaliert der Aufwand quadratisch: Da jede Version potenziell mit jeder anderen Version interagieren muss, können im Worst-Case insgesamt  $n \cdot (n-1)$ Views notwendig werden (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9).
-
-\vspace{0.5cm}
-
-Auch hinsichtlich der Modifizierbarkeit der Daten ergeben sich signifikante Unterschiede. Zur Unterstützung einer partiellen Schema-Versionierung muss im Single-Pool-Modell das jeweils aktuelle Schema als aktualisierbare View auf dem übergeordneten Completed Schema definiert sein. Soll dagegen eine vollständige Schema-Versionierung realisiert werden, setzt dies voraus, dass sämtliche im System existierenden Views aktualisierbar sind, was eine wesentlich komplexere Anforderung darstellt (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9). 
-
-\vspace{0.5cm}
-
-Weiterführende Vor- und Nachteile beider Speicherstrategien wurden von DE CASTRO, GRANDI und SCALAS (1997) sowie in der Arbeit von BRAHMIA, GRANDI und OLIBONI (2024b) beleuchtet. Auf diese tiefergehenden Analysen wird an dieser Stelle verwiesen; eine detaillierte Ausarbeitung würde jedoch den Rahmen der vorliegenden Arbeit überschreiten. 
-
-
-\subsubsection{Interaktion zwischen Instanz und Schema}
-In den bisherigen Betrachtungen wurden ausschließlich Snapshot-Daten herangezogen, da diese hinreichend waren, um grundlegenden Mechanismen der Schema-Versionierung zu erläutern. Zusätzliche Herausforderungen entstehen jedoch, wenn Schema-Versionierung in Datenbanken eingesetzt wird, die temporale Daten verwalten. In diesem Fall muss das Zusammenspiel zwischen der Versionierung der Daten selbst (extensionale Versionierung) und der Versionierung des Schemas (intensionale Versionierung) berücksichtigt werden. Aus dieser wechselseitigen Abhängigkeit resultiert eine weitere architektonische Gestaltungsoption für das Datenmanagement. Diese wird relevant, wenn sowohl die Instanz als auch das Schema entlang derselben Zeitdimension versioniert werden. Die Fachliteratur differenziert in diesem Zusammenang zwischen zwei fundamentalen Verwaltungsansätzen: \textit{Synchrones Management} und \textit{Asynchrones Management} (nach DE CASTRO, GRANDI, SCALAS 1997, S. 258 f.)
-
-\textbf{Synchrones Management}
-
-
-Temporale Daten werden ausschließlich über jene Schemaversion verarbeitet, deren zeitlicher Gültigkeitsbereich mit dem der Daten übereinstimmt. Das betrifft sowohl das Speichern als auch das Abrufen und Aktualisieren der Daten (nach DE CASTRO, GRANDI, SCALAS 1997, S. 259). 
-
-
-\textbf{Asynchrones Management}
-
-
-Temporale Daten können unabhängig von ihrer zeitlichen Einordnung über beliebige Schemaversionen abgefragt oder verändert werden. Die zeitliche Gültigkeit von Daten und Schema muss hierbei also nicht übereinstimmen (nach DE CASTRO, GRANDI, SCALAS 1997, S. 259). Dieses Modell ist vor allem notwendig, um Rückwärts- und Vorwärtskompatibilität zu ermöglichen sowie partielle oder vollständige Schema-Versionierung zu unterstützen, wenn sowohl Daten als auch Schemata entlang derselben zeitlichen Dimension versioniert werden (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-9).
-
-\vspace{0.5cm}
-
-In diesem Kontext erwähnen die Autoren eine wichtige Einschränkung. Werden Schema und Daten über die Transaktionszeit verwaltet, ist nur synchrones Management möglich, weil diese Zeitdimension den tatsächlichen historischen Zustand der Datenbank beschreibt. Wenn eine Datenbank auf einen bestimmten Zeitpunkt zurückgesetzt wird, muss sowohl das Schema als auch die gespeicherten Daten genau zu diesem Zeitpunkt passen.
-Würde man Schema- und Datenversionen asynchron verwalten, könnten unterschiedliche zeitliche Zustände miteinander kombiniert werden — etwa ein Schema aus dem Jahr 1995 mit Daten aus dem Jahr 1996. Dadurch entstünde ein inkonsistenter Datenbankzustand, der historisch nie tatsächlich existiert hat. Genau das widerspricht jedoch der Bedeutung der Transaktionszeit, deren Zweck darin besteht, vergangene Zustände der Datenbank korrekt und vollständig rekonstruieren zu können.
-Deshalb müssen Schema und Daten entlang der Transaktionszeit immer gemeinsam und zeitlich abgestimmt versioniert sowie abgefragt werden. Nur so bleibt gewährleistet, dass jeder rekonstruierte Zustand konsistent ist. Für die Gültigkeitszeit gilt diese Einschränkung dagegen nicht, da sie nicht den historischen Zustand der Datenbank selbst beschreibt, sondern die fachliche Gültigkeit von Informationen in der realen Welt (nach DE CASTRO, GRANDI, SCALAS 1997, S. 259 f.).
-
-\vspace{0.5cm}
-
-Das nachfolgende Beispiel soll die Funktionweisen beider Verwaltungsansätze verdeutlichen und beruht auf DE CASTRO, GRANDI und SCALAS (1997, S. 260 f.). Der Ausgangspunkt ist die Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME} und \textit{SALARY}. Sowohl Schema als auch Daten werden über die Gültigkeitszeit-Dimension versioniert. Die zwei Tupel zeigen die Gehaltshistorie des Mitarbeiters \textit{Brown} (vgl. Abb.~\ref{fig:initialstate}). 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_4_initialState.drawio.pdf}
-    \caption{Gehaltshistorie des Mitarbeiters \textit{Brown}}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 260}    
-    \label{fig:initialstate}
-\end{figure}
-
-
-Anschließend wird eine Schemaänderung angenommen, bei welcher der Relation \textit{EMPLOYEE} das zusätzliche Attribut \textit{DEPT} hinzugefügt wird. Diese Änderung soll ab dem 1. Januar 1994 gültig sein. Darüber hinaus wird angenommen, dass dieselbe Transaktion mithilfe der neuen Schemaversion die Information speichert, dass der Mitarbeiter \textit{Brown} schon immer in der Abteilung \textit{Sales} gearbeitet hat. 
-
-\vspace{0.5cm}
-
-Abbildung~\ref{fig:syncmanagement} veranschaulicht den Zustand des DBMS nach der Schemaänderung unter den Bedingungen des synchronen Managements. 
-Es zeigt sich, dass die Abteilungsinformation \textit{Sales} für den Zeitraum 1992–1993 nicht gespeichert werden konnte, da die entsprechenden Daten von \textit{Brown} in diesem Zeitraum noch über die Schemaversion $\mathrm{SV}_1$ verwaltet werden, die das Attribut \textit{DEPT} nicht enthält.
-Darüber hinaus müssten spezielle Anwendungen entwickelt werden, die beide Schemaversionen berücksichtigen, um die vollständige Historie der älteren Daten – also die Daten ohne das Attribut \textit{DEPT} – von 1990 bis heute rekonstruieren zu können. Der Grund dafür liegt darin, dass die Historie der Daten im synchronen Management analog zu den Gültigkeitsintervallen der Schemaversionen partitioniert wird (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 260).
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_4_syncMngmnt.drawio.pdf}
-    \caption{Synchrones Management}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 260}
-    \label{fig:syncmanagement}
-\end{figure}
-
-
-Abbildung~\ref{fig:asyncmanagement} zeigt den Zustand des DBMS unter den Bedingungen des asynchronen Managements. 
-In diesem Fall bleibt die vollständige Historie der Mitarbeiterdaten in jeder Schemaversion erhalten. Bestehende Anwendungen können weiterhin mit den älteren Daten arbeiten und liefern dabei dieselben Ergebnisse wie vor der Schemaänderung. Gleichzeitig können neue Anwendungen entwickelt werden, die auf den erweiterten Datenbestand zugreifen und zusätzlich die Informationen des Attributs \textit{DEPT} nutzen (vgl. DE CASTRO, GRANDI, SCALAS 1997, S. 260 f.).
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/3_1_5_asyncMngmnt.drawio.pdf}
-    \caption{Asynchrones Management}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 261}
-    \label{fig:asyncmanagement}
-\end{figure}
-
-
-An dieser Stelle sei noch erwähnt, dass die konkreten Auswirkungen von Schema- und Datenänderungen im Rahmen des asynchronen Managements zusätzlich davon abhängen, ob die Daten mithilfe des Single-Pool- oder des Multi-Pool-Ansatzes verwaltet werden (nach DE CASTRO, GRANDI, SCALAS 1997, S. 261). Zudem wird partielle und vollständige Schema-Versionierung bei einer Versionierung entlang der Transaktionszeit aus den genannten Konsistenzgründen ausgeschlossen (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-18).
-
-\vspace{0.5cm}
-
-Abschließend sei darauf hingewiesen, dass viele wissenschaftliche Lösungsansätze auf einer Kombination der zuvor vorgestellten Dimensionen und Konzepte beruhen (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-4 f. u. S. 2430002-25). Aufgrund verschiedener technischer und konzeptioneller Restriktionen sind jedoch nicht alle Kombinationen miteinander kompatibel. Werden Daten und Schemata entlang derselben Zeitdimension versioniert, stellt die Gültigkeitszeit in Verbindung mit asynchronem Management die einzige Kombination dar, die partielle oder vollständige Schema-Versionierung ermöglicht (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-18).
-
-\vspace{0.5cm}
-
-Ein Beispiel für einen Lösungsansatz, der eine vollständige Schema-Versionierung unterstützt, ist der Prototyp VERSIOS. Dieser basiert auf einer Versionierung entlang der Gültigkeitszeit, verwendet die Multi-Pool-Speicherung und verwaltet die Interaktion zwischen Schema- und Instanzversionen mittels asynchronem Management (vgl. BRAHMIA u.a. 2012; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-25).
-
-
-
-\subsection{DBMS Support und Tooling}
-Auch wenn die Schema-Versionierung theoretisch die einzige Methode darstellt, mit der sich Änderungen an einer sich entwickelnden Datenbankstruktur konsistent nachverfolgen und frühere Zustände rekonstruieren lassen, wird dieses Konzept von heutigen relationalen DBMS nicht nativ unterstützt. Auch der SQL-Standard definiert bislang kein Konzept für Schema-Versionierung (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-57).
-
-\vspace{0.5cm}
-
-Viele kommerzielle Datenbanksysteme wie Microsoft SQL Server, IBM DB2, Oracle oder MySQL stellen jedoch über integrierte Funktionen oder die Unterstützung externer Werkzeuge eine Versionsverwaltung für die Entwicklung von Schemata zur Verfügung. Dadurch können Entwickler parallel an einem noch nicht produktiven Schema arbeiten und verschiedene Varianten bzw. aufeinanderfolgende Versionen erzeugen.
-Diese Mechanismen unterstützen beispielsweise das Zusammenführen von Änderungen verschiedener Entwickler, das gezielte Zurücknehmen fehlerhafter Anpassungen, die Nachvollziehbarkeit von Unterschieden zwischen Entwicklungsständen oder Schema-Varianten sowie die Erzeugung von Skripten zur Überführung eines Schemas in eine andere Version. Eine solche Überführung kann auch bestehende Daten betreffen und stellt damit eine partielle und oft verlustbehaftete Unterstützung der Schema-Evolution vor der Produktivsetzung dar (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-57). Tools wie z.B. \textit{Flyway} unterstützen diese Funktionalität (vgl. BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-37).
-Obwohl diese Tools häufig der Schema-Versionierung zugeordnet werden, handelt es sich dabei nicht um Schema-Versionierung im Sinne der Endnutzer: In produktiven Umgebungen können bestehende Daten nicht gleichzeitig über verschiedene Schemaversionen hinweg geteilt oder unterschiedlich angezeigt und bearbeitet werden (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-57).
-
-\vspace{0.5cm}
-
-Eine Lösung die dem Konzept der Schema-Versionierung vergleichsweise nahekommt, ist der \textit{Oracle Workspace Manager} (vgl. ORACLE AI DATABASE WORKSPACE MANAGER DEVELOPER'S GUIDE 2025). 
-
-\vspace{0.5cm}
-
-Der \textit{Oracle Workspace Manager} (kurz \textit{OWM}) stellt eine datenbankinterne Versionierungsmechanik bereit, die auf Zeilenebene mehrere konsistente Datenzustände innerhalb sogenannter \textit{Workspaces} ermöglicht. Im Gegensatz zu klassischen Migrationsansätzen erlaubt das System damit eine parallele Existenz unterschiedlicher Datenversionen innerhalb derselben Datenbankinstanz. Dadurch ist OWM der Schema-Versionierung konzeptionell sehr nahe, da nicht nur eine zeitliche Evolution, sondern auch gleichzeitige isolierte Zustände unterstützt werden. Dennoch handelt es sich nicht um eine vollständige Schema-Versionierung, da insbesondere die strukturelle Unabhängigkeit von Instanzen und Schemata nicht gegeben ist und Versionierung primär auf Daten- statt auf Strukturebene erfolgt (vgl. ORACLE AI DATABASE WORKSPACE MANAGER DEVELOPER'S GUIDE 2025, "1.1 Workspace Manager Overview").
-
-\begin{figure}[!htb]
-  \caption{Testpyramide}
-  \captionsetup{width=1\textwidth}
-  \begin{center}
-    \begin{tikzpicture}
-      \node [double arrow, draw, draw=teal, fill=teal!20, very thick, rotate=90] 
-          at (-5.5,2.3) {Isolation | Integration};
-      \node [double arrow, draw, draw=teal, fill=teal!20, very thick, rotate=90] 
-          at (5.5,2.3) {Schnell\:\:\:\:|\:\:\:\:Langsam};
-      
-      \coordinate (A) at (-5,0) {};
-      \coordinate (B) at (5,0) {};
-      \coordinate (C) at (0,4.5) {};
-      \draw[name path=AC, draw=teal, very thick] (A) -- (C);
-      \draw[name path=BC, draw=teal, very thick] (B) -- (C);
-      \foreach \y/\A in 
-          {
-            0/Unit Tests,
-            1.25/Service Tests,
-            2.5/UI Tests
-          }
-          { %0/G,1/F,2/E,3/D,4/C,5/B,6/A
-            \path[name path=horiz] (A|-0,\y) -- (B|-0,\y);
-            \draw[draw=teal, very thick, 
-              name intersections={of=AC and horiz,by=P},
-              name intersections={of=BC and horiz,by=Q}
-            ] (P) -- (Q)
-            node[midway,above] {\A};
-          }
-    \end{tikzpicture}
-  \end{center}
-  \capquelle{Eigendarstellung angelehnt an \cite[311-317]{cohn_succeeding_2010}}\label{Testpyramide}
-\end{figure}
-
-\subsection{Ausblick}
-Die standardisierte SQL-DDL, die für die Definition und Modifikation relationaler Datenbankschemata eingesetzt wird, weist lediglich eingeschränkte Möglichkeiten zur Unterstützung von Schemaänderungen auf und bietet keine native Funktionalität für Schema-Evolution oder Schema-Versionierung. Aus diesem Grund erscheint eine Erweiterung der SQL-Spezifikation sinnvoll, die explizit Konzepte der Schema-Evolution und Versionierung auf Benutzerebene unterstützt. Eine solche Weiterentwicklung könnte dazu beitragen, Änderungen am Datenbankschema nicht nur technisch, sondern auch konzeptionell transparenter und benutzerfreundlicher abzubilden.
-Im Hinblick auf zukünftige Forschungsarbeiten eröffnet sich hierbei ein breites Spektrum an Fragestellungen. Insbesondere die Entwicklung standardisierter Sprachkonstrukte für Schema-Versionierung, die Integration von Migrationsmechanismen direkt in die Datenbanksprache sowie die konsistente Unterstützung historisierter Datenabfragen über mehrere Schemazustände hinweg stellen vielversprechende Forschungsrichtungen dar. Darüber hinaus wäre zu untersuchen, wie sich solche Erweiterungen in bestehende Datenbankmanagementsysteme integrieren lassen, ohne deren Komplexität oder Performance wesentlich zu beeinträchtigen (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-59 f.).
