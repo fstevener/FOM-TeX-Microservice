@@ -1,122 +1,29 @@
 \section{Einleitung}
-Änderungen an Datenmodellen treten in datengetriebenen Informationssystemen regelmäßig auf und sind als natürlicher Bestandteil ihrer Weiterentwicklung zu verstehen. Ursachen hierfür liegen unter anderem in sich verändernden Nutzeranforderungen, der Anpassung an neue Geschäftslogiken oder in externen Rahmenbedingungen wie gesetzlichen Vorgaben (nach BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-1 f.). Diese strukturellen Anpassungen stellen besondere Anforderungen an die Verwaltung von Datenbeständen, da bestehende Daten und Anwendungen weiterhin funktionsfähig bleiben müssen (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2).
+
+\subsection{Relevanz und Problemstellung}
+Statische Investmentportfolios können nur begrenzt auf veränderte Marktbedingungen reagieren. Gerade in Stressphasen verändern sich Renditen, Risiken und Korrelationen zwischen Anlageklassen, wodurch bestehende Diversifikationsannahmen an Wirkung verlieren können. Für institutionelle Investoren entsteht daraus die Herausforderung, solche Veränderungen frühzeitig zu erkennen und in die Portfolioallokation einzubeziehen.
+
+\subsection{Zielsetzung}
+Ziel dieser Arbeit ist die Konzeption eines KI-basierten Systems zur Erkennung von Marktregimen als quantitative Entscheidungsunterstützung für die Portfolioallokation. Die Arbeit ist unternehmensunabhängig und konzeptionell ausgerichtet. Adressaten sind insbesondere institutionelle Investoren mit Multi-Asset-Portfolios und aktivem Allokationsmandat, beispielsweise Asset Manager, Pensionsfonds, Hedgefonds oder Family Offices. Der Anwendungsfall wird auf den US-Kapitalmarkt begrenzt. Im Mittelpunkt steht nicht die Automatisierung der Anlageentscheidung, sondern die Frage, wie Marktregime datenbasiert erkannt, technisch operationalisiert und hinsichtlich ihres wirtschaftlichen Nutzens bewertet werden können.
+
+\subsection{Gang der Untersuchung}
+Kapitel 2 erläutert die fachlichen Grundlagen zu Asset Management, Marktregimen und quantitativer Regimeerkennung. Kapitel 3 entwickelt das Lösungskonzept entlang der vier Phasen des Business-Analytics-Prozesses nach Seiter: Framing, Allocation, Analytics und Preparation. Kapitel 4 fasst die Ergebnisse zusammen und zeigt mögliche Weiterentwicklungen auf.
+
+\section{Fachliche Grundlagen}
+
+\subsection{Asset Management}
+Asset Management bezeichnet die professionelle Verwaltung von Vermögen im Auftrag Dritter. Kernaufgabe ist die Allokation des Vermögens auf verschiedene Anlageklassen, um unter Berücksichtigung der Risikotoleranz eine möglichst hohe risikoadjustierte Rendite zu erzielen \cite[2-4]{maginn_managing_2007}.
+
+\subsection{Marktregime}
+Kapitalmärkte durchlaufen unterschiedliche, über längere Zeiträume stabile Zustände, sogenannte Marktregime \cite[313–314]{ang_regime_2012}. Vereinfacht lassen sich ein normales Regime mit steigenden Kursen und moderater Volatilität (\textit{Risk-On}) sowie ein Bärenmarkt-Regime mit fallenden Kursen und hoher Volatilität (\textit{Risk-Off}) unterscheiden \cite[1139]{ang_international_2002}.
 
 \vspace{0.5cm}
 
-Ein zentraler Ansatz zur Bewältigung dieser Problematik ist die Schema-Versionierung. Dieses Konzept sieht vor, verschiedene Versionen eines Datenbankschemas parallel zu verwalten und die zugehörigen Daten konsistent diesen Versionen zuzuordnen. Dadurch können sowohl historische Datenbestände als auch ältere Anwendungen weiterhin genutzt werden, ohne dass Informationen verloren gehen oder unmittelbare Migrationen erforderlich sind (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2 f.). Schema-Versionierung wurde sowohl für relationale Datenbanksysteme als auch für neuere Datenbankparadigmen (z.B. NoSQL-Datenbanken) umfassend untersucht. Obwohl eine Vielzahl wissenschaftlicher Arbeiten zu diesem Thema existiert, ist die praktische Unterstützung in Datenbanksystemen bislang nur eingeschränkt ausgeprägt (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-1 u. S. 2430002-3).
+Für die Portfolioallokation ist diese Unterscheidung relevant, da sich Renditen, Risiken und Korrelationen zwischen den Regimen verändern. Aktienmärkte korrelieren in Bärenmärkten stärker miteinander, wodurch der Diversifikationsnutzen gerade in Stressphasen sinkt \cite[1137]{ang_international_2002}. Vermögenswerte, die sich unter normalen Bedingungen unabhängig entwickeln, können so gleichzeitig Verluste erleiden \cite[19]{page_when_2018}.
 
 \vspace{0.5cm}
 
-Vor diesem Hintergrund bietet die vorliegende Seminararbeit eine Einführung in die grundlegenden Konzepte der Schema-Versionierung, wie sie in der wissenschaftlichen Literatur behandelt werden. Der Fokus der Arbeit liegt ausschließlich auf der Versionierung von Datenbankschemata in relationalen Datenbanken.
-
-\vspace{0.5cm}
-
-Methodisch basiert die Arbeit auf einer Literaturanalyse einschlägiger Fachquellen, eigene empirische Erhebungen werden nicht durchgeführt.
-
-\vspace{0.5cm}
-
-Die Arbeit ist wie folgt aufgebaut: Kapitel 2 definiert zunächst die zentralen Begriffe \textit{Datenbankschema}, \textit{Schemamodifikation}, \textit{Schema-Evolution} sowie \textit{Schema-Versionierung} und grenzt diese voneinander ab. Kapitel 3 behandelt anschließend grundlegende Konzepte der Schema-Versionierung, wie sie in der wissenschaftlichen Literatur beschrieben werden und stellt ausgewählte Softwarelösungen vor. Abschließend erfolgt ein kurzer Ausblick.
-
-%\subsection{Einführung in die Thematik}
-%\blindtext\nomenclature{W3C}{World Wide Web Consortium}
-%\blindtext\cite{mswpf}\cite[19]{sadtler_rechtskonformes_2017}
-
-%\subsection{Problemstellung und Zielsetzung}
-%\blindtext
-
-%\subsection{Methodischer Aufbau der Arbeit}
-%\blindtext
-
-\section{Theoretische Grundlagen}
-In diesem Kapitel wird für den Begriff \textit{Schema-Versionierung} eine für diese Arbeit gültige Begriffsbestimmung auf Grundlage etablierter wissenschaftlicher Definitionen vorgenommen. Darüber hinaus werden verwandte Konzepte erläutert, die der Schema-Versionierung inhaltlich nahe stehen und daher häufig mit ihr verwechselt oder vermischt werden.
-
-\subsection{Datenbankschema}
-Das \textit{Datenbankschema} definiert die Struktur der Datenbank (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Es ist eine strukturierte Menge von Metadaten, wird mit der SQL Data Definition Language (DDL) erzeugt und im Systemkatalog des \textit{Datenbankmanagementsystems} (kurz \textit{DBMS}) gespeichert (vgl. ELMASRI, NAVATHE 2011, S. 33; BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Im Folgenden wird der Begriff \textit{Schema} synonym für das Datenbankschema verwendet. Schemata sind für die Abfrage, Aktualisierung, Integration und Konvertierung von Daten erforderlich (nach BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Die ANSI-SPARC-Architektur definiert Schemata auf drei verschiedenen Abstraktionsebenen: das \textit{interne Schema}, das \textit{konzeptionelle Schema} und das \textit{externe Schema} (vgl. Abb.~\ref{fig:ansi-sparc}). Die folgenden Ausführungen zu den Schemaebenen und der Datenunabhängigkeit der ANSI-SPARC-Architektur basieren auf ELMASRI und NAVATHE (2011, S. 33 ff.).
-
-\vspace{0.5cm}
-
-Das \textit{interne Schema} definiert die physische Struktur der Datenbank. Es enthält vollständige Informationen über die physische Speicherung der Daten auf dem Datenträger.
-
-\vspace{0.5cm}
-	
-Das \textit{konzeptionelle Schema} definiert die logische Struktur der Datenbank. Es abstrahiert die Details der physischen Speicherung und bezieht sich ausschließlich auf das konzeptionelle Design der Datenbank. Es beschreibt Relationen, Attribute, Datentypen, Beziehungen zwischen Entitäten und Integritätsbedingungen. Das konzeptionelle Schema legt damit fest, wie die Daten in der Datenbank angeordnet sind und in welcher Beziehung sie zueinander stehen.
-
-\vspace{0.5cm}
-	
-Das \textit{externe Schema} definiert die benutzerspezifische Sicht auf die Datenbank. Es legt fest, auf welche Teilmenge des konzeptionellen Schemas ein Benutzer zugreifen darf. Für verschiedene Benutzergruppen können unterschiedliche externe Schemata existieren.
-
-\vspace{0.5cm}
-
-Die Abstraktionsebenen der ANSI-SPARC-Architektur garantieren Datenunabhängigkeit. Schemaänderungen auf einer Ebene des Datenbanksystems haben damit keine Auswirkungen auf das Schema der nächsthöheren Ebene. Es wird zwischen \textit{physischer Datenunabhängigkeit} und \textit{logischer Datenunabhängigkeit} differenziert. Physische Datenunabhängigkeit beschreibt die Fähigkeit, Änderungen am internen Schema eines Datenbanksystems vorzunehmen, ohne das konzeptionelle Schema anpassen zu müssen. Logische Datenunabhängigkeit liegt vor, wenn das konzeptionelle Schema geändert werden kann, ohne das externe Schema anpassen zu müssen (nach ELMASRI, NAVATHE 2011, S. 35 f.). Die in dieser Arbeit vorgestellten Konzepte beziehen sich primär auf das konzeptionelle Schema, wenngleich Schema-Versionierung alle drei Ebenen der ANSI-SPARC-Architektur betreffen kann (vgl. SILBERSCHATZ, KORTH, SUDARSHAN 2019, S. 12 f.; BRAHMIA, GRANDI, OLIBONI 2024b).
-
-%\begin{figure}
-%  \centering
-%  \includegraphics[width=\linewidth]{.github/2_1_ANSI_SPARC.drawio.pdf}
-%  \includegraphics[scale = ]{.github/2_1_ANSI_SPARC.drawio.pdf}
-%  \caption{Mein Diagramm}
-%\end{figure} 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.9]{.github/2_1_ANSI_SPARC.drawio.pdf}
-    \caption{ANSI-SPARC-Architektur}
-    \capquelle{ELMASRI, NAVATHE 2011, S. 34}
-    \label{fig:ansi-sparc}
-\end{figure}
-
-Das Schema ist eine intensionale Beschreibung der Datenbank und enthält selbst keine Daten. Die \textit{Datenbankinstanz} (im Folgenden kurz \textit{Instanz}) hingegen repräsentiert den konkreten Zustand einer Datenbank zu einem bestimmten Zeitpunkt. Sie wird auch als Extension bezeichnet und enthält die gespeicherten Daten gemäß den Strukturen und Integritätsbedingungen des Schemas. Jedes Einfügen, Löschen oder Aktualisieren von Daten führt zu einem neuen Zustand und damit zu einer neuen Instanz. Das Schema bleibt dabei konstant und ist zeitlich wesentlich stabiler als die Instanz (nach ELMASRI, NAVATHE 2011, S. 32 f.). Erst wenn die Struktur der Datenbank modifiziert werden soll, muss das Schema angepasst werden. Dies kann beispielsweise eintreten, wenn sich die Anforderungen an die Applikation ändern, die mit der Datenbank interagiert (vgl. BRAHMIA, GRANDI, OLIBONI 2024b, S. 2430002-2). Die Kapitel 2.2 bis 2.4 gehen näher darauf ein, wie Änderungen an Schemata in einem DBMS unterstützt werden können.
-
-
-\subsection{Schemamodifikation}
-Änderungen an der Definition des Schemas einer bestehenden Datenbank, werden auch als \textit{Schemamodifikation} bezeichnet (nach RODDICK 1995, S. 384). Schemamodifikation umfasst das Hinzufügen, Modifizieren und Entfernen von Elementen des Schemas (nach BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-2). Bei der Schemamodifikation wird das bestehende Schema inklusive der zugehörigen Instanz verworfen und durch ein neues, leeres Schema ersetzt. Aspekte wie Datenerhalt und Schemakonsistenz werden dabei – im Gegensatz zur Schema-Evolution und Schema-Versionierung – nicht berücksichtigt (nach BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-6 ff.).
-
-\vspace{0.5cm}
-
-Die Abbildungen~\ref{fig:schemamodifikation_initial} und~\ref{fig:schemamodifikation_after_schemaChange} verdeutlichen den Ablauf der Schemamodifikation in einer relationalen Datenbank. Das folgende Beispiel sowie die Beispiele in den Kapiteln 2.3 und 2.4 sind an DE CASTRO, GRANDI und SCALAS (1997, S. 250 ff.) angelehnt.
-
-\vspace{0.5cm}
-
-Ausgangspunkt ist die Schemaversion $\mathrm{SV}_1$ mit dem entsprechenden Eintrag im Systemkatalog des DBMS. $\mathrm{SV}_1$ besteht aus der Relation \textit{EMPLOYEE} mit den Attributen \textit{NAME}, \textit{ADDRESS} und \textit{CITY}. Die Instanz $I_1$ umfasst zwei Tupel (vgl. Abb.~\ref{fig:schemamodifikation_initial}).
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/2_2_Schemamodifikation_initial_Table.drawio.pdf}
-    \caption{Zustand vor der Schemamodifikation}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
-    \label{fig:schemamodifikation_initial}
-\end{figure}
-
-\vspace{1em}
-
-Das Schema wird mit Hilfe von DDL-Statements verändert (vgl. Quelltext~\ref{lst:ddl}). Zunächst wird das Attribut \textit{ADDRESS} aus der Relation entfernt. Anschließend wird ein neues Attribut \textit{PHONE} hinzugefügt.
-
-\vspace{0.5cm}
-
-\lstinputlisting[
-    language=SQL,
-    caption={DDL-Statements},
-    label={lst:ddl}
-]{deine_inhalte/Quellcode/chapter_2_2_ddl.sql}
-
-\vspace{-0.6em}
-
-\capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
-
-\vspace{1.0cm}
-
-Dadurch entsteht die neue Schemaversion $\mathrm{SV}_2$ mit leerer Instanz $I_2$ und angepasstem Eintrag im Systemkatalog (vgl. Abb.~\ref{fig:schemamodifikation_after_schemaChange}). Die ursprüngliche Schema-Version $\mathrm{SV}_1$ existiert nach der Modifikation nicht mehr. Auch die mit $\mathrm{SV}_1$ verbundene Instanz $I_1$ geht verloren.
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=1]{.github/2_2_Schemamodifikation_after_schemaChange.drawio.pdf}
-    \caption{Zustand nach der Schemamodifikation}
-    \capquelle{DE CASTRO, GRANDI, SCALAS 1997, S. 251}
-    \label{fig:schemamodifikation_after_schemaChange}
-\end{figure}
-
-Das Beispiel zeigt damit die charakteristischen Eigenschaften einer klassischen Schemamodifikation: Änderungen werden direkt auf dem bestehenden Schema durchgeführt, ohne frühere Schemaversionen oder historische Instanzen beizubehalten. Anwendungen müssen anschließend zwingend mit der neuen Struktur kompatibel sein (vgl. BRAHMIA, GRANDI, OLIBONI 2024a, S. 2430001-6 ff.).
+Eine statische Allokation bleibt daher ein Kompromiss zwischen unterschiedlichen Marktregimen. Ang und Bekaert beziffern den wirtschaftlichen Nachteil einer statischen gegenüber einer regimeabhängigen Allokation auf rund 2,7 \% des Anfangsvermögens \cite[1182]{ang_international_2002}.
 
 
 \subsection{Schema-Evolution}
