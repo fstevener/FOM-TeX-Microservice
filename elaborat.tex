@@ -268,8 +268,10 @@
 	\listoffigures
 	\newpage
 	
-	\lstlistoflistings
+	\listoftables
 	\newpage
+%	\lstlistoflistings
+%	\newpage
 	
 	% \input{deine_inhalte/Kapitelanhang/Sperrvermerk}
 	% \newpage
@@ -280,7 +282,22 @@
 		\input{deine_inhalte/Kapitel}
 	\newpage
 	\printbibliography[nottype=online,heading=bibintoc,title={Literaturverzeichnis}]
-	\printbibliography[type=online,title={Internetquellen}]
+%	\printbibliography[type=online,title={KI-Verzeichnis}]
+
+	\newpage
+
+	\section*{KI-Verzeichnis}
+	\addcontentsline{toc}{section}{KI-Verzeichnis}
+
+	\begin{description}
+		\item[OpenAI ChatGPT] 
+		Verwendet zur sprachlichen Überarbeitung, Strukturierung und Unterstützung bei der Literaturrecherche. 
+		Verwendetes Modell: GPT-5.6 Sol. Zugriff am 15.08.2026.
+
+		\item[Weitere KI-Anwendung]
+		Beschreibung der Verwendung.
+	\end{description}
+
 	\newpage
 		\input{deine_inhalte/Kapitelanhang/Erklaerung}
 	\end{document}
