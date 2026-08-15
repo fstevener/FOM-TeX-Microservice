@@ -136,6 +136,9 @@ Der SPDR S\&P 500 ETF Trust (\textit{SPY}) bildet den Aktienmarkt ab \cite{noaut
             ICE Data Indices
             \tabularnewline \hline
         \end{tabularx}
+        \begin{tablenotes}[flushleft]
+            \item \normalsize{Quelle: Eigene Darstellung basierend auf \cite{noauthor_spy:_nodate, noauthor_ishares_nodate, noauthor_vix_nodate, noauthor_cboe_nodate, ice_bofa}}
+        \end{tablenotes}
     \end{threeparttable}
 \end{table}
 
@@ -149,7 +152,7 @@ Kurse und Volatilitätsindizes stehen nach Börsenschluss zur Verfügung. Der \t
     \setlength{\arrayrulewidth}{1pt}
     \renewcommand{\arraystretch}{1.25}
     \begin{threeparttable}
-        \caption{Illustrativer Auszug der zusammengeführten Rohdaten}
+        \caption{Illustrativer Auszug der Rohdaten}
         \label{tab:rohdaten}
 
         \small
@@ -211,13 +214,16 @@ Kurse und Volatilitätsindizes stehen nach Börsenschluss zur Verfügung. Der \t
             9,29
             \tabularnewline \hline
         \end{tabularx}
+        \begin{tablenotes}[flushleft]
+            \item \normalsize{Quelle: Fiktive Daten, erstellt mit GPT-5.6 Sol. (OpenAI).}
+        \end{tablenotes}
     \end{threeparttable}
 \end{table}
 
 
 \subsubsection{Systemarchitektur}
 
-Die Regimeerkennung wird als eigenständiger Regime-Detection-Service in eine serviceorientierte Architektur integriert (Abb. X). Nach Handelsschluss werden die Marktdaten automatisiert abgerufen und historisiert. Eine Datenpipeline führt die Aufbereitung aus Kapitel 3.3.1 durch und erzeugt den Merkmalsvektor $\mathbf{z}_t$.
+Die Regimeerkennung wird als eigenständiger Regime-Detection-Service in eine serviceorientierte Architektur integriert (vgl. Abb. ~\ref{fig:systemarch}). Nach Handelsschluss werden die Marktdaten automatisiert abgerufen und historisiert. Eine Datenpipeline führt die Aufbereitung aus Kapitel 3.3.1 durch und erzeugt den Merkmalsvektor $\mathbf{z}_t$.
 
 \vspace{0.5cm}
 
@@ -233,7 +239,7 @@ Training und Inferenz erfolgen getrennt. Das Modell wird regelmäßig auf einem 
     \includegraphics[scale=1]{.github/Systemarchitektur.pdf}
     \caption{Systemarchitektur der KI-basierten Regimeerkennung}
     \capquelle{Eigene Darstellung in Anlehnung an \cite{2969442.2969519, Washizaki2019MachineLA}}
-    \label{fig:partialsv}
+    \label{fig:systemarch}
 \end{figure}
 
 \subsubsection{Personalanforderung}
@@ -442,6 +448,9 @@ Das Merkmal erfasst, ob Aktien und Staatsanleihen zuletzt eher gleich- oder gege
             Gleichlauf und Diversifikationswirkung von Aktien und Anleihen
             \tabularnewline \hline
         \end{tabularx}
+        \begin{tablenotes}[flushleft]
+            \item \normalsize{Quelle: Eigene Darstellung basierend auf \cite{page_when_2018, cont_empirical_2001, polavarapu_cross-asset_2026, chekhlov_drawdown_2005, johnson_risk_2015, yang_information_leakage_2024, barndorff-nielsen_measuring_2008, bazan-palomino_volatility_2026}}
+        \end{tablenotes}
     \end{threeparttable}
 \end{table}
 
@@ -467,7 +476,7 @@ $$
 (z_{t,1},\ldots,z_{t,8})^\top.
 $$
 
-Tabelle 4 zeigt illustrativ, in welcher Form die Daten nach Abschluss der Pipeline in das Machine Learning Model eingehen. Dargestellt sind bereits skalierte Merkmalswerte.
+Tabelle~\ref{tab:modelleingangsdaten} zeigt illustrativ, in welcher Form die Daten nach Abschluss der Pipeline in das Machine Learning Model eingehen. Dargestellt sind bereits skalierte Merkmalswerte.
 
 \begin{table}[H]
     \setlength{\arrayrulewidth}{1pt}
@@ -534,9 +543,8 @@ Tabelle 4 zeigt illustrativ, in welcher Form die Daten nach Abschluss der Pipeli
             -0,21
             \tabularnewline \hline
         \end{tabularx}
-
         \begin{tablenotes}[flushleft]
-            \item \scriptsize{Hinweis: Die dargestellten Werte sind illustrativ und dienen ausschließlich der Veranschaulichung der Datenstruktur nach Skalierung.}
+            \item \normalsize{Quelle: Fiktive Daten, erstellt mit GPT-5.6 Sol. (OpenAI).}
         \end{tablenotes}
     \end{threeparttable}
 \end{table}
@@ -617,7 +625,7 @@ P(S_t=2\mid\mathbf{z}_{1:t})
 \approx 0{,}86.
 $$
 
-Nach Berücksichtigung der heutigen Marktdaten beträgt die Wahrscheinlichkeit für Regime 1 somit ca. 14 % und für Regime 2 ca. 86 %. Das HMM verbindet damit zwei Informationen: Wie wahrscheinlich ist ein Regime aufgrund der bisherigen Entwicklung? und wie gut passen die aktuellen Marktmerkmale zu diesem Regime?
+Nach Berücksichtigung der heutigen Marktdaten beträgt die Wahrscheinlichkeit für Regime 1 somit ca. 14 \% und für Regime 2 ca. 86 \%. Das HMM verbindet damit zwei Informationen: Wie wahrscheinlich ist ein Regime aufgrund der bisherigen Entwicklung? und wie gut passen die aktuellen Marktmerkmale zu diesem Regime?
 
 \vspace{0.5cm}
 
@@ -658,9 +666,8 @@ Das Ergebnis ist eine täglich aktualisierte Wahrscheinlichkeit für das aktuell
             0,95
             \tabularnewline \hline
         \end{tabularx}
-
         \begin{tablenotes}[flushleft]
-            \item \small{Hinweis: Die dargestellten Wahrscheinlichkeiten sind illustrativ und dienen ausschließlich der Veranschaulichung der Modellausgabe.}
+            \item \normalsize{Quelle: Fiktive Daten, erstellt mit GPT-5.6 Sol. (OpenAI).}
         \end{tablenotes}
     \end{threeparttable}
 \end{table}
