@@ -290,12 +290,15 @@ Für die produktive Einführung sind zusätzlich insbesondere IT-Security, Risk 
 \subsection{Analytics}
 
 \subsubsection{Datenaufbereitung}
-
 Die fünf Zeitreihen aus Kapitel 3.2.1 werden vor der Modellierung in acht aussagekräftige Marktmerkmale überführt. Die Merkmale kombinieren Informationen über Rendite, Verlustrisiko, erwartete Volatilität, Kreditstress und das Zusammenspiel von Aktien und Anleihen. Vergleichbare Merkmale werden in der Literatur zur Regimeerkennung und regimeabhängigen Asset Allocation verwendet \cite{ang_regime_2012, ang_international_2002, page_when_2018, polavarapu_cross-asset_2026}.
 
- \textbf{Schritt 1 – Zusammenführung.} Die fünf Zeitreihen werden anhand ihres Datums zusammengeführt. Dabei werden für jeden Handelstag ausschließlich zu diesem Zeitpunkt bereits verfügbare Werte verwendet, noch nicht veröffentlichte Werte werden durch den zuletzt verfügbaren Stand ersetzt. Dadurch wird ein Informationsvorsprung durch zukünftige Daten vermieden \cite[4]{yang_information_leakage_2024}.
+\vspace{0.5cm}
 
- \textbf{Schritt 2 – Merkmalsbildung.} Die Entwicklung von Aktien und Anleihen wird über Renditemerkmale erfasst, wie sie auch in Cross-Asset-Regimemodellen verwendet werden \cite{ang_regime_2012, polavarapu_cross-asset_2026}. Hierzu werden logarithmische Renditen über fünf Handelstage berechnet \cite[223-224]{cont_empirical_2001}:
+\textbf{Schritt 1 – Zusammenführung.} Die fünf Zeitreihen werden anhand ihres Datums zusammengeführt. Dabei werden für jeden Handelstag ausschließlich zu diesem Zeitpunkt bereits verfügbare Werte verwendet, noch nicht veröffentlichte Werte werden durch den zuletzt verfügbaren Stand ersetzt. Dadurch wird ein Informationsvorsprung durch zukünftige Daten vermieden \cite[4]{yang_information_leakage_2024}.
+
+\vspace{0.5cm}
+
+\textbf{Schritt 2 – Merkmalsbildung.} Die Entwicklung von Aktien und Anleihen wird über Renditemerkmale erfasst, wie sie auch in Cross-Asset-Regimemodellen verwendet werden \cite{ang_regime_2012, polavarapu_cross-asset_2026}. Hierzu werden logarithmische Renditen über fünf Handelstage berechnet \cite[223-224]{cont_empirical_2001}:
 
  $$
 x_{t,1}=\ln\left(\frac{SPY_t}{SPY_{t-5}}\right),
@@ -343,6 +346,8 @@ $$
 
 abgebildet. Ein positiver Wert bedeutet, dass die erwartete kurzfristige Volatilität über der Drei-Monats-Erwartung liegt und kann auf erhöhten kurzfristigen Marktstress hinweisen \cite[2467]{johnson_risk_2015}.
 
+\vspace{0.5cm}
+
 Der Kreditmarkt geht über das aktuelle Niveau des High-Yield-Spreads und dessen Fünf-Tage-Veränderung ein:
 
 $$
@@ -352,6 +357,8 @@ x_{t,7}=OAS_t-OAS_{t-5}.
 $$
 
 Damit werden sowohl bestehender Kreditstress als auch seine aktuelle Veränderung berücksichtigt \cite{polavarapu_cross-asset_2026}, \cite[1692–1694]{gilchrist_credit_2012}.
+
+\vspace{0.5cm}
 
 Schließlich beschreibt $\rho_t$ die Korrelation der täglichen SPY- und TLT-Renditen über die vergangenen 63 Handelstage. Das Fenster entspricht näherungsweise drei Kalendermonaten und bildet damit einen mittelfristigen Zusammenhang zwischen beiden Anlageklassen ab. Die Korrelation wird mit der Fisher-Z-Transformation in ein unbegrenztes Merkmal überführt \cite[909–911]{barndorff-nielsen_econometric_2004}:
 
@@ -365,7 +372,7 @@ $$
 Das Merkmal erfasst, ob Aktien und Staatsanleihen zuletzt eher gleich- oder gegenläufig reagierten und damit, wie sich ihre Diversifikationswirkung verändert \cite[27-29]{page_when_2018}.
 
 
-\begin{table}[!htb]
+\begin{table}[H]
     \setlength{\arrayrulewidth}{1pt}
     \renewcommand{\arraystretch}{1.35}
     \begin{threeparttable}
@@ -438,6 +445,8 @@ Das Merkmal erfasst, ob Aktien und Staatsanleihen zuletzt eher gleich- oder gege
     \end{threeparttable}
 \end{table}
 
+\vspace{0.5cm}
+
 \textbf{Schritt 3 – Skalierung.} Da die Merkmale unterschiedliche Einheiten und Größenordnungen besitzen, werden sie auf Basis des jeweiligen Trainingszeitraums robust skaliert \cite{noauthor_robustscaler_nodate}:
 
 $$
@@ -460,7 +469,7 @@ $$
 
 Tabelle 4 zeigt illustrativ, in welcher Form die Daten nach Abschluss der Pipeline in das Machine Learning Model eingehen. Dargestellt sind bereits skalierte Merkmalswerte.
 
-\begin{table}[!htb]
+\begin{table}[H]
     \setlength{\arrayrulewidth}{1pt}
     \renewcommand{\arraystretch}{1.25}
     \begin{threeparttable}
@@ -546,6 +555,8 @@ $$
 
 Aus den Trainingsdaten lernt das HMM für jedes Regime ein typisches Merkmalsprofil. Da die acht Merkmale kontinuierliche Werte annehmen und gemeinsam betrachtet werden, wird innerhalb jedes Regimes eine multivariate Normalverteilung angenommen \cite{stadler_penalized_2013}. Vereinfacht lernt das Modell dadurch, welche Kombinationen der Merkmale für die beiden Regime typisch sind und wie diese innerhalb eines Regimes gemeinsam schwanken. Die zunächst statistisch identifizierten Zustände werden anschließend anhand ihrer Merkmalsprofile als \textit{Risk-On} beziehungsweise \textit{Risk-Off} interpretiert.
 
+\vspace{0.5cm}
+
 Zusätzlich schätzt das Modell eine Übergangsmatrix $A$, deren Einträge die Wahrscheinlichkeit eines Verbleibs oder Wechsels zwischen den Regimen beschreiben \cite{rabiner_tutorial_1989, elliott_application_1997}. Ein illustratives Ergebnis wäre:
 
 $$
@@ -558,6 +569,8 @@ $$
 
 Befindet sich der Markt in Regime 1, bleibt er demnach mit 98,5 \% Wahrscheinlichkeit am Folgetag dort. Für Regime 2 beträgt diese Verbleibswahrscheinlichkeit 96 \%. Hohe Werte auf der Hauptdiagonale bilden damit die zeitliche Persistenz der Marktregime ab.
 
+\vspace{0.5cm}
+
 \textbf{Konkretes Beispiel.} Angenommen, das HMM hat am Vortag $t-1$ geschätzt, dass mit einer Wahrscheinlichkeit von 65 \% Regime 1 und mit 35 \% Regime 2 in $t-1$ vorliegt. Mithilfe der Übergangsmatrix wird zunächst die erwartete Regimeverteilung für den heutigen Handelstag $t$ bestimmt:
 
 $$
@@ -569,6 +582,8 @@ $$
 $$
 
 Dabei bezeichnet $\hat{p}_{t,k}$ die Wahrscheinlichkeit für Regime $k$, bevor die heutigen Marktmerkmale berücksichtigt werden. Für Regime 1 beträgt diese zunächst 65,4 \% und für Regime 2 34,6 \%.
+
+\vspace{0.5cm}
 
 Anschließend vergleicht das Modell die heute beobachteten acht Marktmerkmale mit den zuvor gelernten Merkmalsprofilen. Angenommen, die heute beobachtete Merkmalskombination passt deutlich besser zu Regime 2. Illustrativ seien die entsprechenden Dichtewerte der gelernten Normalverteilungen
 
@@ -603,6 +618,8 @@ P(S_t=2\mid\mathbf{z}_{1:t})
 $$
 
 Nach Berücksichtigung der heutigen Marktdaten beträgt die Wahrscheinlichkeit für Regime 1 somit ca. 14 % und für Regime 2 ca. 86 %. Das HMM verbindet damit zwei Informationen: Wie wahrscheinlich ist ein Regime aufgrund der bisherigen Entwicklung? und wie gut passen die aktuellen Marktmerkmale zu diesem Regime?
+
+\vspace{0.5cm}
 
 Das Ergebnis ist eine täglich aktualisierte Wahrscheinlichkeit für das aktuell vorherrschende Marktregime. Das HMM prognostiziert dabei nicht direkt die zukünftige Aktienrendite, sondern liefert ein quantitatives Signal, das einem Investmentkomitee oder einer nachgelagerten Allokationslogik als Entscheidungsgrundlage dienen kann.
 
